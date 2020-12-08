@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build ./Backend/Backend.csproj --configuration Release
+      run: dotnet build ./Project.sln --configuration Release
     - name: Test
-      run: dotnet test ./XUnitTest/XUnitTestBackend.csproj --configuration Release
+      run: dotnet test ./Project.sln --configuration Release
 
