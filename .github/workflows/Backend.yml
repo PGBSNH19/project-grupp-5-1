@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: XUnit Viewer
         id: xunit-viewer
-        uses: AutoModality/action-xunit-viewer@v1  
+        uses: ./XUnitTest
       - name: Attach the report
         uses: actions/upload-artifact@v1
         with:
