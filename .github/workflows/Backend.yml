@@ -26,5 +26,5 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      working-directory: ./XUnitTest
+      working-directory: XUnitTest
       run: dotnet test --no-restore --verbosity normal
