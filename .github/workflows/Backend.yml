@@ -6,15 +6,17 @@ on:
   pull_request:
     branches: [ main ]
 
-defaults:
-  run:
-    working-directory: project-grupp-5-1
+
 
     
 jobs:
-  build:
-
+  build-job:
+    
     runs-on: ubuntu-latest
+    
+    defaults:
+     run:
+      working-directory: Backend
 
     steps:
     - uses: actions/checkout@v2
@@ -26,6 +28,16 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build ./Project.sln --configuration Release
-    - name: Test
-      run: dotnet test ./Project.sln --configuration Release
 
+      
+  test-job:
+    
+    runs-on: ubuntu-latest
+    
+    defaults:
+     run:
+      working-directory: XUnitTest
+
+    steps:
+     - name: Test
+       run: dotnet test ./Project.sln --configuration Release
