@@ -8,7 +8,7 @@ on:
 
 defaults:
   run:
-    working-directory: web
+    working-directory: Backend
     
 jobs:
   build:
@@ -21,7 +21,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-        project: 'https://github.com/PGBSNH19/project-grupp-5-1/tree/main/Backend'
     - name: Install dependencies
       run: dotnet restore
     - name: Build
