@@ -5,16 +5,15 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-        
+    
 defaults:
-     run:
-      working-directory: Backend
-      
+  run:
+    working-directory: Backend
+
 jobs:
   build:
-        
-    runs-on: ubuntu-latest
 
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -25,8 +24,6 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build ./Project.sln --configuration Release
+      run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test ./Project.sln --configuration Release
-      
-
+      run: dotnet test --no-restore --verbosity normal
