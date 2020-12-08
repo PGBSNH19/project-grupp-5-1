@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: test ./project-grupp-5-1/blob/main/XUnitTest/XUnitTestBackend.csproj
+      run: test ./XUnitTest/XUnitTestBackend.csproj
