@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test https://github.com/PGBSNH19/project-grupp-5-1/blob/main/XUnitTest/XUnitTestBackend.csproj
+      run: dotnet test ./XUnitTest/XUnitTestBackend.csproj
