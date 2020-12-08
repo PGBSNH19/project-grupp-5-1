@@ -7,8 +7,8 @@ on:
     branches: [ main ]
     
 jobs:
-  build-job:
-    
+  build:
+        
     runs-on: ubuntu-latest
     
     defaults:
@@ -25,5 +25,7 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build ./Project.sln --configuration Release
+    - name: Test
+      run: dotnet test ./Project.sln --configuration Release
       
 
