@@ -28,3 +28,5 @@ jobs:
     - name: Test
       working-directory: XUnitTest
       run: dotnet test --no-restore --verbosity normal
+    - name: Unit Test
+      run: ./XUnitTest CIFakeTest
