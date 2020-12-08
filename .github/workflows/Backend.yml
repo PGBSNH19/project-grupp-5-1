@@ -28,5 +28,17 @@ jobs:
     - name: Test
       working-directory: XUnitTest
       run: dotnet test --no-restore --verbosity normal
-    - name: Unit Test
-      run: ./XUnitTest
+
+  test:
+    runs-on: ubuntu-18.04
+    name: Generate Test Reports
+    steps:
+      - name: XUnit Viewer
+        id: xunit-viewer
+        uses: AutoModality/action-xunit-viewer@v1  
+      - name: Attach the report
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ steps.xunit-viewer.outputs.report-name }}
+          path: ${{ steps.xunit-viewer.outputs.report-dir }}
+
