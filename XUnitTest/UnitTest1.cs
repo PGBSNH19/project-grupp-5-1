@@ -9,7 +9,7 @@ namespace XUnitTest
         [InlineData("Hello")]
         public void CIFakeTest(string input)
         {
-            string actual = "Hell";
+            string actual = "Hello";
 
             Assert.Equal(input, actual);
         }
