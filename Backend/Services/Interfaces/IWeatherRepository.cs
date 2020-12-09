@@ -8,5 +8,6 @@ namespace Backend.Services.Interfaces
 {
     public interface IWeatherRepository : IRepository<Weather>
     {
+        Task<Weather> GetWeatherById(int weatherId);
     }
 }

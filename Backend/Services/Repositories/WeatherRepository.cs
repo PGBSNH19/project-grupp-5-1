@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services.Repositories
 {
@@ -18,6 +19,11 @@ namespace Backend.Services.Repositories
         {
             _context = context;
             _logger = logger;
+        }
+
+        public async Task<Weather> GetWeatherById(int weatherId)
+        {
+            return await _context.Set<Weather>().FirstOrDefaultAsync(w => w.Id == weatherId);
         }
     }
 }
