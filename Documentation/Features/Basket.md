@@ -1,18 +1,34 @@
 
 
-Feature: Add to basket
+Feature: Shopping basket
 
-As a customer 
+As a customer in the website
 
-I want to add to basket 
+I want to have a  shopping basket
 
-So that  i am  aware of which product is in my basket
+So that  i can see the products and costs of what i want to purchase
 
-Scenario: Customer add products to basket 
 
--Given
 
--When the customer sees an interesting product
+Scenario 1: Opening the shopping basket 
 
--Then the customer choose to add to basket
+-Given i have added an item tom my shopping bag
+
+-When i click the "put in shopping bag" button
+
+-Then then i move on to the shopping bag page
+
+-And i can see  all the products in my shopping basket
+
+
+
+Scenario 2: Adding a product to basket
+
+-Given i am on a product detail page
+
+-When i select the size/color
+
+-And i click the add to basket button
+
+-Then the product is added to my shopping basket
 
