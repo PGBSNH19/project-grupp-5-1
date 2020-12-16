@@ -10,18 +10,22 @@ namespace Backend.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public string Name { get; set; }
+
         public string Description { get; set; }
+
         [Required]
         public bool IsAvailable { get; set; }
+
         [Required]
         public int Stock { get; set; }
+
         [Required]
-        public ProductCategory ProductCategory { get; set; }
+        public int ProductCategoryId { get; set; }
+
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
         public ICollection<ProductPrice> ProductPrices { get; set; }
-
-
     }
 }
