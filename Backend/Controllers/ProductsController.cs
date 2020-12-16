@@ -74,17 +74,21 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> Add([FromBody] ProductDTO product)
+        public async Task<ActionResult<ProductDTO>> PostProduct([FromBody] ProductDTO product)
         {
             try
             {
                 var mappedResult = _mapper.Map<Product>(product);
 
-                var productPost = _productRepository.Add(mappedResult);
-
-                if (await _productRepository.Save())
+                await _productRepository.Add(mappedResult);
+                try
                 {
-                    return Ok(productPost);
+                    await _productRepository.Save();
+                    return Ok();
+                }
+                catch (Exception)
+                {
+                    return BadRequest();
                 }
             }
             catch (Exception e)
@@ -92,7 +96,6 @@ namespace Backend.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
                     $"Failed to add the product. Exception thrown when attempting to add data to the database: {e.Message}");
             }
-            return BadRequest();
         }
 
         [HttpDelete("{id:int}")]
