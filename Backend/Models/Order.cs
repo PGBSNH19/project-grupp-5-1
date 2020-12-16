@@ -16,5 +16,7 @@ namespace Backend.Models
         public Coupon Coupon { get; set; }
         [Required]
         public User User { get; set; }
+
+        public ICollection<OrderedProduct> OrderedProduct { get; set; }
     }
 }

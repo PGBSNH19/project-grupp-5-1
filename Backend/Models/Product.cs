@@ -19,5 +19,9 @@ namespace Backend.Models
         public int Stock { get; set; }
         [Required]
         public ProductCategory ProductCategory { get; set; }
+        public ICollection<OrderedProduct> OrderedProducts { get; set; }
+        public ICollection<ProductPrice> ProductPrices { get; set; }
+
+
     }
 }
