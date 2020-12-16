@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Frontend.Data;
 using System.Net.Http;
+using Frontend.Services;
 
 namespace Frontend
 {
@@ -31,6 +32,10 @@ namespace Frontend
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<HttpClient>();
+            services.AddHttpClient<IProductService, ProductService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44339/");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

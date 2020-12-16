@@ -30,6 +30,7 @@ namespace Backend
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IWeatherRepository, WeatherRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddControllers();
         }
 
