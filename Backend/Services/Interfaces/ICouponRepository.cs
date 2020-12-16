@@ -8,7 +8,7 @@ namespace Backend.Services.Interfaces
 {
     public interface ICouponRepository : IRepository<Coupon>
     {
-        Task GetCouponById(int id);
-        Task<Coupon> GetAllCoupons();
+        Task<Coupon> GetCouponById(int id);
+        Task<ICollection<Coupon>> GetAllCoupons();
     }
 }

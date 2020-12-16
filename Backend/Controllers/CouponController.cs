@@ -79,13 +79,3 @@ namespace Backend.Controllers
         }
     }
 }
-
-
-
-    //public WeatherController(ILogger<WeatherController> logger, IWeatherRepository weatherRepository, IMapper mapper)
-    //{
-    //    _logger = logger;
-    //    _weatherRepository = weatherRepository;
-    //    _mapper = mapper;
-    //}
-}
