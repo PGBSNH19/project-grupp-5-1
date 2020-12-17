@@ -14,19 +14,24 @@ else
         <div class="row">
             @foreach (var product in products)
             {
-                <div class="col-sm-4 p-2">
-                    <div class="card">
-                        <div class="d-flex justify-content-center p-2">
-                            <img src="/Images/byxa.jpg" style="width:150px;height:150px" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">@product.Description</p>
-                            <p class="text-secondary text-center h2 font-weight-bold"> @product.Stock</p>
-                            <p class="card-text">@product.IsAvailable</p>
+                if (product.Stock > 0)
+                {
+                    <div class="col-sm-4 p-2">
+                        <div class="card">
+                            <div class="d-flex justify-content-center p-2">
+                                <a href="@($"productdetails/{product.Id}")">
+                                    <img src="" style="width:150px;height:150px" />
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text">@product.Description</p>
+                                <p class="text-secondary text-center h2 font-weight-bold"> @product.Stock</p>
+                                <p class="card-text">@product.IsAvailable</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             }
         </div>
     </div>

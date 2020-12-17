@@ -24,7 +24,7 @@ namespace Frontend.Services
 
         public async Task<Product> GetProductById(int id)
         {
-            return await httpClient.GetJsonAsync<Product>($"api/v1.0/{id}");
+            return await httpClient.GetJsonAsync<Product>($"api/v1.0/products/{id}");
         }
     }
 }
