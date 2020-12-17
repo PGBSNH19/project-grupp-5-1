@@ -5,50 +5,31 @@ on:
     branches: [ develop  ]
   pull_request:
     branches: [ develop ]
-
 env:
-  AZURE_WEBAPP_NAME: ElectronicsShop 
-  AZURE_GROUP_NAME: WebStore
+  AZURE_WEBAPP_NAME: ElectronicsShop
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
+  build:
 
-    # checkout the repo
-    - uses: actions/checkout@v1
-    
-    - name: Setup .NET Core
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:  3.0.101
-
-
-    # dotnet build and publish
-    - name: Build with dotnet
-      run: dotnet build ./src --configuration Release
-    - name: dotnet publish 
-      run: |
-        dotnet publish ./src -c Release -o myapp 
-
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-
-    - run: |
-        az group create -n ${{ env.AZURE_GROUP_NAME }} -l eastus 
-        az group deployment create -n ghaction -g ${{ env.AZURE_GROUP_NAME }} --template-file deployment/azuredepoy.json
-
-
-    # deploy web app using Azure credentials
-    - name: 'Azure webapp deploy'
-      uses: azure/webapps-deploy@v1
+        dotnet-version: 3.1.301
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: './myapp' 
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: './dotnetcorewebapp'
 
-    # Azure logout 
-    - name: logout
-      run: |
-        az logout
 
