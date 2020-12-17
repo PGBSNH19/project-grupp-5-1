@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ develop ]
 env:
-  AZURE_WEBAPP_NAME: WebStoreApp
+  AZURE_WEBAPP_NAME: ElectronicsShop
 
 jobs:
   build:
