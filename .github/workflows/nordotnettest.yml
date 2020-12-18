@@ -3,10 +3,10 @@ name: Deploy ASP.NET Core app to Azure Web App
 on:
   push:
     branches:
-      - master
+      - develop
   pull_request:
     branches:
-      - '*'
+      - 'develop'
 # 1. Set up the following secrets in your repository:
 #   AZURE_WEBAPP_PUBLISH_PROFILE
 #
