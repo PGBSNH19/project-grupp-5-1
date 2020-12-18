@@ -1,4 +1,4 @@
-name: grupp5storeback
+name: backend
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: grupp5store 
-  ASURE_WEBAPP_PACKAGE_PATH: './published'
+  ASURE_WEBAPP_PACKAGE_PATH: './backend/published'
   NETCORE_VERSION:  '3.1.301'
 
 jobs:
