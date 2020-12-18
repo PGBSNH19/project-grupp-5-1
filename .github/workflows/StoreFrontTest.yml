@@ -52,6 +52,6 @@ jobs:
       with:
         app-name: hotelclientdev
         publish-profile: ${{ secrets.FRONTENDTEST_PUBLISH_PROFILE }}
-        images: ${{ ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
+        images: ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
     
     
