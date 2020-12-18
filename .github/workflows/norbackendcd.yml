@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - develop
+name: Backend CD
+
+defaults:
+  run:
+    working-directory: ./Backend
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@master
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.NOR_AZURE_CREDENTIALS }}          
+          
+        - name: Azure Container Registry Login
+          uses: Azure/docker-login@v1  
+          with:
+            username: ${{secrets.NOR_ACR_USERNAME}}
+            password:  ${{secrets.NOR_ACR_PASSWORD}}
+            login-server: ${{secrets.NOR_ACR_LOGIN_SERVER}}
+        
+        - name: Build docker image
+          run: docker build . -t ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:${{ github.sha }}
+         
+        - name: Build docker image
+          run: docker push ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:${{ github.sha }}
