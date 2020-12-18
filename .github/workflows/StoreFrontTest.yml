@@ -1,0 +1,59 @@
+name: FrontendTest
+
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [ development ]
+    
+jobs:
+  
+  
+  build:
+    runs-on: ubuntu-latest
+    
+    # continues integration (build + test)
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: Install dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+      working-directory: Frontend
+    
+    - name: Test
+      run: dotnet test ./XUnitTestFrontend/XUnitTestFrontend.csproj
+      
+    # continues deployment (build image and push to acr)
+    - name: Login to container registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ ACR_LOGIN_SERVER }}
+        username: ${{ ACR_USERNAME }}
+        password: ${{ ACR_PASSWORD }}
+    
+    - name: Create Docker-image and push to ACR
+      run: |
+        docker build StoreFront.Test/ -t ${{ ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
+        docker push ${{ ACR_LOGIN_SERVER }}/server:${{ github.sha }}
+    
+    - name: Login to Azure CLI 
+      uses: azure/login@v1
+      with:
+        creds: ${{ AZURE_CREDENTIALS }}
+    
+    - name: Deploy and run Client on webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: hotelclientdev
+        publish-profile: ${{ FRONTENDTEST_PUBLISH_PROFILE }}
+        images: ${{ ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
+    
+    
