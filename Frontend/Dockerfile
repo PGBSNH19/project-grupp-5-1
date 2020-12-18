@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["Frontend.csproj", "Frontend"]
+COPY ["Frontend.csproj", ""]
 RUN dotnet restore "Frontend.csproj"
 COPY . .
 WORKDIR "/src/Frontend"
