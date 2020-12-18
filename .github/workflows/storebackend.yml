@@ -1,4 +1,4 @@
-name: backend
+name: backendAndre
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
 
     - name: "Deploy to Azure WebApp"
       uses: Azure/webapps-deploy@v2
-        with:
+      with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_PUBLISH }}
           package: ${{ env.ASURE_WEBAPP_PACKAGE_PATH }}
