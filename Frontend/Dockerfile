@@ -11,7 +11,7 @@ COPY ["Frontend.csproj", ""]
 RUN dotnet restore "Frontend.csproj"
 COPY . .
 WORKDIR /src
-RUN dotnet build "Frontend/Frontend.csproj" -c Release -o /app/build
+RUN dotnet build "Frontend.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Frontend.csproj" -c Release -o /app/publish
