@@ -34,24 +34,24 @@ jobs:
       uses: azure/docker-login@v1
       with:
         login-server: ${{ secrets.ACR_LOGIN_SERVER }}
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
+        username: ${{ secrets.MIC_ACR_USERNAME }}
+        password: ${{ secrets.MIC_ACR_PASSWORD }}
     
     - name: Create Docker-image and push to ACR
       run: |
-        docker build ./Frontend/ -t ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
+        docker build ./Frontend/ -t ${{ secrets.MIC_ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
+        docker push ${{ secrets.MIC_ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
     
     - name: Login to Azure CLI 
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.MIC_AZURE_CREDENTIALS }}
     
     - name: Deploy and run Client on webapp
       uses: azure/webapps-deploy@v2
       with:
         app-name: storefront5test
-        publish-profile: ${{ secrets.FRONTENDTEST_PUBLISH_PROFILE }}
-        images: ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
+        publish-profile: ${{ secrets.MIC_FRONTENDTEST_PUBLISH_PROFILE }}
+        images: ${{ secrets.MIC_ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
     
     
