@@ -25,7 +25,7 @@ jobs:
         dotnet-version: ${{ env.NETCORE_VERSION }}
         
     - name: edit-appsettings-db-connection-string
-      uses: benday/github-action-utils@v0.1.1
+      uses: benday-inc/edit-dbconnstr-in-appsettings@v1.1
       with:
     # name of the connection string
        name: ${{ secrets.BACKEND_CONNECTION_STRING }}
