@@ -9,7 +9,7 @@ defaults:
     working-directory: ./Backend
 
 jobs:
-    # Followed this tutorial: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action
+    # Followed this tutorial: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action 
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
