@@ -1,50 +1,39 @@
-name: "Build and Deploy BackEnd"
+name: .NET Core CI
 
-on:
-  push:
-    branches: [develop]
-  pull_request:
-    branches: [develop]
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.gitignore"
-      - "**/*.gitattributes"
+on: [push]
+
 env:
   AZURE_WEBAPP_NAME: ElectronicsShop # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: "./Backend" # set this to the path to your web app project, defaults to the repository root
-  NETCORE_VERSION: "3.1.101" # set this to the .NET Core version to use
+  AZURE_WEBAPP_PACKAGE_PATH: "./release" # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: "3.1.301" # set this to the dot net version to use
 
 jobs:
   build:
-    name: Build and Deploy
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Backend
 
     steps:
-      - uses: actions/checkout@v2
+      # Checkout the repo
+      - uses: actions/checkout@main
 
-      - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
+      # Setup .NET Core SDK
+      - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ env.NETCORE_VERSION }}
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore packages
+      # Run dotnet build and publish
+      - name: Restore dependencies
         run: dotnet restore
+      - name: dotnet build and publish
+        run: |
+          dotnet build --no-restore
+          dotnet build --configuration Release
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
-      - name: Build app
-        run: dotnet build --configuration Release --no-restore
-
-      - name: "Deploy to Azure WebApp"
-        uses: azure/webapps-deploy@v1
+      # Deploy to Azure Web apps
+      - name: "Run Azure webapp deploy action using publish profile credentials"
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          publish-profile: ${{ secrets.AZURE_CREDENTIALS  }} # Define secret variable in repository settings as per action documentation
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp"
