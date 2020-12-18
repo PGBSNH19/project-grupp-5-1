@@ -34,7 +34,7 @@ jobs:
       uses: azure/docker-login@v1
       with:
         login-server: ${{ secrets.MIC_ACR_LOGIN_SERVER }}
-        username: ${{ secrets.MIC_ACR_USERNAME }}
+        username: ${{ secrets.MIC_ACR_USER }}
         password: ${{ secrets.MIC_ACR_PASSWORD }}
     
     - name: Create Docker-image and push to ACR
