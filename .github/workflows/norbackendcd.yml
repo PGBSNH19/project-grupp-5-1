@@ -9,10 +9,10 @@ defaults:
     working-directory: ./Backend
 
 jobs:
+    # Followed this tutorial: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
-        # checkout the repo
         - name: 'Checkout GitHub Action'
           uses: actions/checkout@master
           
@@ -29,7 +29,7 @@ jobs:
             login-server: ${{secrets.NOR_ACR_LOGIN_SERVER}}
         
         - name: Build docker image
-          run: docker build . -t ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:${{ github.sha }}
+          run: docker build . -t ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:v1
          
         - name: Build docker image
-          run: docker push ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:${{ github.sha }}
+          run: docker push ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:v1
