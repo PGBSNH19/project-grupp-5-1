@@ -2,17 +2,17 @@ name: "Build and Deploy BackEnd"
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
     paths-ignore:
-      - '**/*.md'
-      - '**/*.gitignore'
-      - '**/*.gitattributes'
+      - "**/*.md"
+      - "**/*.gitignore"
+      - "**/*.gitattributes"
 env:
   AZURE_WEBAPP_NAME: ElectronicsShop # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './Backend'      # set this to the path to your web app project, defaults to the repository root
-  NETCORE_VERSION: '3.1.101'                    # set this to the .NET Core version to use
+  AZURE_WEBAPP_PACKAGE_PATH: "./Backend" # set this to the path to your web app project, defaults to the repository root
+  NETCORE_VERSION: "3.1.101" # set this to the .NET Core version to use
 
 jobs:
   build:
@@ -23,23 +23,28 @@ jobs:
         working-directory: Backend
 
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ env.NETCORE_VERSION }}
-    
-    - name: Restore packages
-      run: dotnet restore
+      - uses: actions/checkout@v2
 
-    - name: Build app
-      run: dotnet build --configuration Release --no-restore
+      - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.NETCORE_VERSION }}
 
-    - name: 'Deploy to Azure WebApp'
-      uses: azure/webapps-deploy@v1
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: Restore packages
+        run: dotnet restore
 
+      - name: Build app
+        run: dotnet build --configuration Release --no-restore
+
+      - name: "Deploy to Azure WebApp"
+        uses: azure/webapps-deploy@v1
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
+
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: webapp
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
