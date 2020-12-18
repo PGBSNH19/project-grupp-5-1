@@ -11,7 +11,6 @@ env:
   ASURE_WEBAPP_PACKAGE_PATH: './backend/published'
   NETCORE_VERSION:  '3.1.301'
 
-
 jobs:
   build:
     name: Build and Deploy
