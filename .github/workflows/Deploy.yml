@@ -1,14 +1,7 @@
 name: "Build and Deploy BackEnd"
 
-on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.gitignore'
-      - '**/*.gitattributes'
+on: [push,pull_request]
+
 env:
   AZURE_WEBAPP_NAME: ElectronicsShop # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './Backend'      # set this to the path to your web app project, defaults to the repository root
@@ -23,7 +16,7 @@ jobs:
         working-directory: Backend
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@main
     
     - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
       uses: actions/setup-dotnet@v1
