@@ -33,14 +33,14 @@ jobs:
     - name: Login to container registry
       uses: azure/docker-login@v1
       with:
-        login-server: ${{ secrets.MIC_ACR_LOGIN_SERVER }}
+        login-server: ${{ secrets.MIC_ACR_SERVER }}
         username: ${{ secrets.MIC_ACR_USER }}
         password: ${{ secrets.MIC_ACR_PASSWORD }}
     
     - name: Create Docker-image and push to ACR
       run: |
-        docker build ./Frontend/ -t ${{ secrets.MIC_ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
-        docker push ${{ secrets.MIC_ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
+        docker build ./Frontend/ -t ${{ secrets.MIC_ACR_SERVER }}/fetest:${{ github.sha }}
+        docker push ${{ secrets.MIC_ACR_SERVER }}/fetest:${{ github.sha }}
     
     - name: Login to Azure CLI 
       uses: azure/login@v1
