@@ -32,7 +32,7 @@ jobs:
       run: dotnet build --no-restore -c Release
       
     - name: Publish
-      run: dotnet publish --configuration Release --no-build -output ${{ env.ASURE_WEBAPP_PACKAGE_PATH }}
+      run: dotnet publish --configuration Release --no-build --output ${{ env.ASURE_WEBAPP_PACKAGE_PATH }}
 
     - name: "Deploy to Azure WebApp"
       uses: Azure/webapps-deploy@v2
