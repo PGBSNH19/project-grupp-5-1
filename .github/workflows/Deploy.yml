@@ -1,7 +1,14 @@
 name: "Build and Deploy BackEnd"
 
-on: [push,pull_request]
-
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
 env:
   AZURE_WEBAPP_NAME: ElectronicsShop # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './Backend'      # set this to the path to your web app project, defaults to the repository root
@@ -16,7 +23,7 @@ jobs:
         working-directory: Backend
 
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v2
     
     - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
       uses: actions/setup-dotnet@v1
@@ -29,12 +36,6 @@ jobs:
     - name: Build app
       run: dotnet build --configuration Release --no-restore
 
-    - name: Test app
-      run: dotnet test --no-build
-
-    - name: Publish app for deploy
-      run: dotnet publish --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
-
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
       with:
@@ -42,8 +43,3 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
 
-    - name: Publish Artifacts
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
