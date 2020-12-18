@@ -33,7 +33,7 @@ jobs:
     - name: Login to container registry
       uses: azure/docker-login@v1
       with:
-        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+        login-server: ${{ secrets.MIC_ACR_LOGIN_SERVER }}
         username: ${{ secrets.MIC_ACR_USERNAME }}
         password: ${{ secrets.MIC_ACR_PASSWORD }}
     
