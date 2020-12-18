@@ -3,8 +3,6 @@ name: FrontendTest
 on:
   push:
     branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
     
 jobs:
   
@@ -35,9 +33,9 @@ jobs:
     - name: Login to container registry
       uses: azure/docker-login@v1
       with:
-        login-server: ${{ ACR_LOGIN_SERVER }}
-        username: ${{ ACR_USERNAME }}
-        password: ${{ ACR_PASSWORD }}
+        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
     
     - name: Create Docker-image and push to ACR
       run: |
