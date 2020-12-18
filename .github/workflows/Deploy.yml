@@ -11,7 +11,7 @@ on:
       - '**/*.gitattributes'
 env:
   AZURE_WEBAPP_NAME: ElectronicsShop # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: 'https://github.com/PGBSNH19/project-grupp-5-1/tree/develop/Backend'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: './publish'      # set this to the path to your web app project, defaults to the repository root
   NETCORE_VERSION: '3.1.101'                    # set this to the .NET Core version to use
 
 jobs:
