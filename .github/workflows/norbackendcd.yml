@@ -20,7 +20,14 @@ jobs:
           uses: azure/login@v1
           with:
             creds: ${{ secrets.NOR_AZURE_CREDENTIALS }}          
-          
+        - name: Replace tokens
+          uses: cschleiden/replace-tokens@v1.0
+          with:
+            files: '["**/*.json"]'
+            tokenPrefix: '#{'
+            tokenSuffix: '}#'
+          env:
+            CONNECTION_STRING: ${{secrets.NOR_CONNECTION_STRING}}
         - name: Azure Container Registry Login
           uses: Azure/docker-login@v1  
           with:
