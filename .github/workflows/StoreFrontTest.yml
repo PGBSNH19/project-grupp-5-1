@@ -40,7 +40,7 @@ jobs:
     - name: Create Docker-image and push to ACR
       run: |
         docker build StoreFront.Test/ -t ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/server:${{ github.sha }}
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}
     
     - name: Login to Azure CLI 
       uses: azure/login@v1
@@ -50,7 +50,7 @@ jobs:
     - name: Deploy and run Client on webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: hotelclientdev
+        app-name: storefront5test
         publish-profile: ${{ secrets.FRONTENDTEST_PUBLISH_PROFILE }}
         images: ${{ secrets.ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
     
