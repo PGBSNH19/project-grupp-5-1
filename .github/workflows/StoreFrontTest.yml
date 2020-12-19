@@ -41,17 +41,5 @@ jobs:
       run: |
         docker build . -t ${{ secrets.MIC_ACR_SERVER }}/frontendtest:${{ github.sha }}
         docker push ${{ secrets.MIC_ACR_SERVER }}/frontendtest:${{ github.sha }}
-    
-    - name: Login to Azure CLI 
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.MIC_AZURE_CREDENTIALS }}
-    
-    - name: Deploy and run Client on webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: storefront5test
-        publish-profile: ${{ secrets.MIC_FRONTENDTEST_PUBLISH_PROFILE }}
-        images: ${{ secrets.MIC_ACR_LOGIN_SERVER }}/frontendtest:${{ github.sha }}    
-    
+  
     
