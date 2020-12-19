@@ -1,6 +1,39 @@
 ﻿@page "/"
-<h1>Hello, world!</h1>
+@inherits IndexBase
 
-Welcome to your new app.
+<h1>List of products</h1>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (products == null)
+{
+    <p><em>Loading....</em></p>
+}
+else
+{
+
+    <div class="container">
+        <div class="row">
+            @foreach (var product in products)
+            {
+                if (product.Stock > 0)
+                {
+                    <div class="col-sm-4 p-2">
+                        <div class="card">
+                            <div class="d-flex justify-content-center p-2">
+                                <a href="@($"productdetails/{product.Id}")">
+                                    <img src="" style="width:150px;height:150px" />
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text">@product.Description</p>
+                                <p class="text-secondary text-center h2 font-weight-bold"> @product.Stock</p>
+                                <p class="card-text">@product.IsAvailable</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+}

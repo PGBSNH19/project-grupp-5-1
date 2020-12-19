@@ -18,6 +18,7 @@ namespace Backend.Models
         public string Password { get; set; }
         [Required]
         public UserRole Role { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 
     public enum UserRole
