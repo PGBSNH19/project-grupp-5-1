@@ -39,7 +39,7 @@ jobs:
     
     - name: Create Docker-image and push to ACR
       run: |
-        docker build -t ../ ${{ secrets.MIC_ACR_SERVER }}/fetest:${{ github.sha }}
+        docker build . -t ${{ secrets.MIC_ACR_SERVER }}/frontendtest:${{ github.sha }}
         docker push ${{ secrets.MIC_ACR_SERVER }}/fetest:${{ github.sha }}
     
     - name: Login to Azure CLI 
