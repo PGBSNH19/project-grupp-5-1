@@ -1,4 +1,5 @@
 ﻿using Frontend.Models;
+using Frontend.Utility;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,12 @@ namespace Frontend.Services
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await httpClient.GetJsonAsync<Product[]>("api/v1.0/products");
+            return await httpClient.GetJsonAsync<Product[]>($"{APIRoute.Products}");
         }
 
         public async Task<Product> GetProductById(int id)
         {
-            return await httpClient.GetJsonAsync<Product>($"api/v1.0/products/{id}");
+            return await httpClient.GetJsonAsync<Product>($"{APIRoute.Products}/{id}");
         }
     }
 }
