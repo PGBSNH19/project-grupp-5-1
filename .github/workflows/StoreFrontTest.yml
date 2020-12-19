@@ -40,7 +40,7 @@ jobs:
     - name: Create Docker-image and push to ACR
       run: |
         docker build . -t ${{ secrets.MIC_ACR_SERVER }}/frontendtest:${{ github.sha }}
-        docker push ${{ secrets.MIC_ACR_SERVER }}/fetest:${{ github.sha }}
+        docker push ${{ secrets.MIC_ACR_SERVER }}/frontendtest:${{ github.sha }}
     
     - name: Login to Azure CLI 
       uses: azure/login@v1
@@ -52,6 +52,6 @@ jobs:
       with:
         app-name: storefront5test
         publish-profile: ${{ secrets.MIC_FRONTENDTEST_PUBLISH_PROFILE }}
-        images: ${{ secrets.MIC_ACR_LOGIN_SERVER }}/fetest:${{ github.sha }}    
+        images: ${{ secrets.MIC_ACR_LOGIN_SERVER }}/frontendtest:${{ github.sha }}    
     
     
