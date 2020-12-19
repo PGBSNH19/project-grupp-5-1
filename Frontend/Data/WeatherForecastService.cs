@@ -21,6 +21,5 @@ namespace Frontend.Data
         //        Summary = Summaries[rng.Next(Summaries.Length)]
         //    }).ToArray());
         //}
-
     }
 }
