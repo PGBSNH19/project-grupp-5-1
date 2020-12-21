@@ -30,20 +30,13 @@ namespace Frontend
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string BaseUrl = "https://localhost:44339/";
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<HttpClient>();
             services.AddBlazoredLocalStorage();
-            services.AddHttpClient<IProductService, ProductService>(client =>
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-            });
-            services.AddHttpClient<IOrderService, OrderService>(client =>
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-            });
+            services.AddHttpClient<IProductService, ProductService>();
+            services.AddHttpClient<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
