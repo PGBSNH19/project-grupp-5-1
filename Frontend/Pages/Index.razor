@@ -20,14 +20,14 @@ else
                         <div class="card">
                             <div class="d-flex justify-content-center p-2">
                                 <a href="@($"productdetails/{product.Id}")">
-                                    <img src="" style="width:150px;height:150px" />
+                                    <img src="@product.ImageUrl" style="width:150px;height:150px" />
                                 </a>
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">@product.Name</h5>
                                 <p class="card-text">@product.Description</p>
-                                <p class="text-secondary text-center h2 font-weight-bold"> @product.Stock</p>
-                                <p class="card-text">@product.IsAvailable</p>
+                                <p class="text-secondary text-center h2 font-weight-bold">Stock: @product.Stock</p>
+                                <p class="card-text">@(product.IsAvailable ? "Available" : "Not Available")</p>
                             </div>
                         </div>
                     </div>
