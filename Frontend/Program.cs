@@ -19,10 +19,12 @@ namespace Frontend
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    Host.CreateDefaultBuilder(args)
+                        .ConfigureWebHostDefaults(webBuilder =>
+                        {
+                            webBuilder
+                            .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
+                            .UseStartup<Startup>();
+                        });
     }
 }

@@ -27,5 +27,11 @@ namespace Frontend.Services
         {
             return await httpClient.GetJsonAsync<Product>($"{APIRoute.Products}/{id}");
         }
+        public async Task<Product> AddProducts(Product product)
+        {
+            //product.Id = null;
+            return await httpClient.PostJsonAsync<Product>("api/v1.0/products", product);
+        }
+
     }
 }
