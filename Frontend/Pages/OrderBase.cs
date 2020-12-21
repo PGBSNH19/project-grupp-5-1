@@ -1,33 +1,51 @@
-﻿using Frontend.Models;
-using Frontend.Services;
+﻿using System.Linq;
+using Frontend.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
     public class OrderBase : ComponentBase
     {
-        public IEnumerable<Order> orders { get; set; } = new List<Order>();
+
+        public IEnumerable<ProductInBasket> basketproducts { get; set; } = new List<ProductInBasket>();
         public IEnumerable<OrderedProduct> orderedProducts { get; set; } = new List<OrderedProduct>();
         public IEnumerable<int> userIds { get; set; } = new List<int>();
 
         [Inject]
-        public IOrderService ProductService { get; set; }
+        public IOrderService OrderService { get; set; }
+
+       public async void Increase(Product product)
+        {
+            await OrderService.IncreaseProductToBasket(product);
+            basketproducts = await OrderService.GetBasketProducts();
+
+        }
+
+        public async void Decrease(Product product)
+        {
+            await OrderService.DecreaseProductToBasket(product);
+            basketproducts = await OrderService.GetBasketProducts();
+        }
+
+        public async void Remove(ProductInBasket product)
+        {
+            await OrderService.DeleteProductFromBasket(product);
+            basketproducts = await OrderService.GetBasketProducts();
+        }
+
+        public async void SendOrder(IEnumerable<ProductInBasket> products)
+        {
+            await OrderService.CreateOrder(products);
+            basketproducts = await OrderService.GetBasketProducts();
+        }
 
 
         protected async override Task OnInitializedAsync()
         {
-            orders = (await ProductService.GetOrders()).OrderBy(u => u.UserId);
-            orderedProducts = await ProductService.GetOrderedProducts();
-
-            foreach (var order in orders)
-            {
-                var thisOrderedProducts = orderedProducts.Where(o => o.OrderId == order.Id);
-                order.OrderedProducts = thisOrderedProducts;
-            }
+            basketproducts = await OrderService.GetBasketProducts();
 
         }
     }
