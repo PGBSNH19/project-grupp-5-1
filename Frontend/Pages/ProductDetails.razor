@@ -1,6 +1,9 @@
 ﻿@page "/productdetails/{id}"
-@page "/productdetails/"
+@page  "/productdetails/"
+@using Frontend.Models
 @inherits ProductDetailsBase
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime JSRuntime
 <h3>Product Details</h3>
 
 @if (product == null)
@@ -24,9 +27,43 @@ else
                     <h4>Category : @product.ProductCategoryId</h4>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="@($"/")" class="btn btn-primary">Back</a>
+                    <a href="/" class="btn btn-light">Return</a>
+                    <button @onclick="() => AddProductToBasket(product)" class="btn btn-primary">Add to basket</button>
                 </div>
             </div>
         </div>
     </div>
+}
+
+@code {
+    public async Task AddProductToBasket(Product product)
+    {
+        bool basketExists = await localStorage.ContainKeyAsync("customer-basket");
+        var basket = basketExists ? await localStorage.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
+
+        ProductInBasket productInBasket = basket.FirstOrDefault(x => x.Product.Id == product.Id);
+
+        if (productInBasket == null)
+        {
+            ProductInBasket newProductInBasket = new ProductInBasket
+            {
+                Product = product,
+                Amount = 1
+            };
+            basket.Add(newProductInBasket);
+        }
+        else
+        {
+            if (productInBasket.Amount >= product.Stock)
+            {
+                await JSRuntime.InvokeAsync<bool>("confirm", $"You can't order more than {product.Stock} of this product.");
+            }
+            else
+            {
+                productInBasket.Amount++;
+            }
+        }
+
+        await localStorage.SetItemAsync("customer-basket", basket);
+    }
 }

@@ -74,7 +74,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> PostProduct([FromBody] ProductDTO product)
+        public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO product)
         {
             try
             {
@@ -84,7 +84,8 @@ namespace Backend.Controllers
                 try
                 {
                     await _productRepository.Save();
-                    return Ok();
+                    return CreatedAtAction(nameof(GetById), new { id = mappedResult.Id },
+                    mappedResult);
                 }
                 catch (Exception)
                 {
