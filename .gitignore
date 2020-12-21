@@ -224,4 +224,6 @@ Thumbs.db
 # ignore project specific folders
 obj/
 bin/
+
 Backend/appsettings.Development.json
+Frontend/appsettings.Development.json
