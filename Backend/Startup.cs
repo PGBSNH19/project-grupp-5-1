@@ -33,7 +33,12 @@ namespace Backend
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IWeatherRepository, WeatherRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddControllers();
+            services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
