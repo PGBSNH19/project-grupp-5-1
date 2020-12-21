@@ -13,6 +13,7 @@ using Frontend.Data;
 using System.Net.Http;
 using Frontend.Services;
 using Blazored.LocalStorage;
+using Frontend.Services.Interfaces;
 
 namespace Frontend
 {
@@ -29,6 +30,7 @@ namespace Frontend
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string BaseUrl = "https://localhost:44339/";
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
@@ -36,7 +38,11 @@ namespace Frontend
             services.AddBlazoredLocalStorage();
             services.AddHttpClient<IProductService, ProductService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44339/");
+                client.BaseAddress = new Uri(BaseUrl);
+            });
+            services.AddHttpClient<IOrderService, OrderService>(client =>
+            {
+                client.BaseAddress = new Uri(BaseUrl);
             });
         }
 
