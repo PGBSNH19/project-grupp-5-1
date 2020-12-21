@@ -14,13 +14,13 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1.0/[controller]")]
-    public class CouponController : ControllerBase
+    public class CouponsController : ControllerBase
     {
-        private readonly ILogger<CouponController> _logger;
+        private readonly ILogger<CouponsController> _logger;
         private readonly ICouponRepository _couponRepository;
         private readonly IMapper _mapper;
 
-        public CouponController(ILogger<CouponController> logger, ICouponRepository couponRepository, IMapper mapper)
+        public CouponsController(ILogger<CouponsController> logger, ICouponRepository couponRepository, IMapper mapper)
         {
             _logger = logger;
             _couponRepository = couponRepository;
@@ -60,15 +60,16 @@ namespace Backend.Controllers
             }
         }
 
-        public async Task<ActionResult<Coupon>> CreateNewCoupon(Coupon coupon)
+        public async Task<ActionResult<CouponDTO>> CreateNewCoupon(CouponDTO coupon)
         {
             try
             {
                 var mappedEntity = _mapper.Map<Coupon>(coupon);
                 await _couponRepository.Add(mappedEntity);
+
                 if(await _couponRepository.Save())
                 {
-                    return Created($"api/v1.0/coupon/{mappedEntity.Id}", _mapper.Map<Coupon>(mappedEntity));
+                    return Created($"api/v1.0/coupons/{mappedEntity.Id}", _mapper.Map<Coupon>(mappedEntity));
                 }
             }
             catch (Exception e)

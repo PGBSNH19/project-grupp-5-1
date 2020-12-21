@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Frontend.Data
+namespace Backend.DTO
 {
-    public class CouponData
-    {
+    public class CouponDTO
+    {        
         public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
@@ -14,5 +14,5 @@ namespace Frontend.Data
         public DateTime EndDate { get; set; }
         public bool Enabled { get; set; }
         public decimal Discount { get; set; }
-    }   
+    }
 }
