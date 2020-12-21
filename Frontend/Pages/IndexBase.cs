@@ -11,13 +11,13 @@ namespace Frontend.Pages
     public class IndexBase : ComponentBase
     {
         [Inject]
-        public IProductService productService { get; set; }
+        public IProductService ProductService { get; set; }
 
         public IEnumerable<Product> products { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            products = (await productService.GetProducts()).ToList();
+            products = (await ProductService.GetProducts()).ToList();
         }
     }
 }

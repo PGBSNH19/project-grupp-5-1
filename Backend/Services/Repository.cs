@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,18 @@ namespace Backend.Services
         {
             _logger.LogInformation($"Fetching entity list of type {typeof(T)} from the database.");
             var query = _storeDbContext.Set<T>().ToListAsync();
+
+            return await query;
+        }
+
+        public async Task<T> Get(int id)
+        {
+            _logger.LogInformation($"Fetching entity with id {id} of type {typeof(T)} from the database.");
+            var query = _storeDbContext.Set<T>().FindAsync(id);
+            if (query == null)
+            {
+                throw new NullReferenceException($"The {typeof(T)} with id {id} was not found in the database");
+            }
 
             return await query;
         }

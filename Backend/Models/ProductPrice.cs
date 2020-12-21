@@ -11,14 +11,19 @@ namespace Backend.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
+
         [Column(TypeName = "decimal(10,2)")]
-        public decimal SalePrice { get; set; }
+        public decimal? SalePrice { get; set; }
+
         [Required]
         public DateTime DateChanged { get; set; }
-        [Required]
+
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
         public Product Product { get; set; }
     }
 }

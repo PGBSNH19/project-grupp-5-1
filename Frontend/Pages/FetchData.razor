@@ -1,7 +1,8 @@
 ﻿@page "/fetchdata"
 
-@using Frontend.Utility
 @using Frontend.Data
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _configuration;
 @inject HttpClient http;
 <h1>Weather forecast</h1>
 
@@ -33,9 +34,11 @@ else
 @code {
     public List<WeatherForecast> Weathers = new List<WeatherForecast>();
 
+
     private async Task GetWeatherData()
     {
-        Weathers = await http.GetJsonAsync<List<WeatherForecast>>($"{APIRoute.APIURL}/weather");
+        var s = _configuration["ApiHostUrl"];
+        Weathers = await http.GetJsonAsync<List<WeatherForecast>>(_configuration["ApiHostUrl"] + "weather");
     }
 
     protected override async Task OnInitializedAsync()

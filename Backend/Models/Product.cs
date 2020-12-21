@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
 {
@@ -22,10 +23,9 @@ namespace Backend.Models
         [Required]
         public int Stock { get; set; }
 
-        [Required]
+        [ForeignKey("ProductCategory")]
         public int ProductCategoryId { get; set; }
-
-        //public ProductCategory ProductCategory { get; set; }
+        public ProductCategory ProductCategory { get; set; }
 
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
         public ICollection<ProductPrice> ProductPrices { get; set; }

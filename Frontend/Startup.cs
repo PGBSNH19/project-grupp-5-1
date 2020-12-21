@@ -13,6 +13,7 @@ using Frontend.Data;
 using System.Net.Http;
 using Frontend.Services;
 using Blazored.LocalStorage;
+using Frontend.Services.Interfaces;
 
 namespace Frontend
 {
@@ -34,10 +35,8 @@ namespace Frontend
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<HttpClient>();
             services.AddBlazoredLocalStorage();
-            services.AddHttpClient<IProductService, ProductService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44339/");
-            });
+            services.AddHttpClient<IProductService, ProductService>();
+            services.AddHttpClient<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
