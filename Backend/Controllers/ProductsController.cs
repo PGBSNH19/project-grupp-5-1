@@ -134,7 +134,7 @@ namespace Backend.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<ProductDTO>> Update(int id, [FromBody] ProductDTO productDTO)
+        public async Task<ActionResult<ProductDTO>> Update(int id, ProductDTO productDTO)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace Backend.Controllers
 
                 if (await _productRepository.Save())
                 {
-                    return NoContent();
+                    return Ok(_mapper.Map<ProductDTO>(mappedResult));
                 }
             }
             catch (Exception e)

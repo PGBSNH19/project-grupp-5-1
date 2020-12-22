@@ -1,7 +1,6 @@
 ﻿@page "/OrderPage"
 @inherits OrderBase
 
-
 <div class="container mt-5">
     @if (basketproducts == null)
     {
@@ -31,7 +30,7 @@
                         <td>@basketProduct.Product.Name</td>
                         <td class="text-center">@basketProduct.Product.ProductCategoryId</td>
                         <td class="text-center">
-                            <img src="@basketProduct.Product.ImageUrl" style="width:40px;height:40px" />
+                            <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:40px;height:40px" />
                         </td>
                         <td class="text-center">
                             <div class="">
@@ -50,4 +49,3 @@
         </div>
     }
 </div>
-
