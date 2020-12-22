@@ -14,10 +14,10 @@ namespace Backend.Models
         [Required]
         public DateTime DateRegistered { get; set; }
 
+
         [ForeignKey("Coupon")]
         public int? CouponId { get; set; }
         public Coupon Coupon { get; set; }
-
         [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; }
