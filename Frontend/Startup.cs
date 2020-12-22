@@ -37,6 +37,7 @@ namespace Frontend
             services.AddBlazoredLocalStorage();
             services.AddHttpClient<IProductService, ProductService>();
             services.AddHttpClient<IOrderService, OrderService>();
+            services.AddHttpClient<ICouponService, CouponService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

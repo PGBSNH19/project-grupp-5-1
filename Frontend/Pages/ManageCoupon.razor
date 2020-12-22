@@ -1,0 +1,60 @@
+﻿@page "/managecoupons/"
+@inherits Frontend.Bases.ManageCouponBase
+
+<EditForm Model="@CreateCoupon" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <h1>Manage Coupons</h1>
+    <div class="row">
+        
+        <div class="col-sm-12">
+            <br /><br />
+            <h3>Create a Coupon</h3>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-2">
+                <div>Code</div>
+                <InputText class="form-control" id="code" placeholder="e.g WINTER20" @bind-Value="CreateCoupon.Code" />
+            </div>
+            <div class="col-md-2">
+                <div>Description</div>
+                <InputText class="form-control" id="description" placeholder="Celebrate christmas!" @bind-Value="CreateCoupon.Description" />
+            </div>
+            <div class="col-md-2">
+                <div>Start Date</div>
+                <InputDate class="form-control" id="startdate" @bind-Value="CreateCoupon.StartDate" />
+            </div>
+            <div class="col-md-2">
+                <div>End Date</div>
+                <InputDate class="form-control" id="endate" placeholder="YYYYMMDD" @bind-Value="CreateCoupon.EndDate" />
+            </div>
+            <div class="col-md-2">
+                <div>Discount</div>
+                <InputNumber class="form-control" id="discount" placeholder="0,2" @bind-Value="CreateCoupon.Discount" />
+            </div>
+            <div class="col-md-2">
+                <div><br /></div>
+                <button type="submit" class="btn btn-success">Create</button>
+            </div>
+        </div>
+    </div>
+    @if (GetCreatedCoupon != null)
+    {
+        <div class="form-group">
+            <div class="col-12">Product Added</div>
+            <div class="col-12">
+                @GetCreatedCoupon.Code/
+                @GetCreatedCoupon.Description/
+                @GetCreatedCoupon.StartDate.ToString("yyyyMMdd")/
+                @GetCreatedCoupon.EndDate.ToString("yyyyMMdd")/
+                @GetCreatedCoupon.Discount
+            </div>
+        </div>
+    }
+</EditForm>
+
+@code {
+    
+}

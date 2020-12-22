@@ -35,6 +35,7 @@ namespace Backend
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
