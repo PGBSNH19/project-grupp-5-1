@@ -74,15 +74,15 @@
         <tbody>
             @foreach (var coupon in Coupons)
             {
-                string discount = (coupon.Discount * 100).ToString();
-                int discountIndex = discount.IndexOf(',');
-                discount = discount.Remove(discountIndex);
+                //string discount = (coupon.Discount * 100).ToString();
+                //int discountIndex = discount.IndexOf(',');
+                //discount = discount.Remove(discountIndex);
             <tr>
                 <td>@coupon.Code</td>
                 <td>@coupon.Description</td>
                 <td>@coupon.StartDate.ToString("yyyyMMdd")</td>
                 <td>@coupon.EndDate.ToString("yyyyMMdd")</td>
-                <td>@discount</td>
+                <td>@coupon.Discount</td>
 
                 @if (coupon.Enabled)
                 {
