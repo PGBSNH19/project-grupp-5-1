@@ -10,43 +10,39 @@ namespace Frontend.Pages
     public class OrderBase : ComponentBase
     {
 
-        public IEnumerable<ProductInBasket> basketproducts { get; set; } = new List<ProductInBasket>();
-        public IEnumerable<OrderedProduct> orderedProducts { get; set; } = new List<OrderedProduct>();
-        public IEnumerable<int> userIds { get; set; } = new List<int>();
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         [Inject]
         public IOrderService OrderService { get; set; }
 
+        [Parameter]
+        public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
+
        public async void Increase(Product product)
         {
             await OrderService.IncreaseProductToBasket(product);
-            basketproducts = await OrderService.GetBasketProducts();
-
         }
 
         public async void Decrease(Product product)
         {
             await OrderService.DecreaseProductToBasket(product);
-            basketproducts = await OrderService.GetBasketProducts();
         }
 
         public async void Remove(ProductInBasket product)
         {
             await OrderService.DeleteProductFromBasket(product);
-            basketproducts = await OrderService.GetBasketProducts();
         }
 
         public async void SendOrder(IEnumerable<ProductInBasket> products)
         {
             await OrderService.CreateOrder(products);
-            basketproducts = await OrderService.GetBasketProducts();
         }
-
 
         protected async override Task OnInitializedAsync()
         {
+            System.Console.WriteLine("From the method");
             basketproducts = await OrderService.GetBasketProducts();
-
         }
     }
 }

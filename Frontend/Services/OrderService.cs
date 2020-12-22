@@ -31,12 +31,8 @@ namespace Frontend.Services
 
         public async Task<IEnumerable<ProductInBasket>> GetBasketProducts()
         {
-            List<ProductInBasket> basket = new List<ProductInBasket>();
-            bool basketExists = await _localStorageService.ContainKeyAsync("customer-basket");
-            return basket = basketExists ? await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket") : null;
+            return await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket");
         }
-
-
 
         public async Task IncreaseProductToBasket(Product product)
         {
@@ -55,6 +51,7 @@ namespace Frontend.Services
             }
             
             await _localStorageService.SetItemAsync("customer-basket", basket);
+            _NavigationManager.NavigateTo("/OrderPage", true);
         }
 
         public async Task DecreaseProductToBasket(Product product)
@@ -64,7 +61,7 @@ namespace Frontend.Services
 
             ProductInBasket productInBasket = basket.FirstOrDefault(x => x.Product.Id == product.Id);
             
-            if (productInBasket.Amount < 2)
+            if (productInBasket.Amount < 1)
             {
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order less than one product.");
             }
@@ -74,6 +71,7 @@ namespace Frontend.Services
             }
             
             await _localStorageService.SetItemAsync("customer-basket", basket);
+            _NavigationManager.NavigateTo("/OrderPage", true);
         }
 
         public async Task DeleteProductFromBasket(ProductInBasket product)
@@ -93,35 +91,45 @@ namespace Frontend.Services
             }
 
             await _localStorageService.SetItemAsync("customer-basket", basket);
-            var a = basket;
 
+            if (basket.Count == 0)
+            {
+                await _localStorageService.ClearAsync();
+            }
+            _NavigationManager.NavigateTo("/OrderPage", true);
         }
 
         public async Task CreateOrder(IEnumerable<ProductInBasket> basketProducts)
         {
-            foreach (var basketProduct in basketProducts)
+            Order order = new Order();
+
+            order.DateRegistered = DateTime.Now;
+            order.CouponId = (int?)null;
+            order.UserId = 1;
+
+            var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
+
+            if (newOrder != null)
             {
-                Order order = new Order();
+                foreach (var basketProduct in basketProducts)
+                {
+                    OrderedProduct orderedProduct = new OrderedProduct();
 
-                order.DateRegistered = DateTime.UtcNow;
-                order.CouponId = "";
-                order.UserId = 1;
+                    orderedProduct.Amount = basketProduct.Amount;
+                    orderedProduct.OrderId = newOrder.Id;
+                    orderedProduct.ProductId = basketProduct.Product.Id;
 
-                var newOrder = await _httpClient.PostJsonAsync<Product>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
+                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
+                }
 
-                OrderedProduct orderedProduct = new OrderedProduct();
-
-                orderedProduct.Amount = basketProduct.Amount;
-                orderedProduct.OrderId = newOrder.Id;
-                orderedProduct.ProductId = basketProduct.Product.Id;
-
-                await _httpClient.PostJsonAsync<Product>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
-
+                await _localStorageService.ClearAsync();
+                await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
+                _NavigationManager.NavigateTo("/");
             }
-            await _localStorageService.ClearAsync();
-            await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for you purched.. See you soon.");
-            _NavigationManager.NavigateTo("/");
-
+            else
+            {
+                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
+            }
         }
 
     }

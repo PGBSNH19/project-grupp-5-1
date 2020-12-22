@@ -21,4 +21,8 @@
     <None Remove="..\.dockerignore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\NewFolder\" />
+  </ItemGroup>
+
 </Project>

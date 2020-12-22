@@ -180,4 +180,12 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
+
+    .table > tbody > tr > th {
+        vertical-align: middle;
+    }
 }
