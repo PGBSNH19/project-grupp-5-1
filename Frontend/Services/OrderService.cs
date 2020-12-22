@@ -20,7 +20,7 @@ namespace Frontend.Services
         private readonly ILocalStorageService _localStorageService;
         private readonly IJSRuntime _jSRuntime;
 
-        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime )
+        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime)
         {
             _NavigationManager = NavigationManager;
             _httpClient = httpClient;
@@ -40,7 +40,7 @@ namespace Frontend.Services
             var basket = basketExists ? await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
 
             ProductInBasket productInBasket = basket.FirstOrDefault(x => x.Product.Id == product.Id);
-            
+
             if (productInBasket.Amount >= product.Stock)
             {
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order more than {product.Stock} of this product.");
@@ -49,7 +49,7 @@ namespace Frontend.Services
             {
                 productInBasket.Amount++;
             }
-            
+
             await _localStorageService.SetItemAsync("customer-basket", basket);
             _NavigationManager.NavigateTo("/OrderPage", true);
         }
@@ -60,7 +60,7 @@ namespace Frontend.Services
             var basket = basketExists ? await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
 
             ProductInBasket productInBasket = basket.FirstOrDefault(x => x.Product.Id == product.Id);
-            
+
             if (productInBasket.Amount < 1)
             {
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order less than one product.");
@@ -69,7 +69,7 @@ namespace Frontend.Services
             {
                 productInBasket.Amount--;
             }
-            
+
             await _localStorageService.SetItemAsync("customer-basket", basket);
             _NavigationManager.NavigateTo("/OrderPage", true);
         }
@@ -80,7 +80,7 @@ namespace Frontend.Services
             var basket = basketExists ? await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
 
             int productIndex = basket.FindIndex(x => x.Product.Id == product.Product.Id);
-            
+
             if (product != null)
             {
                 basket.RemoveAt(productIndex);
@@ -120,6 +120,12 @@ namespace Frontend.Services
                     orderedProduct.ProductId = basketProduct.Product.Id;
 
                     await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
+
+                    var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
+
+                    product.Stock -= basketProduct.Amount;
+
+                    await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
                 }
 
                 await _localStorageService.ClearAsync();
@@ -131,6 +137,5 @@ namespace Frontend.Services
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
             }
         }
-
     }
 }
