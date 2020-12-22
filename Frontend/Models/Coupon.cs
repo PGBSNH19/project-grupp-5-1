@@ -8,10 +8,12 @@ namespace Frontend.Models
 {
     public class Coupon
     {
+        public int Id { get; set; }
         [Required]
-        [StringLength(15, ErrorMessage = "Name to long (15 character limit).")]
+        [StringLength(15, ErrorMessage = "CouponName to long (15 character limit).")]
         public string Code { get; set; }
-        [StringLength(30, ErrorMessage = "Name to long (30 character limit).")]
+        [Required]
+        [StringLength(30, ErrorMessage = "Description to long (30 character limit).")]
         public string Description { get; set; }
         [Required]
         [CustomDateRange(1)]
@@ -21,7 +23,7 @@ namespace Frontend.Models
         public DateTime EndDate { get; set; }
         public bool Enabled { get; set; }
         [Required]
-        [Range(1, 99, ErrorMessage = "You need to specify a precentage number betweem 1 and 99")]
+        [Range(0.01, 0.99, ErrorMessage = "You need to specify a precentage number betweem 0,1 and 0,99")]
         public decimal Discount { get; set; }
     }
 

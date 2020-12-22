@@ -17,26 +17,41 @@ namespace Frontend.Bases
 
         public IEnumerable<Coupon> Coupons { get; set; } = new List<Coupon>();
 
-        public Coupon Coupon = new Coupon()
+        public Coupon CreateCoupon = new Coupon()
         {
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Today
-        };
+            StartDate = DateTime.Today,
+            EndDate = DateTime.Today.AddDays(1),
+            Enabled = true
+    };
+        public Coupon GetCreatedCoupon;
 
+        public static int CreatedCouponId { get; set; }
 
-        //protected async override Task OnInitializedAsync()
-        //{
-        //    Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true); 
-        //}
+        protected async override Task OnInitializedAsync()
+        {
+            Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
+        }
 
         protected async Task HandleValidSubmit()
         {
-            var result = await CouponService.CreateNewCoupon(Coupon);
+            var result = await CouponService.CreateNewCoupon(CreateCoupon);
 
-            if (result != null)
+            if (result.Id != 0)
             {
-                NavigationManager.NavigateTo("/");
-            }
-        }
+                CreatedCouponId = result.Id;
+
+                if (CreatedCouponId != 0)
+                    GetCreatedCoupon = await CouponService.GetCouponById(CreatedCouponId);
+
+                CreateCoupon = new Coupon()
+                {
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today.AddDays(1),
+                    Enabled = true
+                };
+
+                //Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
+    }
+}
     }
 }

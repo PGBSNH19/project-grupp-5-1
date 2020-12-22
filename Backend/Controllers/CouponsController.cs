@@ -74,17 +74,21 @@ namespace Backend.Controllers
 
         // POST: api/v1.0/coupons
         [HttpPost]
-        public async Task<ActionResult<CouponDTO>> Add([FromBody] CouponDTO coupon)
+        public async Task<ActionResult<Coupon>> Add(Coupon coupon)
         {
             try
             {
-                var mappedResult = _mapper.Map<Coupon>(coupon);
-                await _couponRepository.Add(mappedResult);
+                //var mappedResult = _mapper.Map<Coupon>(coupon);
+                await _couponRepository.Add(coupon);
 
-                if (await _couponRepository.Save())
+                try
                 {
-                    _logger.LogInformation($"Inserting an new coupon to the database.");
-                    return Ok(_mapper.Map<CouponDTO>(mappedResult));
+                    await _couponRepository.Save();
+                    return Ok(coupon);
+                }
+                catch (Exception)
+                {
+                    return BadRequest();
                 }
             }
             catch (Exception e)
@@ -92,7 +96,6 @@ namespace Backend.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
                     $"Failed to add the coupon. Exception thrown when attempting to add data to the database: {e.Message}");
             }
-            return BadRequest();
         }
 
         // PUT: api/v1.0/coupons/5
