@@ -15,21 +15,23 @@ namespace Frontend.Bases
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        public IEnumerable<Coupon> Coupons { get; set; } = new List<Coupon>();
-
+        public static int CreatedCouponId { get; set; }
         public Coupon CreateCoupon = new Coupon()
         {
             StartDate = DateTime.Today,
             EndDate = DateTime.Today.AddDays(1),
             Enabled = true
-    };
+        };
         public Coupon GetCreatedCoupon;
 
-        public static int CreatedCouponId { get; set; }
+        public IEnumerable<Coupon> Coupons { get; set; } = new List<Coupon>();
+        public static int GetCoupnIdToUpodate { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
+
+            //foreach(var Coupon)
         }
 
         protected async Task HandleValidSubmit()
@@ -50,8 +52,15 @@ namespace Frontend.Bases
                     Enabled = true
                 };
 
-                //Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
-    }
-}
+                Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
+            }            
+        }
+
+        public async Task UpdateCouponStatus(int id, Coupon coupon)
+        {
+            coupon.Enabled = false;
+
+            await CouponService.UpdateCoupon(id, coupon);
+        }
     }
 }

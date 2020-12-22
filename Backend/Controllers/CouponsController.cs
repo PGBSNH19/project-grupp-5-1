@@ -159,56 +159,5 @@ namespace Backend.Controllers
             }
             return BadRequest();
         }
-        //    [HttpGet]
-        //    public async Task<ActionResult> GetAllCoupons()
-        //    {
-        //        try
-        //        {
-        //            return Ok(await _couponRepository.GetAll());
-        //        }
-        //        catch (TimeoutException e)
-        //        {
-        //            return this.StatusCode(StatusCodes.Status408RequestTimeout, $"Request timeout: { e.Message}");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
-        //        }
-        //    }
-
-        //    public async Task<ActionResult<Coupon>> GetCouponById(int id)
-        //    {
-        //        try
-        //        {
-        //            return Ok(await _couponRepository.GetCouponById(id));
-        //        }
-        //        catch (TimeoutException e)
-        //        {
-        //            return this.StatusCode(StatusCodes.Status408RequestTimeout, $"Request timeout: { e.Message}");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
-        //        }
-        //    }
-
-        //    public async Task<ActionResult<CouponDTO>> CreateNewCoupon(CouponDTO coupon)
-        //    {
-        //        try
-        //        {
-        //            var mappedEntity = _mapper.Map<Coupon>(coupon);
-        //            await _couponRepository.Add(mappedEntity);
-
-        //            if(await _couponRepository.Save())
-        //            {
-        //                return Created($"api/v1.0/coupons/{mappedEntity.Id}", _mapper.Map<Coupon>(mappedEntity));
-        //            }
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            return StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
-        //        }
-        //        return BadRequest();
-        //    }
     }
 }

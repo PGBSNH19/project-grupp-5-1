@@ -74,24 +74,26 @@
         <tbody>
             @foreach (var coupon in Coupons)
             {
-                coupon.Discount = coupon.Discount * 100;
-                <tr>
-                    <td>@coupon.Code</td>
-                    <td>@coupon.Description</td>
-                    <td>@coupon.StartDate.ToString("yyyyMMdd")</td>
-                    <td>@coupon.EndDate.ToString("yyyyMMdd")</td>
-                    <td>@String.Format("{0:0.##}", coupon.Discount) %</td>
-                    @if (coupon.Enabled)
-                    {
-                        <td class="text-success">Active</td>
-                    }
-                    else
-                    {
-                        <td class="tex-danger">Disabled</td>
-                    }
-                    <td><button type="submit" class="btn btn-danger">Disable</button></td>
-                </tr>
+                string discount = (coupon.Discount * 100).ToString();
+                int discountIndex = discount.IndexOf(',');
+                discount = discount.Remove(discountIndex);
+            <tr>
+                <td>@coupon.Code</td>
+                <td>@coupon.Description</td>
+                <td>@coupon.StartDate.ToString("yyyyMMdd")</td>
+                <td>@coupon.EndDate.ToString("yyyyMMdd")</td>
+                <td>@discount</td>
 
+                @if (coupon.Enabled)
+                {
+                    <td class="text-success">Active</td>
+                }
+                else
+                {
+                    <td class="tex-danger">Disabled</td>
+                }
+                <td><button type="submit" class="btn btn-danger" @onclick="() => UpdateCouponStatus(coupon.Id,coupon)">Disable</button></td>
+            </tr>
             }
         </tbody>
     </table>
@@ -101,5 +103,5 @@
 
 
 @code {
-    
+ 
 }
