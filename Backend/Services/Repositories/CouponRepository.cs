@@ -21,15 +21,15 @@ namespace Backend.Services.Repositories
             _logger = logger;
         }
 
-        public async Task<ICollection<Coupon>> GetAllCoupons()
-        {
-            var query = _context.Coupon;
-            return await query.ToListAsync();
-        }
+        //public async Task<ICollection<Coupon>> GetAllCoupons()
+        //{
+        //    var query = _context.Coupon;
+        //    return await query.ToListAsync();
+        //}
 
-        public async Task<Coupon> GetCouponById(int id)
-        {
-            return await _context.Set<Coupon>().FirstOrDefaultAsync(x => x.Id == id);
-        }       
+        //public async Task<Coupon> GetCouponById(int id)
+        //{
+        //    return await _context.Set<Coupon>().FirstOrDefaultAsync(x => x.Id == id);
+        //}       
     }
 }

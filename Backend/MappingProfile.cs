@@ -26,6 +26,9 @@ namespace Backend
 
             CreateMap<Product, ProductDTO>()
                 .ReverseMap();
+
+            CreateMap<Coupon, CouponDTO>()
+               .ReverseMap();
         }
     }
 }
