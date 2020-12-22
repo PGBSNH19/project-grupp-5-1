@@ -104,7 +104,7 @@ namespace Frontend.Services
             Order order = new Order();
 
             order.DateRegistered = DateTime.Now;
-            order.CouponId = (int?)null;
+            order.CouponId = 1;
             order.UserId = 1;
 
             var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
