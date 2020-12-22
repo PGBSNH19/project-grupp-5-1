@@ -1,34 +1,48 @@
-﻿using Frontend.Models;
-using Frontend.Services;
+﻿using System.Linq;
+using Frontend.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
     public class OrderBase : ComponentBase
     {
-        public IEnumerable<Order> orders { get; set; } = new List<Order>();
-        public IEnumerable<OrderedProduct> orderedProducts { get; set; } = new List<OrderedProduct>();
-        public IEnumerable<int> userIds { get; set; } = new List<int>();
 
         [Inject]
-        public IOrderService ProductService { get; set; }
+        public NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        public IOrderService OrderService { get; set; }
+
+        [Parameter]
+        public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
+
+       public async void Increase(Product product)
+        {
+            await OrderService.IncreaseProductToBasket(product);
+        }
+
+        public async void Decrease(Product product)
+        {
+            await OrderService.DecreaseProductToBasket(product);
+        }
+
+        public async void Remove(ProductInBasket product)
+        {
+            await OrderService.DeleteProductFromBasket(product);
+        }
+
+        public async void SendOrder(IEnumerable<ProductInBasket> products)
+        {
+            await OrderService.CreateOrder(products);
+        }
 
         protected async override Task OnInitializedAsync()
         {
-            orders = (await ProductService.GetOrders()).OrderBy(u => u.UserId);
-            orderedProducts = await ProductService.GetOrderedProducts();
-
-            foreach (var order in orders)
-            {
-                var thisOrderedProducts = orderedProducts.Where(o => o.OrderId == order.Id);
-                order.OrderedProducts = thisOrderedProducts;
-            }
-
+            System.Console.WriteLine("From the method");
+            basketproducts = await OrderService.GetBasketProducts();
         }
     }
 }
