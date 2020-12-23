@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: FrontendProd
+
+on:
+  push:
+    branches: [ main ]
+    
+jobs:
+  
+  
+  build:
+    runs-on: ubuntu-latest
+    
+    # continues integration (build + test)
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: Install dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+      working-directory: Frontend
+    
+    - name: Test
+      run: dotnet test ./XUnitTestFrontend/XUnitTestFrontend.csproj
+      
+    # continues deployment (build image and push to acr)
+    - name: Login to container registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.MIC_ACR_SERVER }}
+        username: ${{ secrets.MIC_ACR_USER }}
+        password: ${{ secrets.MIC_ACR_PASSWORD }}
+    
+    - name: Create Docker-image and push to ACR
+      run: |
+        docker build . -t ${{ secrets.MIC_ACR_SERVER }}/frontendprod:latest
+        docker push ${{ secrets.MIC_ACR_SERVER }}/frontendprod:latest
