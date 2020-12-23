@@ -85,7 +85,7 @@ namespace Frontend.Services
             Order order = new Order();
 
             order.DateRegistered = DateTime.Now;
-            order.CouponId = (int?)null;
+            order.CouponId = 1;
             order.UserId = 1;
 
             var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
@@ -101,6 +101,12 @@ namespace Frontend.Services
                     orderedProduct.ProductId = basketProduct.Product.Id;
 
                     await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
+
+                    var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
+
+                    product.Stock -= basketProduct.Amount;
+
+                    await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
                 }
 
                 await _localStorageService.ClearAsync();
@@ -112,6 +118,5 @@ namespace Frontend.Services
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
             }
         }
-
     }
 }
