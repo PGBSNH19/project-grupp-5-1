@@ -1,14 +1,14 @@
-﻿using Frontend.Models;
-using Frontend.Services.Interfaces;
-using Microsoft.AspNetCore.Components;
+﻿using System;
+using System.Linq;
+using Frontend.Models;
 using System.Net.Http;
+using Microsoft.JSInterop;
+using Blazored.LocalStorage;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Frontend.Services.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
-using Blazored.LocalStorage;
-using Microsoft.JSInterop;
-using System.Linq;
-using System;
 
 namespace Frontend.Services
 {
@@ -36,42 +36,24 @@ namespace Frontend.Services
 
         public async Task IncreaseProductToBasket(Product product)
         {
-            bool basketExists = await _localStorageService.ContainKeyAsync("customer-basket");
-            var basket = basketExists ? await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
+            var basket = await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket");
 
             ProductInBasket productInBasket = basket.FirstOrDefault(x => x.Product.Id == product.Id);
 
-            if (productInBasket.Amount >= product.Stock)
-            {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order more than {product.Stock} of this product.");
-            }
-            else
-            {
-                productInBasket.Amount++;
-            }
+            productInBasket.Amount++;
 
             await _localStorageService.SetItemAsync("customer-basket", basket);
-            _NavigationManager.NavigateTo("/OrderPage", true);
         }
 
         public async Task DecreaseProductToBasket(Product product)
         {
-            bool basketExists = await _localStorageService.ContainKeyAsync("customer-basket");
-            var basket = basketExists ? await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
+            var basket = await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket");
 
             ProductInBasket productInBasket = basket.FirstOrDefault(x => x.Product.Id == product.Id);
 
-            if (productInBasket.Amount < 1)
-            {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order less than one product.");
-            }
-            else
-            {
-                productInBasket.Amount--;
-            }
+            productInBasket.Amount--;
 
             await _localStorageService.SetItemAsync("customer-basket", basket);
-            _NavigationManager.NavigateTo("/OrderPage", true);
         }
 
         public async Task DeleteProductFromBasket(ProductInBasket product)
@@ -96,7 +78,6 @@ namespace Frontend.Services
             {
                 await _localStorageService.ClearAsync();
             }
-            _NavigationManager.NavigateTo("/OrderPage", true);
         }
 
         public async Task CreateOrder(IEnumerable<ProductInBasket> basketProducts)
@@ -104,7 +85,7 @@ namespace Frontend.Services
             Order order = new Order();
 
             order.DateRegistered = DateTime.Now;
-            order.CouponId = 1;
+            order.CouponId = (int?)null;
             order.UserId = 1;
 
             var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
@@ -120,12 +101,6 @@ namespace Frontend.Services
                     orderedProduct.ProductId = basketProduct.Product.Id;
 
                     await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
-
-                    var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
-
-                    product.Stock -= basketProduct.Amount;
-
-                    await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
                 }
 
                 await _localStorageService.ClearAsync();
@@ -137,5 +112,6 @@ namespace Frontend.Services
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
             }
         }
+
     }
 }

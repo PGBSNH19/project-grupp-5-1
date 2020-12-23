@@ -1,5 +1,7 @@
 ﻿@page "/OrderPage"
-@inherits OrderBase
+@inherits OrderPageBase
+@inject IJSRuntime _jSRuntime;
+
 
 <div class="container mt-5">
     @if (basketproducts == null)
@@ -11,14 +13,14 @@
     else
     {
         <h4 class="mb-2">Your order details:</h4>
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered table-responsive-sm" responsive>
             <thead class="bg-dark text-white">
                 <tr>
                     <th class="text-center" scope="col">ID</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Category</th>
                     <th scope="col">Image</th>
-                    <th scope="col">Amount</th>
+                    <th scope="col">Ammount</th>
                     <th class="text-center" scope="col">Action</th>
                 </tr>
             </thead>
@@ -30,16 +32,18 @@
                         <td>@basketProduct.Product.Name</td>
                         <td class="text-center">@basketProduct.Product.ProductCategoryId</td>
                         <td class="text-center">
-                            <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:40px;height:40px" />
+                            <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")"
+                                 style="width:40px;height:40px" />
                         </td>
                         <td class="text-center">
                             <div class="">
-                                <button class="btn btn-sm btn-outline-success mr-1" @onclick="() => Decrease(basketProduct.Product)">-</button>
-                                <input class="col-2 text-center" @bind-value="basketProduct.Amount">
-                                <button class="btn btn-sm btn-outline-danger ml-1" @onclick="() => Increase(basketProduct.Product)">+</button>
+                                <button class="btn btn-sm btn-outline-danger mr-1" @onclick="() =>Decrease(basketProduct)">                                                                                            -</button>
+                                <input type="number" class="col-sm-4 text-center" @bind-value="basketProduct.Amount" readonly>
+                                <button class="btn btn-sm btn-outline-success mr-1" @onclick="() =>Increase(basketProduct)">+</button>
+
                             </div>
                         </td>
-                        <td class="text-center"><button type="button" class="btn btn-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
                     </tr>
                 }
             </tbody>
@@ -49,3 +53,4 @@
         </div>
     }
 </div>
+
