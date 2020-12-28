@@ -80,11 +80,18 @@ namespace Backend.Controllers
             return string.Concat(hash.Select(b => b.ToString("x2")));
         }
 
+        /// <summary>
+        /// Authenticates a user in the system.
+        /// </summary>
+        /// <param name="user">The user details which will be used to login.</param>
+        /// <returns>The login details of the authenticated user.</returns>
+        /// <response code="200">Returns the login details of the authenticated user.</response>
+        /// <response code="401">The given login details were wrong.</response>    
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login([FromBody] UserDTO user)
         {
-            IActionResult response = Unauthorized(new { message = "Username or password is incorrect" });
+            IActionResult response = Unauthorized(new { message = "Username or password is incorrect." });
             UserDTO authenticationResult = AuthenticateUser(user);
             if (authenticationResult != null)
             {
