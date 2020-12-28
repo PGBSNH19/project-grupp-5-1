@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Backend.Services.Repositories
 {
-    public class OrderRepository : Repository<Order>, IOrderRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly StoreDbContext _context;
-        private readonly ILogger<OrderRepository> _logger;
+        private readonly ILogger<UserRepository> _logger;
 
-        public OrderRepository(StoreDbContext context, ILogger<OrderRepository> logger) : base(context, logger)
+        public UserRepository(StoreDbContext context, ILogger<UserRepository> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;

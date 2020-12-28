@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Backend.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/v1.0/[controller]")]
     public class OrdersController : ControllerBase
     {

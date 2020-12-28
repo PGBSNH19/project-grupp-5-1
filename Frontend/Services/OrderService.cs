@@ -5,29 +5,35 @@ using System.Net.Http;
 using Microsoft.JSInterop;
 using Blazored.LocalStorage;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using Frontend.Auth;
 
 namespace Frontend.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly NavigationManager _NavigationManager;
         private readonly HttpClient _httpClient;
+        private readonly NavigationManager _NavigationManager;
+
+        private readonly IJSRuntime _jSRuntime;
         private readonly IConfiguration _configuration;
         private readonly ILocalStorageService _localStorageService;
-        private readonly IJSRuntime _jSRuntime;
+        private readonly ITokenValidator _tokenValidator;
 
-        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime)
+        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime, ITokenValidator tokenValidator)
         {
-            _NavigationManager = NavigationManager;
+            _jSRuntime = jSRuntime;
             _httpClient = httpClient;
             _configuration = configuration;
+            _tokenValidator = tokenValidator;
+            _NavigationManager = NavigationManager;
             _localStorageService = localStorageService;
-            _jSRuntime = jSRuntime;
         }
+
 
         public async Task<IEnumerable<ProductInBasket>> GetBasketProducts()
         {
@@ -82,11 +88,15 @@ namespace Frontend.Services
 
         public async Task CreateOrder(IEnumerable<ProductInBasket> basketProducts)
         {
+            await _tokenValidator.CheckToken(_httpClient);
+
             Order order = new Order();
 
             order.DateRegistered = DateTime.Now;
             order.CouponId = 1;
             order.UserId = 1;
+
+
 
             var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
 
@@ -109,7 +119,7 @@ namespace Frontend.Services
                     await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
                 }
 
-                await _localStorageService.ClearAsync();
+                await _localStorageService.RemoveItemAsync("customer-basket");
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
                 _NavigationManager.NavigateTo("/");
             }
@@ -118,5 +128,6 @@ namespace Frontend.Services
                 await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
             }
         }
+
     }
 }
