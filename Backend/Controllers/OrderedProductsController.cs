@@ -26,7 +26,13 @@ namespace Backend.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/v1.0/OrderedProducts
+        /// <summary>
+        /// Retrieves all ordered products.
+        /// </summary>
+        /// <returns>A list of all ordered products.</returns>
+        /// <response code="200">Returns a list of all ordered products.</response>
+        /// <response code="404">If there are no ordered products in the database.</response>
+        /// <response code="500">If the API caught an exception when attempting to fetch the ordered products.</response>   
         [HttpGet]
         public async Task<ActionResult<OrderedProductDTO[]>> GetAll()
         {
@@ -49,7 +55,14 @@ namespace Backend.Controllers
             }
         }
 
-        // GET: api/v1.0/OrderedProducts/5
+        /// <summary>
+        /// Retrieves an ordered product by its Id.
+        /// </summary>
+        /// <param name="orderProductId">The Id of the ordered product.</param>
+        /// <returns>The ordered product which has the specified Id.</returns>
+        /// <response code="200">Returns the ordered product which matched the given Id.</response>
+        /// <response code="404">If no ordered product was found which matched the given Id.</response>
+        /// <response code="500">If the API caught an exception when attempting to fetch an ordered product.</response>
         [HttpGet("{orderProductId}")]
         public async Task<ActionResult<OrderedProductDTO>> GetById(int orderProductId)
         {
@@ -72,7 +85,14 @@ namespace Backend.Controllers
             }
         }
 
-        // POST: api/v1.0/OrderedProducts
+        /// <summary>
+        /// Adds a new ordered product.
+        /// </summary>
+        /// <param name="orderProduct">The new ordered product object to be added.</param>
+        /// <returns>The ordered product object which has been added.</returns>
+        /// <response code="200">Returns the new ordered product which has been added.</response>
+        /// <response code="400">If the API failed to save the new ordered product to the database.</response>
+        /// <response code="500">If the API caught an exception when attempting to save an ordered product.</response> 
         [HttpPost]
         public async Task<ActionResult<OrderedProductDTO>> Add([FromBody] OrderedProductDTO orderProduct)
         {
@@ -95,7 +115,16 @@ namespace Backend.Controllers
             return BadRequest();
         }
 
-        // PUT: api/v1.0/OrderedProducts/5
+        /// <summary>
+        /// Updates an existing ordered product.
+        /// </summary>
+        /// <param name="orderProductId">The Id of the requested ordered product which will be updated.</param>
+        /// <param name="updatedOrderProduct">The new details of the ordered product object.</param>
+        /// <returns>The ordered product object with its updated details.</returns>
+        /// <response code="200">Returns the ordered product which has been updated.</response>
+        /// <response code="404">If no ordered product was found which matched the given Id.</response>
+        /// <response code="400">If the API failed to save the ordered product to the database.</response>
+        /// <response code="500">If the API caught an exception when attempting to save an ordered product.</response>  
         [HttpPut("{orderProductId}")]
         public async Task<ActionResult<OrderedProduct>> Update(int orderProductId, [FromBody] OrderedProductDTO updatedOrderProduct)
         {
@@ -105,7 +134,7 @@ namespace Backend.Controllers
 
                 if (orderProduct == null)
                 {
-                    return BadRequest($"OrderProduct with id {orderProductId} was not found.");
+                    return NotFound($"OrderProduct with id {orderProductId} was not found.");
                 }
 
 
@@ -127,18 +156,25 @@ namespace Backend.Controllers
             return BadRequest();
         }
 
-        // DELETE: api/v1.0/OrderedProducts/5
+        /// <summary>
+        /// Deletes an existing ordered product.
+        /// </summary>
+        /// <param name="orderProductId">The Id of the ordered product which needs to be deleted.</param>
+        /// <returns>The deleted ordered product object.</returns>
+        /// <response code="200">Returns the ordered product which has been deleted.</response>
+        /// <response code="404">If no ordered product was found which matched the given Id.</response>
+        /// <response code="400">If the API failed to save changes to database after deleting the ordered product.</response>
+        /// <response code="500">If the API caught an exception when attempting to delete an ordered product.</response>  
         [HttpDelete("{orderProductId}")]
         public async Task<ActionResult<OrderedProductDTO>> Delete(int orderProductId)
         {
             try
             {
-
                 var orderProduct = await _orderProductRepository.Get(orderProductId);
 
                 if (orderProduct == null)
                 {
-                    return BadRequest($"OrderProduct with id {orderProductId} was not found.");
+                    return NotFound($"OrderProduct with id {orderProductId} was not found.");
                 }
 
                 _orderProductRepository.Remove(orderProduct);

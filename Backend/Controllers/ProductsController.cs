@@ -28,6 +28,13 @@ namespace Backend.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retrieves all existing products.
+        /// </summary>
+        /// <returns>A list of all existing products.</returns>
+        /// <response code="200">Returns a list of existing products.</response>
+        /// <response code="404">If there are no products stored in the database.</response>
+        /// <response code="500">If the API caught an exception when attempting to fetch products.</response>  
         [HttpGet]
         public async Task<ActionResult<ProductDTO[]>> GetAll()
         {
@@ -37,7 +44,7 @@ namespace Backend.Controllers
 
                 if (products == null)
                 {
-                    return NotFound($"Could not find any products");
+                    return NotFound($"Could not find any products.");
                 }
 
                 var mappedResult = _mapper.Map<ProductDTO[]>(products);
@@ -50,6 +57,14 @@ namespace Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a product by its Id.
+        /// </summary>
+        /// <param name="id">The Id of the requested product.</param>
+        /// <returns>The product which has the specified Id.</returns>
+        /// <response code="200">Returns the product which matched the given Id.</response>
+        /// <response code="404">If no product was found which matched the given Id.</response>
+        /// <response code="500">If the API caught an exception when attempting to fetch a product.</response>    
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
@@ -73,6 +88,14 @@ namespace Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a new product.
+        /// </summary>
+        /// <param name="product">The new product object to be added.</param>
+        /// <returns>The product object which has been added.</returns>
+        /// <response code="201">Returns details of the new product which has been added.</response>
+        /// <response code="400">If the API failed to save the new product to the database.</response>
+        /// <response code="500">If the API caught an exception when attempting to save a product.</response>    
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO product)
         {
@@ -87,9 +110,9 @@ namespace Backend.Controllers
                     return CreatedAtAction(nameof(GetById), new { id = mappedResult.Id },
                     mappedResult);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    return BadRequest();
+                    return BadRequest(e);
                 }
             }
             catch (Exception e)
@@ -99,6 +122,15 @@ namespace Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an existing product.
+        /// </summary>
+        /// <param name="id">The Id of the product which needs to be deleted.</param>
+        /// <returns>The deleted product object.</returns>
+        /// <response code="200">Returns the product which has been deleted.</response>
+        /// <response code="404">If no product was found which matched the given Id.</response>
+        /// <response code="400">If the API failed to save changes to database after deleting the product.</response>
+        /// <response code="500">If the API caught an exception when attempting to delete a product.</response>  
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ProductDTO>> Delete(int id)
         {
@@ -119,7 +151,7 @@ namespace Backend.Controllers
                 }
                 catch (Exception e)
                 {
-                    return BadRequest();
+                    return BadRequest(e);
                 }
 
                 var mappedResult = _mapper.Map<ProductDTO>(product);
@@ -130,9 +162,18 @@ namespace Backend.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
                     $"Failed to remove the product. Exception thrown when attempting to add data to the database: {e.Message}");
             }
-            return BadRequest();
         }
 
+        /// <summary>
+        /// Updates an existing product.
+        /// </summary>
+        /// <param name="id">The Id of the requested product which will be updated.</param>
+        /// <param name="productDTO">The new details of the product object.</param>
+        /// <returns>The product object with its updated details.</returns>
+        /// <response code="200">Returns the product which has been updated.</response>
+        /// <response code="404">If no product was found which matched the given Id.</response>
+        /// <response code="400">If the API failed to save the updated product to the database.</response>
+        /// <response code="500">If the API caught an exception when attempting to save a product.</response>
         [HttpPut("{id:int}")]
         public async Task<ActionResult<ProductDTO>> Update(int id, ProductDTO productDTO)
         {
@@ -142,7 +183,7 @@ namespace Backend.Controllers
 
                 if (product == null)
                 {
-                    return BadRequest($"Product with id {id} was not found.");
+                    return NotFound($"Product with id {id} was not found.");
                 }
 
                 var mappedResult = _mapper.Map(productDTO, product);
