@@ -54,7 +54,54 @@
         </div>
     }
 </EditForm>
+<br />
+<br />
+<br />
+<div class="row">
+    <h3>Active Coupons</h3>
+    <table class="table">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>Code</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Discount</th>
+                <th>Status</th>
+                <th>Change Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var coupon in Coupons)
+            {
+                //string discount = (coupon.Discount * 100).ToString();
+                //int discountIndex = discount.IndexOf(',');
+                //discount = discount.Remove(discountIndex);
+            <tr>
+                <td>@coupon.Code</td>
+                <td>@coupon.Description</td>
+                <td>@coupon.StartDate.ToString("yyyyMMdd")</td>
+                <td>@coupon.EndDate.ToString("yyyyMMdd")</td>
+                <td>@coupon.Discount</td>
+
+                @if (coupon.Enabled)
+                {
+                    <td class="text-success">Active</td>
+                }
+                else
+                {
+                    <td class="tex-danger">Disabled</td>
+                }
+                <td><button type="submit" class="btn btn-danger" @onclick="() => UpdateCouponStatus(coupon.Id,coupon)">Disable</button></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
 
 @code {
-    
+ 
 }

@@ -11,5 +11,6 @@ namespace Frontend.Services
         Task<IEnumerable<Coupon>> GetCoupons(bool getOnlyActive);
         Task<Coupon> GetCouponById(int id);
         Task<Coupon> CreateNewCoupon(Coupon coupon);
+        Task UpdateCoupon(int id, Coupon coupon);
     }
 }
