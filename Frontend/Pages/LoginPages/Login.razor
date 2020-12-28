@@ -1,0 +1,38 @@
+﻿@page  "/login"
+@inherits LoginBase
+
+<EditForm Model="@user" OnValidSubmit="@ValidateUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <br /><br /><br /><br /><br />
+    </div>
+    <div class="container col-4">
+        <div class="row">
+            <div class="mb-2">
+                <h4 style="font-weight:bold;">G5Store User Login</h4>
+            </div>
+            <div>
+                <br />
+            </div>
+            <div class="col-12 row mb-3">
+                <InputText class="form-control col-12"@bind-Value="user.Username" placeholder="user name" />
+            </div>
+            <br />
+            <div class="col-12 row mb-3">
+                <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
+            </div>
+            <br />
+            <div class="col-12 row mb-3">
+                <span class="col-12"></span>
+                <input type="submit" class="form-control col-6 btn btn-primary" value="Login" />
+                <a href="/signup" class="col-3">Sign up</a>
+            </div>
+            <br />
+            <div class="col-12 row" style="text-align:left; font-weight:bold">
+                <span class="col-12">@LoginMesssage</span>
+            </div>
+        </div>
+    </div>
+</EditForm>
+

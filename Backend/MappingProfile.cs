@@ -12,11 +12,8 @@ namespace Backend
     {
         public MappingProfile()
         {
-            // Domain to DTO
-            CreateMap<Weather, WeatherToUpdateDto>();
-
-            // DTO to domain
-            CreateMap<WeatherToUpdateDto, Weather>();
+            CreateMap<Weather, WeatherToUpdateDto>()
+                .ReverseMap();
 
             CreateMap<Order, OrderDTO>()
                 .ReverseMap();
@@ -28,6 +25,9 @@ namespace Backend
                 .ReverseMap();
 
             CreateMap<Coupon, CouponDTO>()
+               .ReverseMap();
+
+            CreateMap<User, UserDTO>()
                .ReverseMap();
         }
     }

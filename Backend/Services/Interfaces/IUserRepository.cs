@@ -2,7 +2,7 @@
 
 namespace Backend.Services.Interfaces
 {
-    public interface IOrderRepository : IRepository<Order>
+    public interface IUserRepository : IRepository<User>
     {
     }
 }
