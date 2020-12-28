@@ -13,7 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 
-namespace QBISApplicationAPI.Controllers
+namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1.0/[controller]")]
