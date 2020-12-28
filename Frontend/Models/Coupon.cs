@@ -20,10 +20,11 @@ namespace Frontend.Models
         public DateTime StartDate { get; set; }
         [Required]
         [CustomDateRange(1)]
+        [DateLessThan("StartDate", ErrorMessage = "End Date can't be smaller then Start Date")]
         public DateTime EndDate { get; set; }
         public bool Enabled { get; set; }
         [Required]
-        [Range(0.01, 0.99, ErrorMessage = "You need to specify a precentage number betweem 0,1 and 0,99")]
+        [Range(0.01, 0.99, ErrorMessage = "You need to specify a precentage number betweem 0,01 and 0,99")]
         public decimal Discount { get; set; }
     }
 
@@ -32,6 +33,34 @@ namespace Frontend.Models
     {
         public CustomDateRangeAttribute(int yearsEndFromNow): 
             base(typeof(DateTime), DateTime.Now.Date.ToString(), DateTime.Now.Date.AddYears(yearsEndFromNow).ToString()) { }
+    }
+
+    public class DateLessThanAttribute : ValidationAttribute
+    {
+        private readonly string _comparisonProperty;
+
+        public DateLessThanAttribute(string comparisonProperty)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            ErrorMessage = ErrorMessageString;
+            var currentValue = (DateTime)value;
+
+            var property = validationContext.ObjectType.GetProperty(_comparisonProperty, typeof(DateTime));
+
+            if (property == null)
+                throw new ArgumentException("Property with this name not found");
+
+            var comparisonValue = (DateTime)property.GetValue(validationContext.ObjectInstance);
+
+            if (currentValue < comparisonValue)
+                return new ValidationResult(ErrorMessage);
+
+            return ValidationResult.Success;
+        }
     }
 
 
