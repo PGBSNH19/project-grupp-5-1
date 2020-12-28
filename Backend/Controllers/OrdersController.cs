@@ -33,8 +33,8 @@ namespace Backend.Controllers
         /// </summary>
         /// <returns>A list of all existing orders.</returns>
         /// <response code="200">Returns a list of existing orders.</response>
-        /// <response code="404">If there are no orders stored in the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to fetch orders.</response>    
+        /// <response code="404">There are no orders stored in the database.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch orders.</response>    
         [HttpGet]
         public async Task<ActionResult<OrderDTO[]>> GetAll()
         {
@@ -63,8 +63,8 @@ namespace Backend.Controllers
         /// <param name="orderId">The Id of the requested order.</param>
         /// <returns>The order which has the specified Id.</returns>
         /// <response code="200">Returns the order which matched the given Id.</response>
-        /// <response code="404">If no order was found which matched the given Id.</response>
-        /// <response code="500">If the API caught an exception when attempting to fetch an order.</response>    
+        /// <response code="404">No order was found which matched the given Id.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch an order.</response>    
         [HttpGet("{orderId}")]
         public async Task<ActionResult<OrderDTO>> GetById(int orderId)
         {
@@ -93,8 +93,8 @@ namespace Backend.Controllers
         /// <param name="order">The new order object to be added.</param>
         /// <returns>The order object which has been added.</returns>
         /// <response code="200">Returns the new order which has been added.</response>
-        /// <response code="400">If the API failed to save the new order to the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to save an order.</response>    
+        /// <response code="400">The API failed to save the new order to the database.</response>
+        /// <response code="500">The API caught an exception when attempting to save an order.</response>    
         [HttpPost]
         public async Task<ActionResult<OrderDTO>> Add([FromBody] OrderDTO order)
         {
@@ -124,9 +124,9 @@ namespace Backend.Controllers
         /// <param name="updatedOrder">The new details of the order object.</param>
         /// <returns>The order object with its updated details.</returns>
         /// <response code="200">Returns the order which has been updated.</response>
-        /// <response code="404">If no order was found which matched the given Id.</response>
-        /// <response code="400">If the API failed to save the updated order to the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to save an order.</response>  
+        /// <response code="404">No order was found which matched the given Id.</response>
+        /// <response code="400">The API failed to save the updated order to the database.</response>
+        /// <response code="500">The API caught an exception when attempting to save an order.</response>  
         [HttpPut("{orderId}")]
         public async Task<ActionResult<Order>> Update(int orderId, [FromBody] OrderDTO updatedOrder)
         {
@@ -163,9 +163,9 @@ namespace Backend.Controllers
         /// <param name="orderId">The Id of the order which needs to be deleted.</param>
         /// <returns>The deleted order object.</returns>
         /// <response code="200">Returns the order which has been deleted.</response>
-        /// <response code="404">If no order was found which matched the given Id.</response>
-        /// <response code="400">If the API failed to save changes to database after deleting the order.</response>
-        /// <response code="500">If the API caught an exception when attempting to delete an order.</response>  
+        /// <response code="404">No order was found which matched the given Id.</response>
+        /// <response code="400">The API failed to save changes to database after deleting the order.</response>
+        /// <response code="500">The API caught an exception when attempting to delete an order.</response>  
         [HttpDelete("{orderId}")]
         public async Task<ActionResult<OrderDTO>> Delete(int orderId)
         {

@@ -33,8 +33,8 @@ namespace Backend.Controllers
         /// </summary>
         /// <returns>A list of all existing products.</returns>
         /// <response code="200">Returns a list of existing products.</response>
-        /// <response code="404">If there are no products stored in the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to fetch products.</response>  
+        /// <response code="404">There are no products stored in the database.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch products.</response>  
         [HttpGet]
         public async Task<ActionResult<ProductDTO[]>> GetAll()
         {
@@ -63,8 +63,8 @@ namespace Backend.Controllers
         /// <param name="id">The Id of the requested product.</param>
         /// <returns>The product which has the specified Id.</returns>
         /// <response code="200">Returns the product which matched the given Id.</response>
-        /// <response code="404">If no product was found which matched the given Id.</response>
-        /// <response code="500">If the API caught an exception when attempting to fetch a product.</response>    
+        /// <response code="404">No product was found which matched the given Id.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch a product.</response>    
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
@@ -94,8 +94,8 @@ namespace Backend.Controllers
         /// <param name="product">The new product object to be added.</param>
         /// <returns>The product object which has been added.</returns>
         /// <response code="201">Returns details of the new product which has been added.</response>
-        /// <response code="400">If the API failed to save the new product to the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to save a product.</response>    
+        /// <response code="400">The API failed to save the new product to the database.</response>
+        /// <response code="500">The API caught an exception when attempting to save a product.</response>    
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO product)
         {
@@ -128,9 +128,9 @@ namespace Backend.Controllers
         /// <param name="id">The Id of the product which needs to be deleted.</param>
         /// <returns>The deleted product object.</returns>
         /// <response code="200">Returns the product which has been deleted.</response>
-        /// <response code="404">If no product was found which matched the given Id.</response>
-        /// <response code="400">If the API failed to save changes to database after deleting the product.</response>
-        /// <response code="500">If the API caught an exception when attempting to delete a product.</response>  
+        /// <response code="404">No product was found which matched the given Id.</response>
+        /// <response code="400">The API failed to save changes to database after deleting the product.</response>
+        /// <response code="500">The API caught an exception when attempting to delete a product.</response>  
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ProductDTO>> Delete(int id)
         {
@@ -171,9 +171,9 @@ namespace Backend.Controllers
         /// <param name="productDTO">The new details of the product object.</param>
         /// <returns>The product object with its updated details.</returns>
         /// <response code="200">Returns the product which has been updated.</response>
-        /// <response code="404">If no product was found which matched the given Id.</response>
-        /// <response code="400">If the API failed to save the updated product to the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to save a product.</response>
+        /// <response code="404">No product was found which matched the given Id.</response>
+        /// <response code="400">The API failed to save the updated product to the database.</response>
+        /// <response code="500">The API caught an exception when attempting to save a product.</response>
         [HttpPut("{id:int}")]
         public async Task<ActionResult<ProductDTO>> Update(int id, ProductDTO productDTO)
         {

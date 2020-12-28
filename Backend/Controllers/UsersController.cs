@@ -31,8 +31,8 @@ namespace Backend.Controllers
         /// </summary>
         /// <returns>A list of all registered users.</returns>
         /// <response code="200">Returns a list of registered users.</response>
-        /// <response code="404">If there are no users stored in the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to fetch users.</response>
+        /// <response code="404">There are no users stored in the database.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch users.</response>
         [HttpGet]
         public async Task<ActionResult<UserDTO[]>> GetAll()
         {
@@ -61,8 +61,8 @@ namespace Backend.Controllers
         /// <param name="userId">The Id of the requested user.</param>
         /// <returns>The user which has the specified Id.</returns>
         /// <response code="200">Returns the user which matched the given Id.</response>
-        /// <response code="404">If no user was found which matched the given Id.</response>
-        /// <response code="500">If the API caught an exception when attempting to fetch an user.</response>
+        /// <response code="404">No user was found which matched the given Id.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch an user.</response>
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserDTO>> GetById(int userId)
         {
@@ -91,8 +91,8 @@ namespace Backend.Controllers
         /// <param name="user">The new user object to be added.</param>
         /// <returns>The user object which has been added.</returns>
         /// <response code="200">Returns the new user which has been added.</response>
-        /// <response code="400">If the API failed to save the new user to the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to save an user.</response>
+        /// <response code="400">The API failed to save the new user to the database.</response>
+        /// <response code="500">The API caught an exception when attempting to save an user.</response>
         [HttpPost]
         public async Task<ActionResult<UserDTO>> Add([FromBody] UserDTO user)
         {
@@ -123,9 +123,9 @@ namespace Backend.Controllers
         /// <param name="updatedUser">The new details of the user object.</param>
         /// <returns>The user object with its updated details.</returns>
         /// <response code="200">Returns the user which has been updated.</response>
-        /// <response code="404">If no user was found which matched the given Id.</response>
-        /// <response code="400">If the API failed to save the updated user to the database.</response>
-        /// <response code="500">If the API caught an exception when attempting to save an user.</response>  
+        /// <response code="404">No user was found which matched the given Id.</response>
+        /// <response code="400">The API failed to save the updated user to the database.</response>
+        /// <response code="500">The API caught an exception when attempting to save an user.</response>  
         [HttpPut("{userId}")]
         public async Task<ActionResult<User>> Update(int userId, [FromBody] UserDTO updatedUser)
         {
@@ -162,9 +162,9 @@ namespace Backend.Controllers
         /// <param name="userId">The Id of the user which needs to be deleted.</param>
         /// <returns>The deleted user object.</returns>
         /// <response code="200">Returns the user which has been deleted.</response>
-        /// <response code="404">If no user was found which matched the given Id.</response>
-        /// <response code="400">If the API failed to save changes to database after deleting the user.</response>
-        /// <response code="500">If the API caught an exception when attempting to delete an user.</response>  
+        /// <response code="404">No user was found which matched the given Id.</response>
+        /// <response code="400">The API failed to save changes to database after deleting the user.</response>
+        /// <response code="500">The API caught an exception when attempting to delete an user.</response>  
         [HttpDelete("{userId}")]
         public async Task<ActionResult<UserDTO>> Delete(int userId)
         {
