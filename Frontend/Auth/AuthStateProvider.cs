@@ -72,7 +72,6 @@ namespace Frontend.Auth
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }, "apiauth_type");
             }
-
             return claimsIdentity;
         }
     }

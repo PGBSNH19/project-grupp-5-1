@@ -2,23 +2,25 @@
 @inherits LoginBase
 
 <EditForm Model="@user" OnValidSubmit="@ValidateUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <div>
         <br /><br /><br /><br /><br />
     </div>
     <div class="container col-4">
         <div class="row">
-            <div>
-                <h3 style="font-weight:bold; color:purple" class="bt-3">G5Store User Login</h3>
+            <div class="mb-2">
+                <h4 style="font-weight:bold;">G5Store User Login</h4>
             </div>
             <div>
                 <br />
             </div>
             <div class="col-12 row mb-3">
-                <input class="form-control col-12" @bind="user.Username" placeholder="user name" />
+                <InputText class="form-control col-12"@bind-Value="user.Username" placeholder="user name" />
             </div>
             <br />
             <div class="col-12 row mb-3">
-                <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
+                <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
             </div>
             <br />
             <div class="col-12 row mb-3">
