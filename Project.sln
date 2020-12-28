@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "Frontend\Frontend.csproj", "{C3E8FD2B-6D11-433E-9A6E-9AFF5669748D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{84DB3687-FC08-4811-804B-63560CAEA90C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.csproj", "{84DB3687-FC08-4811-804B-63560CAEA90C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestBackend", "XUnitTest\XUnitTestBackend.csproj", "{61591A16-F402-48E7-9C6E-9AB42BD2A80E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestBackend", "XUnitTest\XUnitTestBackend.csproj", "{61591A16-F402-48E7-9C6E-9AB42BD2A80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestFrontend", "XUnitTestFrontend\XUnitTestFrontend.csproj", "{98829784-8C01-4296-B44D-A2BA6F255E2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestFrontend", "XUnitTestFrontend\XUnitTestFrontend.csproj", "{98829784-8C01-4296-B44D-A2BA6F255E2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

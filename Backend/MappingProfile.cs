@@ -17,6 +17,18 @@ namespace Backend
 
             // DTO to domain
             CreateMap<WeatherToUpdateDto, Weather>();
+
+            CreateMap<Order, OrderDTO>()
+                .ReverseMap();
+
+            CreateMap<OrderedProduct, OrderedProductDTO>()
+                .ReverseMap();
+
+            CreateMap<Product, ProductDTO>()
+                .ReverseMap();
+
+            CreateMap<Coupon, CouponDTO>()
+               .ReverseMap();
         }
     }
 }

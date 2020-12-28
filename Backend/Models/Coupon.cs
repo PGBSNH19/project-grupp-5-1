@@ -24,5 +24,6 @@ namespace Backend.Models
         [Required]
         [Column(TypeName = "decimal(5,4)")]
         public decimal Discount { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

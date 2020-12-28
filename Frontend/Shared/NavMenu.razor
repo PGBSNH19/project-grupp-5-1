@@ -1,4 +1,10 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Pages
+
+@inject IModalService modal
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Frontend</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -13,13 +19,18 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="addproduct">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add product
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="managecoupons">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Coupons
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="@(() => modal.Show<ProductBasket>("Product basket"))" style="cursor: pointer;">
+                <span class="oi oi-cart" data-inline="false"></span> View basket
             </NavLink>
         </li>
     </ul>

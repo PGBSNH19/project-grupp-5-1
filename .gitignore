@@ -217,7 +217,6 @@ __pycache__/
 Thumbs.db
 
 # ignore appsettings configuration files
-**/appsettings.json
 **/appsettings.development.json
 **/appsettings.staging.json
 **/appsettings.production.json
@@ -225,4 +224,6 @@ Thumbs.db
 # ignore project specific folders
 obj/
 bin/
+
 Backend/appsettings.Development.json
+Frontend/appsettings.Development.json
