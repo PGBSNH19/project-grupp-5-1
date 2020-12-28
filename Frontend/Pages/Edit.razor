@@ -1,0 +1,76 @@
+﻿@page "/edit/{CurrentID}"
+@using Models
+@inject Frontend.Services.IProductService productService
+@inject NavigationManager NavigationManager
+
+
+<h1>Edit</h1>
+
+
+<EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for=" Name" class="control-label">Name</label>
+                <InputText id="Name" class="form-control" placeholder="Name" @bind-Value="product.Name" />
+                <ValidationMessage For="@(()=> product.Name)" />
+            </div>
+            <div class="form-group">
+                <label for="Description" class="control-label">Description</label>
+                <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
+                <ValidationMessage For="@(()=> product.Description)" />
+            </div>
+            <div class="form-group">
+                <label for="Size" class="control-label">Available</label>
+                <select @bind="@product.IsAvailable" class="form-control">
+                    <option value="">--Available--</option>
+                    <option value="0">Yes</option>
+                    <option value="1">No</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label for=" Price" class="control-label">Stock</label>
+                <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
+                <ValidationMessage For="@(()=> product.Stock)" />
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Edit" />
+                <input type="button" class="btn btn-primary" @onclick="@cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+    @code {
+        [Parameter]
+        public string CurrentID { get; set; }
+        Product product = new Product();
+
+        protected override async Task OnInitializedAsync()
+        {
+            product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
+        }
+
+
+        protected async void HandleValidSubmit()
+        {
+            await productService.Update(product);
+            product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
+            StateHasChanged();
+            NavigationManager.NavigateTo("manageproducts");
+        }
+
+        void cancel()
+        {
+            NavigationManager.NavigateTo("manageproducts");
+        }
+
+    }

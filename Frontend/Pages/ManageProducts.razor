@@ -1,0 +1,53 @@
+﻿@page "/manageproducts"
+@inherits frontend.Pages.AddProductBase
+<h1>Manage Products</h1>
+<br />
+<br />
+<a href="/addproduct" class="btn btn-success"><span class="oi oi-plus" aria-hidden="true" /> Add New Product</a>
+
+
+@if (products == null)
+{
+    <p><em>Loading....</em></p>
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <h2>Products</h2>
+    <table class="table">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>SalePrice</th>
+                <th>Stock</th>
+                <th>Available</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>price</td>
+                <td>saleprice</td>
+                @if (@product.Stock < 6)
+                {
+                    <td>@product.Stock <span class="oi oi-warning text-warning float-right" aria-hidden="true" /></td>
+                }
+                else
+                {
+                    <td>@product.Stock</td>
+                }
+                <td>@product.IsAvailable</td>
+                <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
