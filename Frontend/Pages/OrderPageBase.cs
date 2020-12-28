@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using Frontend.Models;
+﻿using Frontend.Models;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using Frontend.Auth;
 
 namespace Frontend.Pages
 {
@@ -22,7 +20,6 @@ namespace Frontend.Pages
 
         [Parameter]
         public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
-
 
         public async void Increase(ProductInBasket product)
         {
@@ -55,13 +52,7 @@ namespace Frontend.Pages
 
         public async void SendOrder(IEnumerable<ProductInBasket> products)
         {
-            try
-            {
-                await OrderService.CreateOrder(products);
-            }
-            catch (System.Exception)
-            {
-            }
+           await OrderService.CreateOrder(products);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

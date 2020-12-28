@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/v1.0/[controller]")]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly ILogger<OrdersController> _logger;
@@ -76,6 +76,7 @@ namespace Backend.Controllers
 
         // POST: api/v1.0/Orders
         [HttpPost]
+
         public async Task<ActionResult<OrderDTO>> Add([FromBody] OrderDTO order)
         {
             try

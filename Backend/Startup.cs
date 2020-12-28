@@ -12,7 +12,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
 namespace Backend
 {
     public class Startup
@@ -31,6 +30,8 @@ namespace Backend
             {
                 options.UseSqlServer(Configuration.GetConnectionString("StoreDatabase"));
             });
+            
+            services.AddMvc();
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IWeatherRepository, WeatherRepository>();
@@ -61,8 +62,6 @@ namespace Backend
                             ClockSkew = TimeSpan.Zero
                         };
                     });
-                
-            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +75,8 @@ namespace Backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
