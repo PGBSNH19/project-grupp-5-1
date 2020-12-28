@@ -36,7 +36,14 @@ else
                 <td>@product.Description</td>
                 <td>price</td>
                 <td>saleprice</td>
-                <td>@product.Stock</td>
+                @if (@product.Stock < 6)
+                {
+                    <td>@product.Stock <span class="oi oi-warning text-warning float-right" aria-hidden="true" /></td>
+                }
+                else
+                {
+                    <td>@product.Stock</td>
+                }
                 <td>@product.IsAvailable</td>
                 <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
             </tr>
@@ -44,11 +51,3 @@ else
         </tbody>
     </table>
 }
-
-
-
-@*<h3>ManageProducts</h3>
-
-@code {
-
-}*@
