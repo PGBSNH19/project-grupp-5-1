@@ -96,36 +96,37 @@ namespace Frontend.Services
             order.CouponId = 1;
             order.UserId = 1;
 
-
-
-            var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
-
-            if (newOrder != null)
+            if (_httpClient.DefaultRequestHeaders.Authorization != null)
             {
-                foreach (var basketProduct in basketProducts)
+                Order newOrder;
+                newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
+                if (newOrder != null)
                 {
-                    OrderedProduct orderedProduct = new OrderedProduct();
+                    foreach (var basketProduct in basketProducts)
+                    {
+                        OrderedProduct orderedProduct = new OrderedProduct();
 
-                    orderedProduct.Amount = basketProduct.Amount;
-                    orderedProduct.OrderId = newOrder.Id;
-                    orderedProduct.ProductId = basketProduct.Product.Id;
+                        orderedProduct.Amount = basketProduct.Amount;
+                        orderedProduct.OrderId = newOrder.Id;
+                        orderedProduct.ProductId = basketProduct.Product.Id;
 
-                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
+                        await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
 
-                    var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
+                        var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
 
-                    product.Stock -= basketProduct.Amount;
+                        product.Stock -= basketProduct.Amount;
 
-                    await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
+                        await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
+                    }
+
+                    await _localStorageService.RemoveItemAsync("customer-basket");
+                    await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
+                    _NavigationManager.NavigateTo("/");
                 }
-
-                await _localStorageService.RemoveItemAsync("customer-basket");
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
-                _NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
+                else
+                {
+                    await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
+                }
             }
         }
 

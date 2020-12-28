@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/v1.0/[controller]")]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly ILogger<OrdersController> _logger;
@@ -96,6 +96,7 @@ namespace Backend.Controllers
         /// <response code="400">The API failed to save the new order to the database.</response>
         /// <response code="500">The API caught an exception when attempting to save an order.</response>    
         [HttpPost]
+
         public async Task<ActionResult<OrderDTO>> Add([FromBody] OrderDTO order)
         {
             try

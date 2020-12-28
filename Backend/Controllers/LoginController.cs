@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using Backend.Models;
 
 namespace Backend.Controllers
 {
@@ -28,6 +29,37 @@ namespace Backend.Controllers
             _userRepository = userRepository;
             _mapper = mapper;
             _config = config;
+        }
+
+        /// <summary>
+        /// Authenticates a user in the system.
+        /// </summary>
+        /// <param name="user">The user details which will be used to login.</param>
+        /// <returns>The login details of the authenticated user.</returns>
+        /// <response code="200">Returns the login details of the authenticated user.</response>
+        /// <response code="401">The given login details were wrong.</response>   
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult Login([FromBody] UserDTO user)
+        {
+            IActionResult response = Unauthorized(new { message = "Username or password is incorrect" });
+            UserDTO authenticationResult = AuthenticateUser(user);
+            if (authenticationResult != null)
+            {
+                
+                var token = GenerateJWTToken(authenticationResult);
+                response = Ok(new
+                {
+                    id = authenticationResult.Id,
+                    firstName = authenticationResult.FirstName,
+                    lastName = authenticationResult.LastName,
+                    username = authenticationResult.Username,
+                    role = authenticationResult.Role,
+                    accesstoken = new JwtSecurityTokenHandler().WriteToken(token.TokenBody),
+                    expiry = token.ExpiryDate,
+                });
+            }
+            return response;
         }
 
         [NonAction]
@@ -51,10 +83,12 @@ namespace Backend.Controllers
         }
 
         [NonAction]
-        private string GenerateJWTToken(UserDTO userInfo)
+        private Token GenerateJWTToken(UserDTO userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var expire = DateTime.Now.AddMinutes(120);
+            Token returnedToken = new Token();
 
             var claims = new[]
             {
@@ -66,11 +100,14 @@ namespace Backend.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(30),
+                expires: expire,
                 signingCredentials: credentials
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            returnedToken.ExpiryDate = expire;
+            returnedToken.TokenBody = token;
+
+            return returnedToken;
         }
 
         [NonAction]
@@ -78,35 +115,6 @@ namespace Backend.Controllers
         {
             var hash = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(input));
             return string.Concat(hash.Select(b => b.ToString("x2")));
-        }
-
-        /// <summary>
-        /// Authenticates a user in the system.
-        /// </summary>
-        /// <param name="user">The user details which will be used to login.</param>
-        /// <returns>The login details of the authenticated user.</returns>
-        /// <response code="200">Returns the login details of the authenticated user.</response>
-        /// <response code="401">The given login details were wrong.</response>    
-        [HttpPost]
-        [AllowAnonymous]
-        public IActionResult Login([FromBody] UserDTO user)
-        {
-            IActionResult response = Unauthorized(new { message = "Username or password is incorrect." });
-            UserDTO authenticationResult = AuthenticateUser(user);
-            if (authenticationResult != null)
-            {
-                var tokenString = GenerateJWTToken(authenticationResult);
-                response = Ok(new
-                {
-                    id = authenticationResult.Id,
-                    firstName = authenticationResult.FirstName,
-                    lastName = authenticationResult.LastName,
-                    username = authenticationResult.Username,
-                    role = authenticationResult.Role,
-                    accesstoken = tokenString,
-                });
-            }
-            return response;
         }
     }
 }

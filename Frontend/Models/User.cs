@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Frontend.Models
 {
@@ -16,6 +17,8 @@ namespace Frontend.Models
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string AccessToken { get; set; }
+        public DateTime expiry { get; set; }
+
         public Role Role { get; set; }
     }
 }
