@@ -49,10 +49,18 @@ namespace Frontend.Pages.LoginPages
 
         public async Task<bool> ValidateUser()
         {
+            User returnedUser = new User();
             //call an API
-            var returnedUser = await userService.LoginAsync(user);
+            try
+            {
+                 returnedUser = await userService.LoginAsync(user);
+            }
+            catch (System.Exception)
+            {
+                returnedUser = null;
+            }
 
-            if (returnedUser.Username != null)
+            if (returnedUser != null)
             {
                 await ((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser);
                 NavigationManager.NavigateTo("/");
