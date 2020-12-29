@@ -54,9 +54,7 @@ namespace Backend.Services.Repositories
 
             using (var smtp = new SmtpClient())
             {
-                smtp.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
-
-                smtp.Connect(_mailSettings.Host, _mailSettings.Port, true);
+                smtp.Connect(_mailSettings.Host, _mailSettings.Port);
                 smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
                 await smtp.SendAsync(email);
                 smtp.Disconnect(true);
