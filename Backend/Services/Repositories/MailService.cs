@@ -16,8 +16,6 @@ namespace Backend.Services.Repositories
     {
         private readonly MailSettings _mailSettings;
 
-        private List<BuyedProducts> buyeds = new List<BuyedProducts>();
-
         public MailService(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;

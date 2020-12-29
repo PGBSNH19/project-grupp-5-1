@@ -119,29 +119,29 @@ namespace Frontend.Services
 
                         await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
 
-                        BuyedProducts buyedProduct = new BuyedProducts()
-                        {
-                            ProductName = product.Name,
-                            Amount = basketProduct.Amount,
-                            Description = product.Description,
-                            Price = 10,
-                        };
+                        //BuyedProducts buyedProduct = new BuyedProducts()
+                        //{
+                        //    ProductName = product.Name,
+                        //    Amount = basketProduct.Amount,
+                        //    Description = product.Description
+                        //};
 
-                        buyedProducts.Add(buyedProduct);
+                        //buyedProducts.Add(buyedProduct);
                     }
 
-                    MailRequest orderToSend = new MailRequest()
-                    {
-                        ToEmail = userInfo.Email,
-                        OrderId = newOrder.Id,
-                        UserName = userInfo.FirstName,
-                        Subject = "Your order",
-                        Address = userInfo.Address,
-                        City = userInfo.City,
-                        ZipCode = userInfo.ZipCode,
-                        buyedProductsList = buyedProducts
-                    };
-                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send", orderToSend);
+                    //MailRequest orderToSend = new MailRequest()
+                    //{
+                    //    ToEmail = userInfo.Email,
+                    //    OrderId = newOrder.Id,
+                    //    UserName = userInfo.FirstName,
+                    //    Subject = "Your order",
+                    //    Address = userInfo.Address,
+                    //    City = userInfo.City,
+                    //    ZipCode = userInfo.ZipCode,
+                    //    buyedProductsList = buyedProducts
+                    //};
+
+                    //await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send", orderToSend);
 
                     await _localStorageService.RemoveItemAsync("customer-basket");
                     await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");

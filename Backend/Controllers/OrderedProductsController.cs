@@ -196,7 +196,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("send")]
-        public async Task<ActionResult> SendMail([FromBody] MailRequest request)
+        public async Task<ActionResult> SendMail(MailRequest request)
         {
             try
             {
