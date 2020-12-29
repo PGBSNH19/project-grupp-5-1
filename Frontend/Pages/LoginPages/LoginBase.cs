@@ -1,12 +1,10 @@
 ﻿using Frontend.Auth;
+using Frontend.Models;
 using Frontend.Services;
-using Microsoft.JSInterop;
-using Blazored.LocalStorage;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Frontend.Models;
 
 namespace Frontend.Pages.LoginPages
 {
@@ -19,16 +17,10 @@ namespace Frontend.Pages.LoginPages
         public NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        public ILocalStorageService localStorageService { get; set; }
-
-        [Inject]
         public IUserService userService { get; set; }
 
-        [Inject]
-        public IJSRuntime jSRuntime { get; set; }
-
         public User user = new User();
-        public string LoginMesssage { get; set; }
+        public string ErrorMesssage { get; set; }
 
         ClaimsPrincipal claimsPrincipal;
 
@@ -67,7 +59,7 @@ namespace Frontend.Pages.LoginPages
             }
             else
             {
-                LoginMesssage = "Invalid username or password";
+                ErrorMesssage = "Invalid username or password";
             }
 
             return await Task.FromResult(true);

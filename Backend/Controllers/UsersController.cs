@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Backend.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Backend.Controllers
 {
@@ -92,6 +95,7 @@ namespace Backend.Controllers
         /// <returns>The user object which has been added.</returns>
         /// <response code="200">Returns the new user which has been added.</response>
         /// <response code="400">The API failed to save the new user to the database.</response>
+        /// <response code="409">The API caught an exception when find the user name is already exist in the database.</response>
         /// <response code="500">The API caught an exception when attempting to save an user.</response>
         [HttpPost]
         public async Task<ActionResult<UserDTO>> Add([FromBody] UserDTO user)
@@ -100,12 +104,24 @@ namespace Backend.Controllers
             {
                 var mappedResult = _mapper.Map<User>(user);
 
-                await _userRepository.Add(mappedResult);
+                var users = await _userRepository.GetAll();
 
-                if (await _userRepository.Save())
+                if (users.Where(u => u.Username == user.Username).FirstOrDefault() == null)
                 {
-                    _logger.LogInformation($"Inserting an new user to the database.");
-                    return Ok(_mapper.Map<UserDTO>(mappedResult));
+                    mappedResult.Password = HashPassword(mappedResult.Password);
+
+                    await _userRepository.Add(mappedResult);
+
+                    if (await _userRepository.Save())
+                    {
+                        _logger.LogInformation($"Inserting an new user to the database.");
+                        return Ok(_mapper.Map<UserDTO>(mappedResult));
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation($"This user is already exist in database.");
+                    return StatusCode(409, $"User '{user.Username}' already exists.");
                 }
             }
             catch (Exception e)
@@ -191,6 +207,13 @@ namespace Backend.Controllers
                     $"Failed to remove the order. Exception thrown when attempting to add data to the database: {e.Message}");
             }
             return BadRequest();
+        }
+
+        [NonAction]
+        private static string HashPassword(string input)
+        {
+            var hash = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(input));
+            return string.Concat(hash.Select(b => b.ToString("x2")));
         }
     }
 }

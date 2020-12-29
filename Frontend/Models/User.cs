@@ -10,10 +10,8 @@ namespace Frontend.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         [Required]
-        [StringLength(15, ErrorMessage = "First name to long (15 character limit).")]
         public string Username { get; set; }
         [Required]
-        [StringLength(15, ErrorMessage = "First name to long (15 character limit).")]
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string AccessToken { get; set; }
