@@ -9,14 +9,20 @@
 }
 else
 {
-    <div>
-        <h1>List of products</h1>
-        <form @onsubmit="SearchProducts">
-            <div class="form-inline">
-                <input class="form-control" placeholder="Enter product name..." @bind="@ProductSearchQuery" />
-                <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
-            </div>
-        </form>
+<div>
+    <h1>List of products</h1>
+    <form @onsubmit="SearchProducts">
+        <div class="form-inline">
+            <input class="form-control" placeholder="Enter product name..." maxlength="60" @bind="@ProductSearchQuery" />
+            <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
+        </div>
+    </form>
+    @if (products.Count() <= 0)
+    {
+        <div class="mt-3">Sorry, no matches for “@ProductSearchQuery” could be found.</div>
+    }
+    else
+    {
         <div class="row">
             @foreach (var product in products)
             {
@@ -40,5 +46,6 @@ else
                 }
             }
         </div>
-    </div>
+    }
+</div>
 }
