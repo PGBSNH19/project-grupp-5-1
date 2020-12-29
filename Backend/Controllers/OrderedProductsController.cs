@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Backend.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using Backend.Models.Mail;
 
 namespace Backend.Controllers
 {
@@ -17,12 +18,14 @@ namespace Backend.Controllers
     {
         private readonly ILogger<OrderedProductsController> _logger;
         private readonly IOrderedProductRepository _orderProductRepository;
+        private readonly IMailService _mailService;
         private readonly IMapper _mapper;
 
-        public OrderedProductsController(ILogger<OrderedProductsController> logger, IOrderedProductRepository orderProductRepository, IMapper mapper)
+        public OrderedProductsController(ILogger<OrderedProductsController> logger, IOrderedProductRepository orderProductRepository, IMailService mailService, IMapper mapper)
         {
             _logger = logger;
             _orderProductRepository = orderProductRepository;
+            _mailService = mailService;
             _mapper = mapper;
         }
 
@@ -137,7 +140,6 @@ namespace Backend.Controllers
                     return NotFound($"OrderProduct with id {orderProductId} was not found.");
                 }
 
-
                 var mappedResult = _mapper.Map(updatedOrderProduct, orderProduct);
                 mappedResult.Id = orderProductId;
                 _orderProductRepository.Update(mappedResult);
@@ -191,6 +193,20 @@ namespace Backend.Controllers
                     $"Failed to remove the order. Exception thrown when attempting to add data to the database: {e.Message}");
             }
             return BadRequest();
+        }
+
+        [HttpPost("send")]
+        public async Task<ActionResult> SendMail([FromBody] MailRequest request)
+        {
+            try
+            {
+                await _mailService.SendEmailAsync(request);
+                return Ok(request);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
