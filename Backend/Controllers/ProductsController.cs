@@ -91,18 +91,25 @@ namespace Backend.Controllers
         /// <summary>
         /// Searches for products which contains the given product name.
         /// </summary>
-        /// <param name="productName">The query which will be used when attempting to search products by their name.</param>
+        /// <param name="productname">The query which will be used when attempting to search products by their name.</param>
         /// <returns>A list of products whose name contain the search query.</returns>
         /// <response code="200">The API has successfully retrieved the product search result.</response>
         /// <response code="500">The API caught an exception when attempting to search for products.</response>   
-        [HttpGet("search/{productName}")]
-        public async Task<ActionResult<ProductDTO>> SearchProducts(string productName)
+        [HttpGet("search")]
+        public async Task<ActionResult<ProductDTO>> SearchProducts([FromQuery] string productname)
         {
             try
             {
-                var products = await _productRepository.SearchProducts(productName);
+                if (string.IsNullOrEmpty(productname))
+                {
+                    var allProducts = await _productRepository.GetAll();
+                    var mappedAllResult = _mapper.Map<ProductDTO[]>(allProducts);
+                    return Ok(mappedAllResult);
+                }
 
-                _logger.LogInformation($"Searching products with name '{productName}' from the database.");
+                var products = await _productRepository.SearchProducts(productname);
+
+                _logger.LogInformation($"Searching products with name '{productname}' from the database.");
                 var mappedResult = _mapper.Map<ProductDTO[]>(products);
                 return Ok(mappedResult);
             }
