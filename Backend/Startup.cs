@@ -5,6 +5,8 @@ using System.Text;
 using Backend.Data;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Backend.Models.Mail;
+using Backend.Services;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -86,6 +88,8 @@ namespace Backend
                             ClockSkew = TimeSpan.Zero
                         };
                     });
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddScoped<IMailService, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,6 +11,7 @@ using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Frontend.Auth;
+using Frontend.Models.Mail;
 
 namespace Frontend.Services
 {
@@ -23,6 +24,7 @@ namespace Frontend.Services
         private readonly IConfiguration _configuration;
         private readonly ILocalStorageService _localStorageService;
         private readonly ITokenValidator _tokenValidator;
+        private List<BuyedProducts> buyedProducts = new List<BuyedProducts>();
 
         public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime, ITokenValidator tokenValidator)
         {
@@ -103,11 +105,12 @@ namespace Frontend.Services
                 {
                     foreach (var basketProduct in userInfo.userBasket)
                     {
-                        OrderedProduct orderedProduct = new OrderedProduct();
-
-                        orderedProduct.Amount = basketProduct.Amount;
-                        orderedProduct.OrderId = newOrder.Id;
-                        orderedProduct.ProductId = basketProduct.Product.Id;
+                        OrderedProduct orderedProduct = new OrderedProduct()
+                        {
+                            Amount = basketProduct.Amount,
+                            OrderId = newOrder.Id,
+                            ProductId = basketProduct.Product.Id,
+                        };
 
                         await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
 
@@ -116,7 +119,30 @@ namespace Frontend.Services
                         product.Stock -= basketProduct.Amount;
 
                         await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
+
+                        BuyedProducts buyedProduct = new BuyedProducts()
+                        {
+                            ProductName = product.Name,
+                            Amount = basketProduct.Amount,
+                            Description = product.Description,
+                            Price = 10,
+                        };
+
+                        buyedProducts.Add(buyedProduct);
                     }
+
+                    MailRequest orderToSend = new MailRequest()
+                    {
+                        ToEmail = userInfo.Email,
+                        OrderId = newOrder.Id,
+                        UserName = userInfo.FirstName,
+                        Subject = "Your order",
+                        Address = userInfo.Address,
+                        City = userInfo.City,
+                        ZipCode = userInfo.ZipCode,
+                        buyedProductsList = buyedProducts
+                    };
+                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send", orderToSend);
 
                     await _localStorageService.RemoveItemAsync("customer-basket");
                     await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
