@@ -196,12 +196,12 @@ namespace Backend.Controllers
         }
 
         [HttpPost("send")]
-        public async Task<ActionResult<MailRequest>> SendMail([FromBody] MailRequest request)
+        public async Task<ActionResult> SendMail([FromBody] MailRequest request)
         {
             try
             {
-                var result = await _mailService.SendEmailAsync(request);
-                return Ok(result);
+                await _mailService.SendEmailAsync(request);
+                return Ok(request);
             }
             catch (Exception e)
             {
