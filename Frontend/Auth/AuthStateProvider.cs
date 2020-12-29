@@ -67,7 +67,7 @@ namespace Frontend.Auth
             { 
                 claimsIdentity = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, (user.FirstName + " " + user.LastName) ?? user.Username),                                   
+                    new Claim(ClaimTypes.Name, string.IsNullOrEmpty(user.FirstName) ? user.Username : user.FirstName),
                     new Claim(ClaimTypes.UserData, user.Username),                                   
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }, "apiauth_type");
