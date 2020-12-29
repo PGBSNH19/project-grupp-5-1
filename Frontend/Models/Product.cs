@@ -15,7 +15,7 @@ namespace Frontend.Models
         public int Stock { get; set; }
 
         [Required]
-        [StringLength(16, ErrorMessage = "Name too long (16 character limit).")]
+        [StringLength(60, ErrorMessage = "Name too long (60 character limit).")]
         public string Name { get; set; }
 
         [Required]
