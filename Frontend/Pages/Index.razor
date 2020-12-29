@@ -1,24 +1,28 @@
 ﻿@page "/"
 @inherits IndexBase
 
-<h1>List of products</h1>
-
 @if (products == null)
 {
     <div class="mt-5 text-center w-100">
         <img src="./Images/spinner.gif" style="width:20%;height:5%" />
-    </div>}
+    </div>
+}
 else
 {
-
-
-    <div class="container">
+    <div>
+        <h1>List of products</h1>
+        <form @onsubmit="SearchProducts">
+            <div class="form-inline">
+                <input class="form-control" placeholder="Enter product name..." @bind="@ProductSearchQuery" />
+                <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
+            </div>
+        </form>
         <div class="row">
             @foreach (var product in products)
             {
                 if (product.Stock > 0)
                 {
-                    <div class="col-sm-4 p-2">
+                    <div class="col-sm-4 p-3">
                         <div class="card">
                             <div class="d-flex justify-content-center p-2">
                                 <a href="@($"productdetails/{product.Id}")">

@@ -17,9 +17,19 @@ namespace Frontend.Pages
 
         public IEnumerable<Product> products { get; set; }
 
+        public string ProductSearchQuery { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             products = (await ProductService.GetProducts()).ToList();
+        }
+
+        protected async Task SearchProducts()
+        {
+            if (string.IsNullOrWhiteSpace(ProductSearchQuery))
+                products = (await ProductService.GetProducts()).ToList();
+            else
+                products = (await ProductService.SearchProducts(ProductSearchQuery)).ToList();
         }
     }
 }
