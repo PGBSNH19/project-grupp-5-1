@@ -16,7 +16,7 @@
                 <p class="mt-3 font-weight-bold">Welcome, @context.User.Identity.Name</p>
             </Authorized>
             <NotAuthorized>
-                <p class="mt-3 font-weight-bold">You are signed out...!</p>
+                <p class="mt-3 font-weight-bold">Signed out...!</p>
             </NotAuthorized>
         </AuthorizeView>
         <AuthorizeView Roles="Admin">
@@ -31,14 +31,12 @@
         </AuthorizeView>
         <AuthorizeView>
             <Authorized>
-                <a href="/" @onclick="(() => Logout())">Logout</a>
+                <a class="ml-2" href="/" @onclick="(() => Logout())">Logout</a>
             </Authorized>
             <NotAuthorized>
-                <a href="/login">Login</a>
+                <a class="ml-2" href="/login">Login</a>
             </NotAuthorized>
         </AuthorizeView>
-
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
     </div>
 
     <div class="content px-4">
