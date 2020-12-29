@@ -137,9 +137,9 @@ app {
     }
 
 @media (max-width: 767.98px) {
-    .main .top-row:not(.auth) {
+/*    .main .top-row:not(.auth) {
         display: none;
-    }
+    }*/
 
     .main .top-row.auth {
         justify-content: space-between;
