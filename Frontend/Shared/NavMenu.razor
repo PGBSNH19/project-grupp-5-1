@@ -1,6 +1,9 @@
 ﻿@using Blazored.Modal
 @using Blazored.Modal.Services
 @using Pages
+@using Frontend.Auth
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 @inject IModalService modal
 
@@ -12,6 +15,8 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+
+
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
@@ -21,13 +26,13 @@
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="addproduct">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Add product
+                    <NavLink class="nav-link" href="manageproducts">
+                        <span class="oi oi-spreadsheet" aria-hidden="true"></span> Manage Products
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="managecoupons">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Coupons
+                        <span class="oi oi-aperture" aria-hidden="true"></span> Manage Coupons
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
@@ -43,10 +48,34 @@
                 <span class="oi oi-cart" data-inline="false"></span> View basket
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="manageproducts">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Products
-            </NavLink>
+
+        <li class="top-row px-4 nav-item">
+            <AuthorizeView>
+                <Authorized>
+                    <p class="mt-3 font-weight-bold text-white">@context.User.Identity.Name</p>
+                </Authorized>
+                <NotAuthorized>
+                    <p class="mt-3 font-weight-bold text-white">Signed out...!</p>
+                </NotAuthorized>
+            </AuthorizeView>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <p class="mt-3 font-weight-bold text-white">(Admin)</p>
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Roles="Customer">
+                <Authorized>
+                    <p class="mt-3 font-weight-bold text-white">(Customer)</p>
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView>
+                <Authorized>
+                    <a class="ml-2" href="/" @onclick="(() => Logout())">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a class="ml-2" href="/login">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </li>
     </ul>
 </div>
@@ -60,4 +89,11 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    public async Task Logout()
+    {
+        await ((AuthStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOut();
+        NavigationManager.NavigateTo("/");
+    }
+
 }

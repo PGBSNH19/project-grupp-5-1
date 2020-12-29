@@ -148,7 +148,7 @@ app {
     .main .top-row a, .main .top-row .btn-link {
         margin-left: 0;
     }
-}
+}   
 
 @media (min-width: 768px) {
     app {
@@ -200,4 +200,10 @@ app {
     input[type=number] {
         -moz-appearance: textfield;
     }
+}
+/*custom css*/
+.login-footer{
+    position:absolute;
+    bottom:0;
+    width:100%;
 }
