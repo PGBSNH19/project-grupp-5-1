@@ -99,8 +99,7 @@ namespace Frontend.Services
 
             if (_httpClient.DefaultRequestHeaders.Authorization != null)
             {
-                Order newOrder;
-                newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
+                var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
                 if (newOrder != null)
                 {
                     foreach (var basketProduct in userInfo.userBasket)
