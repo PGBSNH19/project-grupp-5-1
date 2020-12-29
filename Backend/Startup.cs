@@ -34,7 +34,7 @@ namespace Backend
             {
                 options.UseSqlServer(Configuration.GetConnectionString("StoreDatabase"));
             });
-            
+
             services.AddMvc();
 
             services.AddAutoMapper(typeof(Startup));
@@ -112,7 +112,6 @@ namespace Backend
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
