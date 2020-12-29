@@ -24,6 +24,13 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + "api/v1.0/products");
         }
 
+        public async Task<IEnumerable<Product>> SearchProducts(string productName)
+        {
+            var s = _configuration["ApiHostUrl"] + $"api/v1.0/products/search/{productName}";
+            return await httpClient.GetJsonAsync<Product[]>(s);
+        }
+
+
         public async Task<Product> GetProductById(int id)
         {
             return await httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{id}");
