@@ -21,6 +21,9 @@ namespace Frontend.Pages
         [Parameter]
         public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
 
+        [Parameter]
+        public UserInfo userInfo { get; set; } = new UserInfo();
+
         public async void Increase(ProductInBasket product)
         {
             if (product.Amount >= product.Product.Stock) await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order more than {product.Product.Stock} of this product.");
@@ -50,9 +53,9 @@ namespace Frontend.Pages
             StateHasChanged();
         }
 
-        public async void SendOrder(IEnumerable<ProductInBasket> products)
+        public async void SendOrder(UserInfo userInfo)
         {
-           await OrderService.CreateOrder(products);
+            await OrderService.CreateOrder(userInfo);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -60,9 +63,9 @@ namespace Frontend.Pages
             if (firstRender)
             {
                 basketproducts = await OrderService.GetBasketProducts();
+                userInfo.userBasket = basketproducts;
                 StateHasChanged();
             }
         }
-
     }
 }

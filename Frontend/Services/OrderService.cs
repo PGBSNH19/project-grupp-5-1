@@ -34,7 +34,6 @@ namespace Frontend.Services
             _localStorageService = localStorageService;
         }
 
-
         public async Task<IEnumerable<ProductInBasket>> GetBasketProducts()
         {
             return await _localStorageService.GetItemAsync<List<ProductInBasket>>("customer-basket");
@@ -86,7 +85,7 @@ namespace Frontend.Services
             }
         }
 
-        public async Task CreateOrder(IEnumerable<ProductInBasket> basketProducts)
+        public async Task CreateOrder(UserInfo userInfo)
         {
             await _tokenValidator.CheckToken(_httpClient);
 
@@ -102,7 +101,7 @@ namespace Frontend.Services
                 newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
                 if (newOrder != null)
                 {
-                    foreach (var basketProduct in basketProducts)
+                    foreach (var basketProduct in userInfo.userBasket)
                     {
                         OrderedProduct orderedProduct = new OrderedProduct();
 
@@ -129,6 +128,5 @@ namespace Frontend.Services
                 }
             }
         }
-
     }
 }
