@@ -2,6 +2,7 @@
 using Backend.Services.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
@@ -54,10 +55,20 @@ namespace Backend.Services.Repositories
 
             using (var smtp = new SmtpClient())
             {
-                await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.Auto);
-                await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
-                await smtp.SendAsync(email);
-                await smtp.DisconnectAsync(true);
+                try
+                {
+                    smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
+                    await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.Auto);
+
+                    await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
+                    await smtp.SendAsync(email);
+                    await smtp.DisconnectAsync(true);
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(ex.Message);
+                }
             }
         }
     }
