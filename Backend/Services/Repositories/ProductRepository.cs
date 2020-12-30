@@ -61,11 +61,7 @@ namespace Backend.Services.Repositories
         public async Task<IList<Product>> GetProductsByPriceRange(int min, int max)
         {
             _logger.LogInformation($"Fetching entity list of type {typeof(Product)} from the database.");
-            //var query = _context.Product.Include(x => x.ProductPrices).Select(y => new Product
-            //{
-            //    Id = y.Id,
-            //    ProductPrices = y.ProductPrices.Where(prices => prices.Price >= min && prices.Price <= max).ToList()
-            //}).ToListAsync();
+
             var query = _context.Product.Where(x => x.ProductPrices.Any(c => c.Price <= min && c.Price >= max)).ToListAsync();
                       
             return await query;

@@ -15,6 +15,7 @@ namespace Frontend.Services
         Task<Product> Update(Product product);
         Task<IEnumerable<ProductCategory>> GetAllProductCategories();
         Task<IEnumerable<Product>> GetProductsByCategoryId(int id);
+        Task<IEnumerable<Product>> GetProductsByPriceRange(int min, int max);
     }
 
 }

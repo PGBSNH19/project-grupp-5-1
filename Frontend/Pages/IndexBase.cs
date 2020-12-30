@@ -19,7 +19,9 @@ namespace Frontend.Pages
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
 
         public string ProductSearchQuery { get; set; }
-        public string ProductCategoryId { get; set; }
+        public string ProductCategoryId { get; set; } = "0";
+        public string MinPrice { get; set; } = "0";
+        public string MaxPrice { get; set; } = "0";
 
 
         protected override async Task OnInitializedAsync()
@@ -36,14 +38,17 @@ namespace Frontend.Pages
                 products = (await ProductService.SearchProducts(ProductSearchQuery)).ToList();
         }
 
-        protected async Task FilterByProductCategory()
+        protected async Task FilterByProductCategory(int id)
         {
-            var id = int.Parse(ProductCategoryId);
-
             if (id == 0)
                 products = await ProductService.GetProducts();
             else
                 products = await ProductService.GetProductsByCategoryId(id);
+        }
+
+        protected async Task FilterByPriceRange(int min, int max)
+        {
+            products = await ProductService.GetProductsByPriceRange(min, max);
         }
 
     }

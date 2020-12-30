@@ -43,35 +43,90 @@ else
                     }
             </button>
         </div>
-        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-            @*<ul class="nav flex-column">
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                            <span class="oi oi-home" aria-hidden="true"></span> Home
-                        </NavLink>
-                    </li>
-                </ul>*@
-            <EditForm Model="@products">
-                <div class="col-md-2">
-                    <div>Category</div>
-                    <InputSelect @bind-Value="@ProductCategoryId">
-                        <option value="0">Select category ...</option>
+        <div class="@NavMenuCssClass bg-light-yellow row form-group ml-0 mr-0 pb-4">
+            <div class="col-lg-2 pt-4">
+                <div>Category</div>
+                <EditForm Model="@products">
+                    <InputSelect @bind-Value="@ProductCategoryId" class="form-control">
+                        <option value="0" class="form-control">Select category ...</option>
                         @foreach (var category in ProductCategories)
-                        {
-                            <option value="@category.Id">@category.CategoryName</option>
-                        }                        
+                            {
+                            <option value="@category.Id" class="form-control">@category.CategoryName</option>
+                            }
                     </InputSelect>
-                </div>
-            </EditForm>
-            <span class="oi oi-home" aria-hidden="true"></span> Home
-        </div>
+                </EditForm>
+            </div>
+            <div class="col-lg-3 pt-4" style="margin-top: auto;">
+                <button type="submit" class="btn btn-success" @onclick="() => FilterByProductCategory(int.Parse(ProductCategoryId))">Filter Category</button>
+                
+            </div>
 
-        @*<form @onsubmit="SearchProducts">
-                <div class="form-inline">
-                    <input class="form-control" placeholder="Enter product name..." maxlength="60" @bind="@ProductSearchQuery" />
-                    <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
-                </div>
-            </form>*@
+            <div class="col-lg-2 pt-4">
+                <div>Price from:</div>
+                <EditForm Model="@products">
+                    <InputSelect @bind-Value="@MinPrice" class="form-control">
+                        <option value="0" class="form-control">Price to ...</option>
+                        <option value="100" class="form-control">100</option>
+                        <option value="200" class="form-control">200</option>
+                        <option value="500" class="form-control">500</option>
+                        <option value="1000" class="form-control">1000</option>
+                        <option value="2000" class="form-control">2000</option>
+                        <option value="5000" class="form-control">5000</option>
+                        <option value="10000" class="form-control">10000</option>
+                        <option value="50000" class="form-control">50000</option>
+                        <option value="100000" class="form-control">100000</option>
+                    </InputSelect>
+                </EditForm>
+            </div>
+            <div class="col-lg-2 pt-4">
+                <div>Price to:</div>
+                <EditForm Model="@products">
+                    <InputSelect @bind-Value="@MaxPrice" class="form-control">
+                        <option value="0" class="form-control">Price to ...</option>
+                        @if (int.Parse(MinPrice) <= 100)
+                        {
+                            <option value="100" class="form-control">100</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 200)
+                        {
+                            <option value="200" class="form-control">200</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 500)
+                        {
+                            <option value="500" class="form-control">500</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 1000)
+                        {
+                            <option value="1000" class="form-control">1000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 2000)
+                        {
+                            <option value="2000" class="form-control">2000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 5000)
+                        {
+                            <option value="5000" class="form-control">5000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 10000)
+                        {
+                            <option value="10000" class="form-control">10000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 50000)
+                        {
+                            <option value="50000" class="form-control">50000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 100000)
+                        {
+                            <option value="100000" class="form-control">100000</option>
+                        }
+                    </InputSelect>
+                </EditForm>
+            </div>
+            <div class="col-lg-3 pt-4" style="margin-top: auto;">
+                <button type="submit" class="btn btn-success" @onclick="() => FilterByPriceRange(int.Parse(MinPrice),int.Parse(MinPrice))">Filter Price</button>
+            </div>            
+        </div>  
+
         @if (products.Count() <= 0)
         {
             <div class="mt-3">Sorry, no matches for “@ProductSearchQuery” could be found.</div>
