@@ -86,7 +86,7 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="inputZip">Zip Code</label>
-                    <InputText type="text" class="form-control" id="inputZip" placeholder="Zip Code" @bind-Value="userInfo.ZipCode" />
+                    <InputNumber type="text" class="form-control" id="inputZip" placeholder="Zip Code" @bind-Value="userInfo.ZipCode" />
                     <ValidationMessage For="@(()=> userInfo.ZipCode)" />
                 </div>
             </div>

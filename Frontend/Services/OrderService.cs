@@ -138,7 +138,7 @@ namespace Frontend.Services
                         UserName = userInfo.FirstName + " " + userInfo.LastName,
                         Address = userInfo.Address,
                         City = userInfo.City,
-                        ZipCode = userInfo.ZipCode,
+                        ZipCode = userInfo.ZipCode.ToString(),
                         buyedProductsList = buyedProducts
                     };
 
