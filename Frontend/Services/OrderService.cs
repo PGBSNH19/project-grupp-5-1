@@ -124,6 +124,7 @@ namespace Frontend.Services
                             ProductName = product.Name,
                             Amount = basketProduct.Amount,
                             Description = product.Description,
+                            Price = 10,
                         };
 
                         buyedProducts.Add(buyedProduct);
@@ -134,10 +135,10 @@ namespace Frontend.Services
                         ToEmail = userInfo.Email,
                         OrderId = newOrder.Id,
                         Subject = "Your order",
-                        UserName = "Andre",
-                        Address = "address",
-                        City = "city",
-                        ZipCode = "12345",
+                        UserName = userInfo.FirstName + " " + userInfo.LastName,
+                        Address = userInfo.Address,
+                        City = userInfo.City,
+                        ZipCode = userInfo.ZipCode,
                         buyedProductsList = buyedProducts
                     };
 

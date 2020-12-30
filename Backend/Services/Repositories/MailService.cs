@@ -39,9 +39,11 @@ namespace Backend.Services.Repositories
 
             MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
                                .Replace("[productname]", htmlProduct.ProductName)
+                               .Replace("[username]", mailRequest.UserName)
                                .Replace("[address]", mailRequest.Address)
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
+                               .Replace("[orderdate]", DateTime.Now.ToString())
                                .Replace("[total]", htmlProduct.TotalPrice.ToString());
 
             var email = new MimeMessage();
