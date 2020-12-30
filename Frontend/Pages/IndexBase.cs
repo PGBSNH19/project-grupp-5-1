@@ -31,5 +31,10 @@ namespace Frontend.Pages
             else
                 products = (await ProductService.SearchProducts(ProductSearchQuery)).ToList();
         }
+
+        protected List<Product> GetFeaturedProducts()
+        {
+            return products.Where(x => x.IsFeatured).ToList();
+        }
     }
 }

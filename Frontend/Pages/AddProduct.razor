@@ -27,21 +27,24 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
-        <div class="col-sm-10">
-            <select @bind="product.IsAvailable" class="form-control">
-                <option value="o">Yes</option>
-                <option value="1">No</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group row">
         <label for="stock" class="col-sm-2 col-form-label">
             Stock
         </label>
         <div class="col-sm-10">
             <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
             <ValidationMessage For="@(()=> product.Stock)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="IsFeatured" class="col-sm-2 col-form-label">Featured</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="height: 100%" @bind="product.IsFeatured">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="height: 100%" @bind="product.IsAvailable">
         </div>
     </div>
 
