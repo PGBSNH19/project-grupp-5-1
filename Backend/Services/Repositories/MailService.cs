@@ -25,10 +25,10 @@ namespace Backend.Services.Repositories
 
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
-            string FilePath = Directory.GetCurrentDirectory() + "./Template/Mail/thanks.html";
-            StreamReader str = new StreamReader(FilePath);
-            string MailText = str.ReadToEnd();
-            str.Close();
+            //string FilePath = Directory.GetCurrentDirectory() + "./Template/Mail/thanks.html";
+            //StreamReader str = new StreamReader(FilePath);
+            //string MailText = str.ReadToEnd();
+            //str.Close();
 
             //BuyedProducts htmlProduct = new BuyedProducts();
 
@@ -43,6 +43,8 @@ namespace Backend.Services.Repositories
             //                   .Replace("[city]", mailRequest.City)
             //                   .Replace("[zipcode]", mailRequest.ZipCode)
             //                   .Replace("[total]", htmlProduct.TotalPrice.ToString());
+
+            string MailText = mailRequest.OrderId.ToString();
 
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
