@@ -59,13 +59,11 @@ namespace Backend.Services.Repositories
             {
                 try
                 {
-                    smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
 
-                    await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.Auto);
-
-                    await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
+                    smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
                     await smtp.SendAsync(email);
-                    await smtp.DisconnectAsync(true);
+                    smtp.Disconnect(true);
                 }
                 catch (Exception ex)
                 {
