@@ -10,13 +10,41 @@
 else
 {
 <div>
-    <h1>List of products</h1>
-    <form @onsubmit="SearchProducts">
+    <h1>Products</h1>
+    <form @onsubmit="SearchProducts" class="mb-3">
         <div class="form-inline">
             <input class="form-control" placeholder="Enter product name..." maxlength="60" @bind="@ProductSearchQuery" />
             <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
         </div>
     </form>
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var product in GetFeaturedProducts())
+            {
+            
+            <div class="card carousel-item text-white bg-primary mb-3 @(GetFeaturedProducts()[0] == product ? "active" : "")"
+                 style="max-height:240px">
+                <div class="card-header">
+                    Featured products
+                </div>
+                <a href=@($"productdetails/{product.Id}") class="text-white" style="text-decoration: none">
+                    <div class="card-body" href="@($"productdetails/{product.Id}")">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description</p>
+                    </div>
+                </a>
+            </div>
+            }
+            </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
     @if (products.Count() <= 0)
     {
         <div class="mt-3">Sorry, no matches for “@ProductSearchQuery” could be found.</div>
