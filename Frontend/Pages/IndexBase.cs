@@ -16,12 +16,16 @@ namespace Frontend.Pages
         public IProductService ProductService { get; set; }
 
         public IEnumerable<Product> products { get; set; }
+        public IEnumerable<ProductCategory> ProductCategories { get; set; }
 
         public string ProductSearchQuery { get; set; }
+        public string ProductCategoryId { get; set; }
+
 
         protected override async Task OnInitializedAsync()
         {
             products = (await ProductService.GetProducts()).ToList();
+            ProductCategories = await ProductService.GetAllProductCategories();
         }
 
         protected async Task SearchProducts()
@@ -31,5 +35,16 @@ namespace Frontend.Pages
             else
                 products = (await ProductService.SearchProducts(ProductSearchQuery)).ToList();
         }
+
+        protected async Task FilterByProductCategory()
+        {
+            var id = int.Parse(ProductCategoryId);
+
+            if (id == 0)
+                products = await ProductService.GetProducts();
+            else
+                products = await ProductService.GetProductsByCategoryId(id);
+        }
+
     }
 }

@@ -207,3 +207,24 @@ app {
     bottom:0;
     width:100%;
 }
+
+.bg-middle-yellow {
+    background-color: #dcc100;
+}
+.bg-dark-yellow {
+    background-color: #9a810b;
+}
+
+.text-dark-yellow {
+    color: #9a810b;
+}
+
+/*.custom-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+}*/
+
+.toggler-button {
+    padding: 0;
+    border: none;
+    background: none;
+}
