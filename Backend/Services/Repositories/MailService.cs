@@ -25,26 +25,24 @@ namespace Backend.Services.Repositories
 
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
-            string FilePath = "thanks.html";
+            string FilePath = "./Template/Mail/thanks.html";
             StreamReader str = new StreamReader(FilePath);
             string MailText = str.ReadToEnd();
             str.Close();
 
-            //BuyedProducts htmlProduct = new BuyedProducts();
+            BuyedProducts htmlProduct = new BuyedProducts();
 
-            //foreach (var item in mailRequest.buyedProductsList)
-            //{
-            //    htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.Price}</td></tr>";
-            //}
+            foreach (var item in mailRequest.buyedProductsList)
+            {
+                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.Price}</td></tr>";
+            }
 
-            //MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
-            //                   .Replace("[productname]", htmlProduct.ProductName)
-            //                   .Replace("[address]", mailRequest.Address)
-            //                   .Replace("[city]", mailRequest.City)
-            //                   .Replace("[zipcode]", mailRequest.ZipCode)
-            //                   .Replace("[total]", htmlProduct.TotalPrice.ToString());
-
-            //string MailText = mailRequest.OrderId.ToString();
+            MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
+                               .Replace("[productname]", htmlProduct.ProductName)
+                               .Replace("[address]", mailRequest.Address)
+                               .Replace("[city]", mailRequest.City)
+                               .Replace("[zipcode]", mailRequest.ZipCode)
+                               .Replace("[total]", htmlProduct.TotalPrice.ToString());
 
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);

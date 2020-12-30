@@ -119,14 +119,14 @@ namespace Frontend.Services
 
                         await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
 
-                        //BuyedProducts buyedProduct = new BuyedProducts()
-                        //{
-                        //    ProductName = product.Name,
-                        //    Amount = basketProduct.Amount,
-                        //    Description = product.Description,
-                        //};
+                        BuyedProducts buyedProduct = new BuyedProducts()
+                        {
+                            ProductName = product.Name,
+                            Amount = basketProduct.Amount,
+                            Description = product.Description,
+                        };
 
-                        //buyedProducts.Add(buyedProduct);
+                        buyedProducts.Add(buyedProduct);
                     }
 
                     MailRequest orderToSend = new MailRequest()
@@ -134,11 +134,11 @@ namespace Frontend.Services
                         ToEmail = userInfo.Email,
                         OrderId = newOrder.Id,
                         Subject = "Your order",
-                        //UserName = "Andre",
-                        //Address = "address",
-                        //City = "city",
-                        //ZipCode = "12345",
-                        //buyedProductsList = buyedProducts
+                        UserName = "Andre",
+                        Address = "address",
+                        City = "city",
+                        ZipCode = "12345",
+                        buyedProductsList = buyedProducts
                     };
 
                     await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send/", orderToSend);
