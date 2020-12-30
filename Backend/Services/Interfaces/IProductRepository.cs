@@ -10,5 +10,7 @@ namespace Backend.Services.Interfaces
     {
         Task<Product> GetProductById(int id);
         Task<IList<Product>> SearchProducts(string productName);
+        Task<IList<Product>> GetProductsByCategory(string category);
+        Task<IList<Product>> GetProductsByPriceRange(int min, int max);
     }
 }

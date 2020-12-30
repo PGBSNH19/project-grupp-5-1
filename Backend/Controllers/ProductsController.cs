@@ -94,6 +94,7 @@ namespace Backend.Controllers
         /// <param name="productname">The query which will be used when attempting to search products by their name.</param>
         /// <returns>A list of products whose name contain the search query.</returns>
         /// <response code="200">The API has successfully retrieved the product search result.</response>
+        /// <response code="404">No product was found which matched the given search criteria.</response>
         /// <response code="500">The API caught an exception when attempting to search for products.</response>   
         [HttpGet("search")]
         public async Task<ActionResult<ProductDTO>> SearchProducts([FromQuery] string productname)
@@ -116,6 +117,69 @@ namespace Backend.Controllers
             catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"API Failure: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Find products by category.
+        /// </summary>
+        /// <param name="category">The category to be filterd.</param>
+        /// <returns>Products that contains category</returns>
+        /// <response code="200">Returns products that found by category</response>
+        /// <response code="404">No product was found which matched the given category.</response>
+        /// <response code="500">The API caught an exception when attempting to search for given category.</response> 
+        [HttpGet("category/{category}")]
+        public async Task<ActionResult<ProductDTO>> GetCategory(string category)
+        {
+            try
+            {
+                var product = await _productRepository.GetProductsByCategory(category);
+
+                if (product == null)
+                {
+                    return NotFound($"Category with name {category} was not found.");
+                }
+
+                var mappedResult = _mapper.Map<IList<ProductDTO>>(product);
+
+                return Ok(mappedResult);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Failed to get the category. The category you try to find doesn't exists: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns>Products within specific price range</returns>
+        /// <response code="200">Returns products that found by pricerange</response>
+        /// <response code="404">No product was found which matched the given pricerange.</response>
+        /// <response code="500">The API caught an exception when attempting to search for given pricerange.</response> 
+        [HttpGet("pricerange/{min},{max}")]
+        public async Task<ActionResult<ProductDTO>> GetCategory([FromQuery] int min, int max)
+        {
+            try
+            {
+                var product = await _productRepository.GetProductsByPriceRange(min, max);
+
+                if (product == null)
+                {
+                    return NotFound($"Products between the pricerange of {min} - {max} was not found.");
+                }
+
+                var mappedResult = _mapper.Map<IList<ProductDTO>>(product);
+
+                return Ok(mappedResult);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Failed to get pricerange. The pricerange you try to find doesn't exists: {e.Message}");
             }
         }
 
