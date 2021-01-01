@@ -22,6 +22,16 @@
                 <ValidationMessage For="@(()=> product.Description)" />
             </div>
             <div class="form-group">
+                <label for="ProductCategory" class="control-label">Category</label>
+                <InputSelect @bind-Value="@ProductCatId" class="form-control">
+                    <option value="1" class="form-control">Select category ...</option>
+                    @foreach (var category in ProductCategories)
+                    {
+                        <option value="@category.Id" class="form-control">@category.CategoryName</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="form-group">
                 <label for="Size" class="control-label">Available</label>
                 <select @bind="@product.IsAvailable" class="form-control">
                     <option value="">--Available--</option>
@@ -54,14 +64,19 @@
         public string CurrentID { get; set; }
         Product product = new Product();
 
+        string ProductCatId { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
         protected override async Task OnInitializedAsync()
         {
             product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
+            ProductCategories = (await productService.GetAllProductCategories()).ToList();
         }
 
 
         protected async void HandleValidSubmit()
         {
+            product.ProductCategoryId = int.Parse(ProductCatId);
             await productService.Update(product);
             product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
             StateHasChanged();
