@@ -24,7 +24,6 @@
             <div class="form-group">
             <label for="ProductCategory" class="control-label">Category</label>
                 <InputSelect @bind-Value="@ProductCatId" class="form-control">
-                    <option value="1" class="form-control">Select category ...</option>
                     @foreach (var category in ProductCategories)
                     {
                         <option value="@category.Id" class="form-control">@category.CategoryName</option>
