@@ -25,6 +25,7 @@ else
                 <th>Price</th>
                 <th>SalePrice</th>
                 <th>Stock</th>
+                <th>Featured</th>
                 <th>Available</th>
                 <th>Edit</th>
             </tr>
@@ -45,6 +46,7 @@ else
                 {
                     <td>@product.Stock</td>
                 }
+                <td>@product.IsFeatured</td>
                 <td>@product.IsAvailable</td>
                 <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
             </tr>

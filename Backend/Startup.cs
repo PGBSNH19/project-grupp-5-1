@@ -89,7 +89,7 @@ namespace Backend
                         };
                     });
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.AddScoped<IMailService, MailService>();
+            services.AddTransient<IMailService, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

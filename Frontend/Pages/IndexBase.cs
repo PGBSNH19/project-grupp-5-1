@@ -38,6 +38,11 @@ namespace Frontend.Pages
                 products = (await ProductService.SearchProducts(ProductSearchQuery)).ToList();
         }
 
+        protected List<Product> GetFeaturedProducts()
+        {
+            return products.Where(x => x.IsFeatured).ToList();
+        }
+
         protected async Task FilterByProductCategory(int id)
         {
             if (id == 0)
@@ -50,6 +55,5 @@ namespace Frontend.Pages
         {
             products = await ProductService.GetProductsByPriceRange(min, max);
         }
-
     }
 }

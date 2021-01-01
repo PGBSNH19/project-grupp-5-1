@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Backend.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Backend.Models.Mail;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -195,6 +196,7 @@ namespace Backend.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPost("send")]
         public async Task<ActionResult> SendMail([FromBody] MailRequest request)
         {

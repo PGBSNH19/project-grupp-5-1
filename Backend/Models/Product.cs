@@ -21,6 +21,9 @@ namespace Backend.Models
         public bool IsAvailable { get; set; }
 
         [Required]
+        public bool IsFeatured { get; set; }
+
+        [Required]
         public int Stock { get; set; }
 
         [ForeignKey("ProductCategory")]
