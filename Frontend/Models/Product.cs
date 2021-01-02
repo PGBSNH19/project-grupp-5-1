@@ -29,5 +29,10 @@ namespace Frontend.Models
         //    get => "https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png";
         //}
         public int ProductCategoryId { get; set; }
+
+        public ICollection<ProductPrice> ProductPrices { get; set; }
+
+        public decimal Price { get; set; }
+        public decimal? SalePrice { get; set; }
     }
 }

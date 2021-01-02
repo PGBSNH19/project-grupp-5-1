@@ -16,5 +16,6 @@ namespace Backend.DTO
         public int ProductCategoryId { get; set; }
 
         //public ProductCategory ProductCategory { get; set; }
+  
     }
 }

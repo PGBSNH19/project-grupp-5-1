@@ -25,5 +25,10 @@ namespace Backend.Services.Repositories
         {
             return await _context.Set<Product>().FirstOrDefaultAsync(w => w.Id == id);
         }
+        //public async Task<Decimal> GetLatestPrice(int productId)
+        //{
+        //    return await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
+        //        .Select(x => x.SalePrice ?? x.Price).LastAsync();
+        //}
     }
 }

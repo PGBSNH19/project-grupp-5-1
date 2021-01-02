@@ -1,8 +1,5 @@
 ﻿@page "/edit/{CurrentID}"
-@using Models
-@inject Frontend.Services.IProductService productService
-@inject NavigationManager NavigationManager
-
+@inherits EditBase
 
 <h1>Edit</h1>
 
@@ -21,6 +18,24 @@
                 <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
                 <ValidationMessage For="@(()=> product.Description)" />
             </div>
+            <div class="form-group row">
+                <label for="stock" class="col-sm-2 col-form-label">
+                    Price
+                </label>
+                <div class="col-sm-10">
+                    <InputNumber id="price" class="form-control" placeholder="price" @bind-Value="ProductPrice" />
+                    <ValidationMessage For="@(()=> ProductPrice)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="stock" class="col-sm-2 col-form-label">
+                    SalePrice
+                </label>
+                <div class="col-sm-10">
+                    <InputNumber id="salePrice" class="form-control" placeholder="salePrice" @bind-Value="SalePrice" />
+                    <ValidationMessage For="@(()=> SalePrice)" />
+                </div>
+            </div>
             <div class="form-group">
                 <label for="Size" class="control-label">Available</label>
                 <select @bind="@product.IsAvailable" class="form-control">
@@ -35,42 +50,9 @@
                 <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
                 <ValidationMessage For="@(()=> product.Stock)" />
             </div>
+        </div>
+    </div>
 
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Edit" />
-                <input type="button" class="btn btn-primary" @onclick="@cancel" value="Cancel" />
-            </div>
-        </div>
-    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+
 </EditForm>
-
-
-    @code {
-        [Parameter]
-        public string CurrentID { get; set; }
-        Product product = new Product();
-
-        protected override async Task OnInitializedAsync()
-        {
-            product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
-        }
-
-
-        protected async void HandleValidSubmit()
-        {
-            await productService.Update(product);
-            product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
-            StateHasChanged();
-            NavigationManager.NavigateTo("manageproducts");
-        }
-
-        void cancel()
-        {
-            NavigationManager.NavigateTo("manageproducts");
-        }
-
-    }
