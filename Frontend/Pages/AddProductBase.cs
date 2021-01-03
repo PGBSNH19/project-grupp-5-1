@@ -43,19 +43,19 @@ namespace frontend.Pages
             };
 
             products = (await productService.GetProducts()).ToList();
-            //var prices = (await productService.GetPrices()).ToList();
-            //if (prices.Count != 0)
-            //{
-            //    foreach (var product in products)
-            //    {
+            var prices = (await productService.GetAllPrices()).ToList();
+            if (prices.Count != 0)
+            {
+                foreach (var product in products)
+                {
 
-            //        var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
-            //        product.Price = price.Price;
-            //        product.SalePrice = price.SalePrice;
+                    var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
+                    product.Price = price.Price;
+                    product.SalePrice = price.SalePrice;
 
-            //    }
+                }
 
-            //}
+            }
         }
 
         protected async Task HandleValidSubmit()

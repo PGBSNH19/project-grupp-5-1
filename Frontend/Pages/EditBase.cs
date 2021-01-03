@@ -19,7 +19,8 @@ namespace Frontend.Pages
         [Parameter]
         public string CurrentID { get; set; }
 
-        public IEnumerable<Product> prod { get; set; }
+        public IEnumerable<Product> products { get; set; }
+        public IEnumerable<ProductPrice> GetProductPrices { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -35,24 +36,20 @@ namespace Frontend.Pages
         protected override async Task OnInitializedAsync()
         {
             product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
-            //prod = (await ProductService.GetProducts()).ToList();
-            //var prices = (await ProductsPricesService.GetAllPrices()).ToList();
-            //if (prices.Count != 0)
+            //GetProductPrices = await ProductService.GetAllPrices();
+
+            //foreach (var product in products)
             //{
-            //    foreach (var product in prod)
-            //    {
-
-            //        var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
-            //        product.Price = price.Price;
-            //        product.SalePrice = price.SalePrice;
-
-            //    }
-
+            //    bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+            //    if (hasFound)
+            //        product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
+            //    else
+            //        product.Price = 0;
             //}
         }
 
 
-    protected async void HandleValidSubmit()
+        protected async void HandleValidSubmit()
         {
             await ProductService.Update(product, ProductPrice, SalePrice);
             product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
