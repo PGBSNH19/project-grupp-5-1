@@ -19,7 +19,6 @@ namespace Frontend.Pages
         public IJSRuntime JSRuntime { get; set; }
 
         [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; }
-
         public List<ProductInBasket> Basket = new List<ProductInBasket>();
 
         private async Task GetBasketData()

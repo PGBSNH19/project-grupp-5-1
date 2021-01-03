@@ -3,16 +3,20 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-<div class="sidebar">
+<body>
     <NavMenu />
-</div>
-
-<div class="main">
-    
-
-    <div class="content px-4">
+    <div class="container">
         @Body
     </div>
-</div>
+</body>
 
+@*<div class="sidebar">
+    <NavMenu />
+    </div>
+
+    <div class="main">
+
+    <div class="content px-4">
+    @Body
+    </div>
+    </div>*@
