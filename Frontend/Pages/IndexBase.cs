@@ -16,12 +16,18 @@ namespace Frontend.Pages
         public IProductService ProductService { get; set; }
 
         public IEnumerable<Product> products { get; set; }
+        public IEnumerable<ProductCategory> ProductCategories { get; set; }
 
         public string ProductSearchQuery { get; set; }
+        public string ProductCategoryId { get; set; } = "0";
+        public string MinPrice { get; set; } = "0";
+        public string MaxPrice { get; set; } = "0";
+
 
         protected override async Task OnInitializedAsync()
         {
             products = (await ProductService.GetProducts()).ToList();
+            ProductCategories = await ProductService.GetAllProductCategories();
         }
 
         protected async Task SearchProducts()
@@ -35,6 +41,19 @@ namespace Frontend.Pages
         protected List<Product> GetFeaturedProducts()
         {
             return products.Where(x => x.IsFeatured).ToList();
+        }
+
+        protected async Task FilterByProductCategory(int id)
+        {
+            if (id == 0)
+                products = await ProductService.GetProducts();
+            else
+                products = await ProductService.GetProductsByCategoryId(id);
+        }
+
+        protected async Task FilterByPriceRange(int min, int max)
+        {
+            products = await ProductService.GetProductsByPriceRange(min, max);
         }
     }
 }

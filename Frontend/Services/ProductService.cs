@@ -47,6 +47,21 @@ namespace Frontend.Services
             return await httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
         }
 
+        public async Task<IEnumerable<ProductCategory>> GetAllProductCategories()
+        {
+            return await httpClient.GetJsonAsync<ProductCategory[]>(_configuration["ApiHostUrl"] + $"api/v1.0/products/categories");
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByCategoryId(int id)
+        {
+            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + $"api/v1.0/products/categories/{id}");
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByPriceRange(int min, int max)
+        {
+            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + $"api/v1.0/products/pricerange/{min},{max}");
+        }
+
 
     }
 }

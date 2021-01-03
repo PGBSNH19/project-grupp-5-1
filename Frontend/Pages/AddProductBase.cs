@@ -12,10 +12,12 @@ namespace frontend.Pages
     public class AddProductBase : ComponentBase
     {
         [Inject]
-        public IProductService productService { get; set; }
-        public Product product { get; set; } = new Product();
+        public IProductService ProductService { get; set; }
+        public Product Product { get; set; } = new Product();
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
         public IEnumerable<Product> products { get; set; }
+        public string ProductCatId { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -29,19 +31,19 @@ namespace frontend.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            product = new Product
-            {
-             
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
+
+            Product = new Product()
+            { 
                 ProductCategoryId = 1
             };
 
-            products = (await productService.GetProducts()).ToList();
-            
         }
 
         protected async Task HandleValidSubmit()
         {
-            var result = await productService.AddProducts(product);
+            Product.ProductCategoryId = int.Parse(ProductCatId);
+            var result = await ProductService.AddProducts(Product);
 
             if (result != null)
             {
