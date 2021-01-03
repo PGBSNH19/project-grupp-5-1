@@ -1,5 +1,6 @@
 ﻿using Frontend.Models;
 using Frontend.Services;
+using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
@@ -14,24 +15,21 @@ namespace Frontend.Pages
     {
         [Inject]
         public IProductService ProductService { get; set; }
-
         public IEnumerable<Product> products { get; set; }
+        public IEnumerable<ProductPrice> GetProductPrices { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             products = (await ProductService.GetProducts()).ToList();
-            var prices = (await ProductService.GetPrices()).ToList();
-            if (prices.Count != 0)
+            GetProductPrices = await ProductService.GetAllPrices();
+
+            foreach(var product in products)
             {
-                foreach (var product in products)
-                {
-
-                    var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
-                    product.Price = price.Price;
-                    product.SalePrice = price.SalePrice;
-
-                }
-
+                bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+                if (hasFound)
+                    product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
+                else
+                    product.Price = 0;
             }
         }
     }

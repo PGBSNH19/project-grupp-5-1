@@ -1,5 +1,6 @@
 ﻿using Frontend.Models;
 using Frontend.Services;
+using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -34,20 +35,20 @@ namespace Frontend.Pages
         protected override async Task OnInitializedAsync()
         {
             product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
-            prod = (await ProductService.GetProducts()).ToList();
-            var prices = (await ProductService.GetPrices()).ToList();
-            if (prices.Count != 0)
-            {
-                foreach (var product in prod)
-                {
+            //prod = (await ProductService.GetProducts()).ToList();
+            //var prices = (await ProductsPricesService.GetAllPrices()).ToList();
+            //if (prices.Count != 0)
+            //{
+            //    foreach (var product in prod)
+            //    {
 
-                    var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
-                    product.Price = price.Price;
-                    product.SalePrice = price.SalePrice;
+            //        var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
+            //        product.Price = price.Price;
+            //        product.SalePrice = price.SalePrice;
 
-                }
+            //    }
 
-            }
+            //}
         }
 
 

@@ -24,8 +24,16 @@ namespace Backend.Services.Repositories
      
         public async Task<Decimal> GetLatestPrice(int productId)
         {
-            return await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
+            var query = await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
                 .Select(x => x.SalePrice ?? x.Price).LastAsync();
+
+            if(query == 0)
+            {
+                query = await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
+                .Select(x => x.Price).LastAsync();
+            }
+
+            return query;
         }
     }
 }

@@ -14,8 +14,8 @@ namespace Backend.DTO
         public bool IsAvailable { get; set; }
         public int Stock { get; set; }
         public int ProductCategoryId { get; set; }
-
+        public ICollection<ProductPrice> ProductPrices { get; set; } = new List<ProductPrice>();
         //public ProductCategory ProductCategory { get; set; }
-  
+
     }
 }

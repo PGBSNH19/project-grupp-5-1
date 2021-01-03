@@ -25,16 +25,20 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + "api/v1.0/products");
         }
 
-        public async Task<IEnumerable<ProductPrice>> GetPrices()
-        {
-            return await httpClient.GetJsonAsync<ProductPrice[]>(_configuration["ApiHostUrl"] + "api/v1.0/ProductsPrices");
-        }
-
         public async Task<Product> GetProductById(int id)
         {
             return await httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{id}");
         }
 
+        public async Task<IEnumerable<ProductPrice>> GetAllPrices()
+        {
+            return await httpClient.GetJsonAsync<IEnumerable<ProductPrice>>(_configuration["ApiHostUrl"] + $"api/v1.0/productsprices");
+        }
+
+        public async Task<decimal> GetLatestPriceByProductId(int id)
+        {
+            return await httpClient.GetJsonAsync<decimal>(_configuration["ApiHostUrl"] + $"api/v1.0/productsprices/price/{id}");
+        }
 
         public async Task<Product> AddProducts(Product product, decimal productPrice, decimal salePrice)
         {
