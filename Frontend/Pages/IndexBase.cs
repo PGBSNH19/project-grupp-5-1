@@ -38,6 +38,22 @@ namespace Frontend.Pages
                     product.SalePrice = 0;
                 }
             }
+
+
+            //products = (await ProductService.GetProducts()).ToList();
+            //var prices = (await ProductService.GetAllPrices()).ToList();
+            //if (prices.Count != 0)
+            //{
+            //    foreach (var product in products)
+            //    {
+
+            //        var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
+            //        product.Price = price.Price;
+            //        product.SalePrice = price.SalePrice;
+
+            //    }
+
+            //}
         }
     }
 }
