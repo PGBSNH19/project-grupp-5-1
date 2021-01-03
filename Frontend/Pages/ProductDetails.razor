@@ -22,13 +22,17 @@ else
                 <div class="card-body text-center">
                     <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:150px;height:150px" />
 
-                    <h4>Product ID : @product.Id</h4>
-                    <h4>Description : @product.Description</h4>
-                    <h4>Category : @product.ProductCategoryId</h4>
+                    <div>
+                        <h5>Description: </h5>
+                        <div>@product.Description</div>
+                        <br />
+                    </div>
+                    <div><strong>Category: </strong>@product.ProductCategoryId<br /><br /></div>
+                    <div><strong>Price: </strong>@product.Price<br /><br /></div>
                 </div>
                 <div class="card-footer text-center">
                     <a href="/" class="btn btn-light">Return</a>
-                    <button @onclick="() => AddProductToBasket(product)" class="btn btn-primary">Add to basket</button>
+                    <button @onclick="() => AddProductToBasket(product)" class="btn btn-success">Add to basket</button>
                 </div>
             </div>
         </div>

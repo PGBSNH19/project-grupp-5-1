@@ -31,7 +31,7 @@ namespace Frontend.Bases
         {
             Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
 
-            //foreach(var Coupon)
+           
         }
 
         protected async Task HandleValidSubmit()

@@ -40,6 +40,11 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<decimal>(_configuration["ApiHostUrl"] + $"api/v1.0/productsprices/price/{id}");
         }
 
+        public async Task<ProductPrice> GetPriceByProductId(int id)
+        {
+            return await httpClient.GetJsonAsync<ProductPrice>(_configuration["ApiHostUrl"] + $"api/v1.0/productsprices/product/{id}");
+        }
+
         public async Task<Product> AddProducts(Product product, decimal productPrice, decimal salePrice)
         {
             try

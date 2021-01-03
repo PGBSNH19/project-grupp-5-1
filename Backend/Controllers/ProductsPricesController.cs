@@ -88,6 +88,14 @@ namespace Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves latest price, by product id
+        /// </summary>
+        /// <param name="productId">The Id of the requested product.</param>
+        /// <returns>The product which has the specified Id.</returns>
+        /// <response code="200">Returns the latest price which is lower (price or saleprice)</response>
+        /// <response code="404">No price was found which matched the given product Id.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch a price.</response>   
         [HttpGet("price/{productId:int}")]
         public async Task<ActionResult<decimal>> GetLatestPriceByProductId(int productId)
         {
@@ -95,12 +103,36 @@ namespace Backend.Controllers
             {
                 var price = await _productsPricesRepository.GetLatestPrice(productId);
 
-                if (price == 0)
+                return Ok(price);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Failed to get the product. Exception thrown when attempting to add data to the database: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves latest price, by product id
+        /// </summary>
+        /// <param name="id">The Id of the requested product.</param>
+        /// <returns>The product which has the specified Id.</returns>
+        /// <response code="200">Returns the latest price which is lower (price or saleprice)</response>
+        /// <response code="404">No price was found which matched the given product Id.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch a price.</response>   
+        [HttpGet("product/{id:int}")]
+        public async Task<ActionResult<ProductPriceDTO>> GetProductPriceByProductId(int id)
+        {
+            try
+            {
+                var productPrice = await _productsPricesRepository.GetPriceByProductId(id);
+
+                if (productPrice == null)
                 {
-                    return NotFound($"Product with id {productId} has no price.");
+                    return NotFound($"Product with id {id} has no price.");
                 }
 
-                return Ok(price);
+                return Ok(productPrice);
             }
             catch (Exception e)
             {

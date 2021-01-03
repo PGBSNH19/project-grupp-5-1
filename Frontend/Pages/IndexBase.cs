@@ -27,9 +27,16 @@ namespace Frontend.Pages
             {
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
+                {
                     product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
+                    var saleprice = await ProductService.GetPriceByProductId(product.Id);
+                    product.SalePrice = saleprice.SalePrice;
+                }
                 else
+                {
                     product.Price = 0;
+                    product.SalePrice = 0;
+                }
             }
         }
     }

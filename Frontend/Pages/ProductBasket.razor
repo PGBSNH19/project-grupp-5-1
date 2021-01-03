@@ -24,8 +24,8 @@
                     <tr>
                         <td>@basketProduct.Product.Name</td>
                         <td>@basketProduct.Amount</td>
-                        <td>0</td>
-                        <td>@(basketProduct.Amount * 0)</td>
+                        <td>@basketProduct.Product.Price</td>
+                        <td>@(basketProduct.Amount * basketProduct.Product.Price)</td>
                     </tr>
                 }
             </tbody>
@@ -33,7 +33,7 @@
                 <tr>
                     <th>
                         Total price:
-                        @Basket.Sum(x => x.Amount * 0)
+                        @Basket.Sum(x => x.Amount * x.Product.Price)
                     </th>
                     <th></th>
                     <th></th>
