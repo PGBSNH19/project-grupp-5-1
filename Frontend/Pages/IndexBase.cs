@@ -17,6 +17,13 @@ namespace Frontend.Pages
         public IProductService ProductService { get; set; }
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
+        public IEnumerable<ProductCategory> ProductCategories { get; set; }
+
+        public string ProductSearchQuery { get; set; }
+        public string ProductCategoryId { get; set; } = "0";
+        public string MinPrice { get; set; } = "0";
+        public string MaxPrice { get; set; } = "0";
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,22 +45,33 @@ namespace Frontend.Pages
                     product.SalePrice = 0;
                 }
             }
+            ProductCategories = await ProductService.GetAllProductCategories();
+        }
 
+        protected async Task SearchProducts()
+        {
+            if (string.IsNullOrWhiteSpace(ProductSearchQuery))
+                products = (await ProductService.GetProducts()).ToList();
+            else
+                products = (await ProductService.SearchProducts(ProductSearchQuery)).ToList();
+        }
 
-            //products = (await ProductService.GetProducts()).ToList();
-            //var prices = (await ProductService.GetAllPrices()).ToList();
-            //if (prices.Count != 0)
-            //{
-            //    foreach (var product in products)
-            //    {
+        protected List<Product> GetFeaturedProducts()
+        {
+            return products.Where(x => x.IsFeatured).ToList();
+        }
 
-            //        var price = prices.Where(x => x.ProductId == product.Id).FirstOrDefault();
-            //        product.Price = price.Price;
-            //        product.SalePrice = price.SalePrice;
+        protected async Task FilterByProductCategory(int id)
+        {
+            if (id == 0)
+                products = await ProductService.GetProducts();
+            else
+                products = await ProductService.GetProductsByCategoryId(id);
+        }
 
-            //    }
-
-            //}
+        protected async Task FilterByPriceRange(int min, int max)
+        {
+            products = await ProductService.GetProductsByPriceRange(min, max);
         }
     }
 }

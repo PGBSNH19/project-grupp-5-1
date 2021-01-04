@@ -25,6 +25,13 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + "api/v1.0/products");
         }
 
+        public async Task<IEnumerable<Product>> SearchProducts(string productName)
+        {
+            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] 
+                + $"api/v1.0/products/search/?productname={productName}");
+        }
+
+
         public async Task<Product> GetProductById(int id)
         {
             return await httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{id}");
@@ -98,6 +105,21 @@ namespace Frontend.Services
 
                 return null;
             }
+        }
+
+        public async Task<IEnumerable<ProductCategory>> GetAllProductCategories()
+        {
+            return await httpClient.GetJsonAsync<ProductCategory[]>(_configuration["ApiHostUrl"] + $"api/v1.0/products/categories");
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByCategoryId(int id)
+        {
+            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + $"api/v1.0/products/categories/{id}");
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByPriceRange(int min, int max)
+        {
+            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] + $"api/v1.0/products/pricerange/{min},{max}");
         }
 
 

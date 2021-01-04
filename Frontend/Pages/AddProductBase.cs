@@ -14,10 +14,13 @@ namespace frontend.Pages
     {
         [Inject]
         public IProductService productService { get; set; }
-        public Product product { get; set; } = new Product();
               
-        public IEnumerable<Product> products { get; set; }
-      
+        public IEnumerable<Product> products { get; set; }      
+        public IProductService ProductService { get; set; }
+        public Product Product { get; set; } = new Product();
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
+        public string ProductCatId { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -36,18 +39,18 @@ namespace frontend.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            product = new Product
-            {
-             
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
+
+            Product = new Product()
+            { 
                 ProductCategoryId = 1
             };
-
-            products = (await productService.GetProducts()).ToList();
         }
 
         protected async Task HandleValidSubmit()
         {
-            var result = await productService.AddProducts(product,ProductPrice,SalePrice);
+            var result = await ProductService.AddProducts(Product,ProductPrice,SalePrice);
+            Product.ProductCategoryId = int.Parse(ProductCatId);
 
             if (result != null)
             {

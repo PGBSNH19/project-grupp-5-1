@@ -23,7 +23,6 @@ namespace Frontend.Pages
         public IProductService ProductService { get; set; }
 
         [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; }
-
         public List<ProductInBasket> Basket = new List<ProductInBasket>();
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
 

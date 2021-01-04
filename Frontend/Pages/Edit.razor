@@ -37,22 +37,72 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="Size" class="control-label">Available</label>
-                <select @bind="@product.IsAvailable" class="form-control">
-                    <option value="">--Available--</option>
-                    <option value="0">Yes</option>
-                    <option value="1">No</option>
-
-                </select>
+            <label for="ProductCategory" class="control-label">Category</label>
+                <InputSelect @bind-Value="@ProductCatId" class="form-control">
+                    @foreach (var category in ProductCategories)
+                    {
+                        <option value="@category.Id" class="form-control">@category.CategoryName</option>
+                    }
+                </InputSelect>
             </div>
             <div class="form-group">
                 <label for=" Price" class="control-label">Stock</label>
                 <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
                 <ValidationMessage For="@(()=> product.Stock)" />
             </div>
+            <div class="form-group row">
+                <label for="IsFeatured" class="col-sm-2 col-form-label">Featured</label>
+                <div class="col-sm-10">
+                    <input type="checkbox" style="height: 100%" @bind="product.IsFeatured">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
+                <div class="col-sm-10">
+                    <input type="checkbox" style="height: 100%" @bind="product.IsAvailable">
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <button class="btn btn-primary" type="submit">Save</button>
-
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Edit" />
+                <input type="button" class="btn btn-primary" @onclick="@cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
 </EditForm>
+
+
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    Product product = new Product();
+
+    string ProductCatId { get; set; }
+    public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
+        ProductCategories = (await productService.GetAllProductCategories()).ToList();
+    }
+
+
+    protected async void HandleValidSubmit()
+    {
+        product.ProductCategoryId = int.Parse(ProductCatId);
+        await productService.Update(product);
+        product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
+        StateHasChanged();
+        NavigationManager.NavigateTo("manageproducts");
+    }
+
+    void cancel()
+    {
+        NavigationManager.NavigateTo("manageproducts");
+    }
+
+}

@@ -2,12 +2,14 @@
 using Backend.Services.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Backend.Services.Repositories
@@ -16,8 +18,6 @@ namespace Backend.Services.Repositories
     {
         private readonly MailSettings _mailSettings;
 
-        private List<BuyedProducts> buyeds = new List<BuyedProducts>();
-
         public MailService(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;
@@ -25,7 +25,7 @@ namespace Backend.Services.Repositories
 
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
-            string FilePath = Directory.GetCurrentDirectory() + "./Template/Mail/thanks.html";
+            string FilePath = "./Template/Mail/thanks.html";
             StreamReader str = new StreamReader(FilePath);
             string MailText = str.ReadToEnd();
             str.Close();
@@ -34,14 +34,16 @@ namespace Backend.Services.Repositories
 
             foreach (var item in mailRequest.buyedProductsList)
             {
-                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Aomunt}</td><td class={"tabel-style"}>{item.Price}</td></tr>";
+                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.Price}</td></tr>";
             }
 
             MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
                                .Replace("[productname]", htmlProduct.ProductName)
+                               .Replace("[username]", mailRequest.UserName)
                                .Replace("[address]", mailRequest.Address)
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
+                               .Replace("[orderdate]", DateTime.Now.ToString())
                                .Replace("[total]", htmlProduct.TotalPrice.ToString());
 
             var email = new MimeMessage();
@@ -55,10 +57,18 @@ namespace Backend.Services.Repositories
 
             using (var smtp = new SmtpClient())
             {
-                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-                smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-                await smtp.SendAsync(email);
-                smtp.Disconnect(true);
+                try
+                {
+                    smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+
+                    smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+                    await smtp.SendAsync(email);
+                    smtp.Disconnect(true);
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(ex.Message);
+                }
             }
         }
     }

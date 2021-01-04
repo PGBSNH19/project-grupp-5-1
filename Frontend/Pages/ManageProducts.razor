@@ -1,5 +1,6 @@
 ﻿@page "/manageproducts"
 @inherits IndexBase
+
 <h1>Manage Products</h1>
 <br />
 <br />
@@ -24,6 +25,7 @@ else
                 <th>Price</th>
                 <th>SalePrice</th>
                 <th>Stock</th>
+                <th>Featured</th>
                 <th>Available</th>
                 <th>Edit</th>
             </tr>
@@ -38,12 +40,13 @@ else
                 <td>@product.SalePrice</td>
                 @if (@product.Stock < 6)
                 {
-                    <td>@product.Stock <span class="oi oi-warning text-warning float-right" aria-hidden="true" /></td>
+                    <td>@product.Stock <i class="oi oi-warning text-warning float-right" title="Product is running low on stock" aria-hidden="true" /></td>
                 }
                 else
                 {
                     <td>@product.Stock</td>
                 }
+                <td>@product.IsFeatured</td>
                 <td>@product.IsAvailable</td>
                 <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
             </tr>

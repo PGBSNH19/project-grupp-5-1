@@ -23,5 +23,18 @@ namespace Frontend.Services
             return await Task.FromResult(response);
         }
 
+        public async Task<User> RegisterUserAsync(RegisterUser user)
+        {
+            try
+            {
+                var response = await _httpClient.PostJsonAsync<User>(_configuration["ApiHostUrl"] + "api/v1.0/users", user);
+                return await Task.FromResult(response);
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
+        }
+
     }
 }

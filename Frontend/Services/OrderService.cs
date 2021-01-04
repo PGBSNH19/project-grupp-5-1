@@ -99,8 +99,7 @@ namespace Frontend.Services
 
             if (_httpClient.DefaultRequestHeaders.Authorization != null)
             {
-                Order newOrder;
-                newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
+                var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
                 if (newOrder != null)
                 {
                     foreach (var basketProduct in userInfo.userBasket)
@@ -112,7 +111,7 @@ namespace Frontend.Services
                             ProductId = basketProduct.Product.Id,
                         };
 
-                        await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
+                        await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/", orderedProduct);
 
                         var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
 
@@ -135,14 +134,15 @@ namespace Frontend.Services
                     {
                         ToEmail = userInfo.Email,
                         OrderId = newOrder.Id,
-                        UserName = userInfo.FirstName,
                         Subject = "Your order",
+                        UserName = userInfo.FirstName + " " + userInfo.LastName,
                         Address = userInfo.Address,
                         City = userInfo.City,
-                        ZipCode = userInfo.ZipCode,
+                        ZipCode = userInfo.ZipCode.ToString(),
                         buyedProductsList = buyedProducts
                     };
-                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send", orderToSend);
+
+                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send/", orderToSend);
 
                     await _localStorageService.RemoveItemAsync("customer-basket");
                     await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");

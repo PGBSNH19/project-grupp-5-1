@@ -3,53 +3,20 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-<div class="sidebar">
+<body>
     <NavMenu />
-</div>
-
-<div class="main">
-    <div class="top-row px-4">
-
-        <AuthorizeView>
-            <Authorized>
-                <p class="mt-3 font-weight-bold">Welcome, @context.User.Identity.Name</p>
-            </Authorized>
-            <NotAuthorized>
-                <p class="mt-3 font-weight-bold">You are signed out...!</p>
-            </NotAuthorized>
-        </AuthorizeView>
-        <AuthorizeView Roles="Admin">
-            <Authorized>
-                <p class="mt-3 font-weight-bold">(Admin)</p>
-            </Authorized>
-        </AuthorizeView>
-        <AuthorizeView Roles="Customer">
-            <Authorized>
-                <p class="mt-3 font-weight-bold">(Customer)</p>
-            </Authorized>
-        </AuthorizeView>
-        <AuthorizeView>
-            <Authorized>
-                <a href="/" @onclick="(() => Logout())">Logout</a>
-            </Authorized>
-            <NotAuthorized>
-                <a href="/login">Login</a>
-            </NotAuthorized>
-        </AuthorizeView>
-
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
-    <div class="content px-4">
+    <div class="container">
         @Body
     </div>
-</div>
+</body>
 
-@code{
-    public async Task Logout()
-    {
-        await ((AuthStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOut();
-        NavigationManager.NavigateTo("/");
-    }
-}
+@*<div class="sidebar">
+    <NavMenu />
+    </div>
+
+    <div class="main">
+
+    <div class="content px-4">
+    @Body
+    </div>
+    </div>*@

@@ -32,6 +32,9 @@ namespace Backend
 
             CreateMap<User, UserDTO>()
                .ReverseMap();
+
+            CreateMap<ProductCategory, ProductCategoryDTO>()
+                .ReverseMap();
         }
     }
 }
