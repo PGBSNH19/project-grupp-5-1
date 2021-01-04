@@ -37,7 +37,7 @@ namespace Backend.Services.Repositories
                 htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.TotalPrice}</td></tr>";
             }
 
-            DateTime eastern = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
+            //DateTime eastern = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
 
             MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
                                .Replace("[productname]", htmlProduct.ProductName)
@@ -45,7 +45,7 @@ namespace Backend.Services.Repositories
                                .Replace("[address]", mailRequest.Address)
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
-                               .Replace("[orderdate]", eastern.ToString("dd/MM/yyyy:hh:mm:ss"))
+                               .Replace("[orderdate]", DateTime.Now.ToString())
                                .Replace("[totalpricewithdiscount]", mailRequest.TotalPiceWithDiscount.ToString("0.##"));
 
             var email = new MimeMessage();
