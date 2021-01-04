@@ -1,8 +1,5 @@
 ﻿@page "/edit/{CurrentID}"
-@using Models
-@inject Frontend.Services.IProductService productService
-@inject NavigationManager NavigationManager
-
+@inherits EditBase
 
 <h1>Edit</h1>
 
@@ -21,8 +18,31 @@
                 <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
                 <ValidationMessage For="@(()=> product.Description)" />
             </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    Current Price: <strong>@product.CurrentPrice</strong>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="stock" class="col-sm-2 col-form-label">
+                    Original Price
+                </label>
+                <div class="col-sm-10">
+                    <InputNumber id="price" class="form-control" placeholder="Original price" @bind-Value="product.Price" />
+                    <ValidationMessage For="@(()=> product.Price)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="stock" class="col-sm-2 col-form-label">
+                    Sale Price
+                </label>
+                <div class="col-sm-10">
+                    <InputNumber id="salePrice" class="form-control" placeholder="salePrice" @bind-Value="product.SalePrice" />
+                    <ValidationMessage For="@(()=> product.SalePrice)" />
+                </div>
+            </div>
             <div class="form-group">
-            <label for="ProductCategory" class="control-label">Category</label>
+                <label for="ProductCategory" class="control-label">Category</label>
                 <InputSelect @bind-Value="@ProductCatId" class="form-control">
                     @foreach (var category in ProductCategories)
                     {
@@ -54,40 +74,8 @@
         <div class="col-md-4">
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Edit" />
-                <input type="button" class="btn btn-primary" @onclick="@cancel" value="Cancel" />
+                <input type="button" class="btn btn-primary" @onclick="@(()=> Cancel())" value="Cancel" />
             </div>
         </div>
     </div>
 </EditForm>
-
-
-@code {
-    [Parameter]
-    public string CurrentID { get; set; }
-    Product product = new Product();
-
-    string ProductCatId { get; set; }
-    public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
-        ProductCategories = (await productService.GetAllProductCategories()).ToList();
-    }
-
-
-    protected async void HandleValidSubmit()
-    {
-        product.ProductCategoryId = int.Parse(ProductCatId);
-        await productService.Update(product);
-        product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
-        StateHasChanged();
-        NavigationManager.NavigateTo("manageproducts");
-    }
-
-    void cancel()
-    {
-        NavigationManager.NavigateTo("manageproducts");
-    }
-
-}

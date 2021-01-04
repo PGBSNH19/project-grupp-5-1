@@ -42,6 +42,7 @@ namespace Backend
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IWeatherRepository, WeatherRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductsPricesRepository, ProductsPricesRepository>();
             services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();

@@ -1,5 +1,6 @@
 ﻿using Frontend.Models;
 using Frontend.Services;
+using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
@@ -14,9 +15,10 @@ namespace Frontend.Pages
     {
         [Inject]
         public IProductService ProductService { get; set; }
-
         public IEnumerable<Product> products { get; set; }
-        public IEnumerable<ProductCategory> ProductCategories { get; set; }
+        public IEnumerable<ProductPrice> GetProductPrices { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+        //public decimal? CurrentPrice { get; set; }
 
         public string ProductSearchQuery { get; set; }
         public string ProductCategoryId { get; set; } = "0";
@@ -27,7 +29,28 @@ namespace Frontend.Pages
         protected override async Task OnInitializedAsync()
         {
             products = (await ProductService.GetProducts()).ToList();
-            ProductCategories = await ProductService.GetAllProductCategories();
+            GetProductPrices = await ProductService.GetAllPrices();
+
+            foreach(var product in products)
+            {
+                bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+                if (hasFound)
+                {                    
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
+
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                }
+                else
+                {
+                    product.Price = 0;
+                    product.SalePrice = 0;
+                    product.CurrentPrice = 0;
+                }
+            }
+
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
         }
 
         protected async Task SearchProducts()

@@ -15,5 +15,7 @@ namespace Backend.DTO
         public bool IsFeatured { get; set; }
         public int Stock { get; set; }
         public int ProductCategoryId { get; set; }
+        public ICollection<ProductPrice> ProductPrices { get; set; }
+
     }
 }

@@ -22,7 +22,8 @@ else
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price</th>
+                <th>Curr.Price</th>
+                <th>Org.Price</th>
                 <th>SalePrice</th>
                 <th>Stock</th>
                 <th>Featured</th>
@@ -36,8 +37,9 @@ else
             <tr>
                 <td>@product.Name</td>
                 <td>@product.Description</td>
-                <td>price</td>
-                <td>saleprice</td>
+                <td>@product.CurrentPrice</td>
+                <td>@product.Price</td>
+                <td>@product.SalePrice</td>
                 @if (@product.Stock < 6)
                 {
                     <td>@product.Stock <i class="oi oi-warning text-warning float-right" title="Product is running low on stock" aria-hidden="true" /></td>
