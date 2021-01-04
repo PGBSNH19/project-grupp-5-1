@@ -6,11 +6,11 @@ The purpose of this project is to enable companies to sell products to their cus
 
 ## Table of contents
 
-* [1. Technologies used](#1. Technologies used)
+* [1. Technologies used](#1-technologies-used)
 
-* [2. Local development setup](#2. Local development setup)
+* [2. Local development setup](#2-local-development-setup)
 
-* [3. Team](#3. Team)
+* [3. Team](#3-team)
 
 
 
