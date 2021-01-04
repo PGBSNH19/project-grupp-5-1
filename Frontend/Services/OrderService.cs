@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Frontend.Auth;
 using Frontend.Models.Mail;
+using System.Runtime.InteropServices;
 
 namespace Frontend.Services
 {
@@ -129,7 +130,16 @@ namespace Frontend.Services
 
                         buyedProducts.Add(buyedProduct);
                     }
-                    DateTime dateNow = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
+
+                    string timeZoneId = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "W. Europe Standard Time" : "Europe/Stockholm";
+
+                    // Get a TimeZoneInfo object for that time zone
+                    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+
+                    // Convert the current UTC time to the time in Sweden
+                    DateTimeOffset currentTimeInSweden = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, tzi);
+
+                    //DateTime dateNow = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
                     MailRequest orderToSend = new MailRequest()
                     {
                         ToEmail = userInfo.Email,
@@ -139,7 +149,7 @@ namespace Frontend.Services
                         Address = userInfo.Address,
                         City = userInfo.City,
                         ZipCode = userInfo.ZipCode.ToString(),
-                        Date = dateNow.ToString("F"),
+                        Date = currentTimeInSweden.ToString("F"),
                         TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount,
                         buyedProductsList = buyedProducts
                     };
