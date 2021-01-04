@@ -72,11 +72,54 @@ namespace Frontend.Pages
                 products = await ProductService.GetProducts();
             else
                 products = await ProductService.GetProductsByCategoryId(id);
+
+            GetProductPrices = await ProductService.GetAllPrices();
+
+            foreach (var product in products)
+            {
+                bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+                if (hasFound)
+                {
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
+
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                }
+                else
+                {
+                    product.Price = 0;
+                    product.SalePrice = 0;
+                    product.CurrentPrice = 0;
+                }
+            }
         }
 
-        protected async Task FilterByPriceRange(int min, int max)
+        public async Task FilterByPriceRange(int min, int max)
         {
-            products = await ProductService.GetProductsByPriceRange(min, max);
+            products = await ProductService.GetProducts();
+            GetProductPrices = await ProductService.GetAllPrices();
+
+            foreach (var product in products)
+            {
+                bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+                if (hasFound)
+                {
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
+
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                }
+                else
+                {
+                    product.Price = 0;
+                    product.SalePrice = 0;
+                    product.CurrentPrice = 0;
+                }
+            }
+
+            products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
         }
     }
 }

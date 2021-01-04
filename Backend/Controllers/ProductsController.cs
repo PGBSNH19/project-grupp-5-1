@@ -212,38 +212,6 @@ namespace Backend.Controllers
         }
 
         /// <summary>
-        /// Get products within specified Price Range
-        /// </summary>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        /// <returns>Products within specific price range</returns>
-        /// <response code="200">Returns products that found by pricerange</response>
-        /// <response code="404">No product was found which matched the given pricerange.</response>
-        /// <response code="500">The API caught an exception when attempting to search for given pricerange.</response>
-        [HttpGet("pricerange/{min},{max}")]
-        public async Task<ActionResult<ProductDTO>> GetPriceRange([FromQuery] int min, int max)
-        {
-            try
-            {
-                var product = await _productRepository.GetProductsByPriceRange(min, max);
-
-                if (product == null)
-                {
-                    return NotFound($"Products between the pricerange of {min} - {max} was not found.");
-                }
-
-                var mappedResult = _mapper.Map<IList<ProductDTO>>(product);
-
-                return Ok(mappedResult);
-            }
-            catch (Exception e)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Failed to get pricerange. The pricerange you try to find doesn't exists: {e.Message}");
-            }
-        }
-
-        /// <summary>
         /// Adds a new product.
         /// </summary>
         /// <param name="product">The new product object to be added.</param>

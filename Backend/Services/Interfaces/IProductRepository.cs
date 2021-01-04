@@ -13,6 +13,5 @@ namespace Backend.Services.Interfaces
         Task<IList<Product>> GetProductsByCategoryId(int id);
         Task<IList<Product>> GetProductsByCategoryName(string category);
         Task<IList<ProductCategory>> GetAllProdictCategories();
-        Task<IList<Product>> GetProductsByPriceRange(int min, int max);
     }
 }
