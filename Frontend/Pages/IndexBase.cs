@@ -27,9 +27,9 @@ namespace Frontend.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            products = (await ProductService.GetProducts()).ToList();
-            GetProductPrices = await ProductService.GetAllPrices();
+            products = (await ProductService.GetProducts()).ToList();            
             ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
+            GetProductPrices = await ProductService.GetAllPrices();
 
             foreach (var product in products)
             {
