@@ -95,10 +95,10 @@
                                     @{
                                         var discSum = (basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) * Discount);
                                         discSum = basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) - discSum;
-                                        decimal disc = (decimal)discSum;
+                                        TotalPriceWithDiscount = (decimal)discSum;
                                     }
                                     <td>
-                                        With discount: @disc.ToString("0.###")
+                                        With discount: @TotalPriceWithDiscount.ToString("0.###")
                                     </td>
                                 </tr>
                             </tbody>

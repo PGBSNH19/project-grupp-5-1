@@ -32,6 +32,7 @@ namespace Frontend.Pages
         public IEnumerable<Coupon> Coupons { get; set; }
         public string GetCouponId { get; set; }
         public decimal Discount { get; set; }
+        public decimal TotalPriceWithDiscount { get; set; }
 
         [Parameter]
         public UserInfo userInfo { get; set; } = new UserInfo();
