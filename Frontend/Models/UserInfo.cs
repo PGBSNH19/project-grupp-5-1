@@ -34,6 +34,8 @@ namespace Frontend.Models
 
         public decimal TotalPiceWithDiscount { get; set; } = 0;
 
+        public string Date { get; set; }
+
         public IEnumerable<ProductInBasket> userBasket { get; set; }
     }
 }

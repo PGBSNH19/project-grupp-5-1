@@ -129,7 +129,7 @@ namespace Frontend.Services
 
                         buyedProducts.Add(buyedProduct);
                     }
-
+                    DateTime dateNow = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
                     MailRequest orderToSend = new MailRequest()
                     {
                         ToEmail = userInfo.Email,
@@ -139,6 +139,7 @@ namespace Frontend.Services
                         Address = userInfo.Address,
                         City = userInfo.City,
                         ZipCode = userInfo.ZipCode.ToString(),
+                        Date = dateNow.ToString("F"),
                         TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount,
                         buyedProductsList = buyedProducts
                     };

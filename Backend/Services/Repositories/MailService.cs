@@ -45,7 +45,7 @@ namespace Backend.Services.Repositories
                                .Replace("[address]", mailRequest.Address)
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
-                               .Replace("[orderdate]", DateTime.Now.ToString())
+                               .Replace("[orderdate]", mailRequest.Date)
                                .Replace("[totalpricewithdiscount]", mailRequest.TotalPiceWithDiscount.ToString("0.##"));
 
             var email = new MimeMessage();
