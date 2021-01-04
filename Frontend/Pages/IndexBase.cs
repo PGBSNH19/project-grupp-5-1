@@ -29,16 +29,18 @@ namespace Frontend.Pages
         {
             products = (await ProductService.GetProducts()).ToList();
             GetProductPrices = await ProductService.GetAllPrices();
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
 
-            foreach(var product in products)
+            foreach (var product in products)
             {
+                product.ProductCategoryName = ProductCategories.Where(p => p.Id == product.ProductCategoryId).SingleOrDefault()?.CategoryName;
+
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
                 {
                     var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
                     product.Price = getProductPrices.Price;
                     product.SalePrice = getProductPrices.SalePrice;
-
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                 }
                 else
@@ -46,10 +48,8 @@ namespace Frontend.Pages
                     product.Price = 0;
                     product.SalePrice = 0;
                     product.CurrentPrice = 0;
-                }
-            }
-
-            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
+                }               
+            }          
         }
 
         protected async Task SearchProducts()

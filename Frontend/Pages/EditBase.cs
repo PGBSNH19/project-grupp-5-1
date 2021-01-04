@@ -34,6 +34,7 @@ namespace Frontend.Pages
             ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
 
             GetProductPrices = await ProductService.GetAllPrices();
+            product.ProductCategoryName = ProductCategories.Where(p => p.Id == product.ProductCategoryId).SingleOrDefault()?.CategoryName;
 
             bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
             if (hasFound)
@@ -41,7 +42,6 @@ namespace Frontend.Pages
                 var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
                 product.Price = getProductPrices.Price;
                 product.SalePrice = getProductPrices.SalePrice;
-
                 product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
             }
             else
