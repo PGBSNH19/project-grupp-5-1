@@ -24,14 +24,8 @@ namespace frontend.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Price must be over 0.")]
-        public decimal ProductPrice { get; set; }
-
         [Parameter]
         public string Id { get; set; }
-
 
         protected async override Task OnInitializedAsync()
         {
@@ -48,7 +42,7 @@ namespace frontend.Pages
             if(ProductCatId == null) { ProductCatId = "1"; }
             Product.ProductCategoryId = int.Parse(ProductCatId);
 
-            var result = await ProductService.AddProducts(Product, ProductPrice);
+            var result = await ProductService.AddProducts(Product, Product.Price);
 
             if (result != null)
             {
