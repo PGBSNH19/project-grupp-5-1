@@ -17,7 +17,7 @@ namespace Frontend.Pages
         public IProductService ProductService { get; set; }
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
-        public IEnumerable<ProductCategory> ProductCategories { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
         public string ProductSearchQuery { get; set; }
         public string ProductCategoryId { get; set; } = "0";
@@ -45,7 +45,7 @@ namespace Frontend.Pages
                     product.SalePrice = 0;
                 }
             }
-            ProductCategories = await ProductService.GetAllProductCategories();
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
         }
 
         protected async Task SearchProducts()

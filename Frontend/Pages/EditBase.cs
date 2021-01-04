@@ -15,9 +15,9 @@ namespace Frontend.Pages
     {
         [Inject]
         public IProductService ProductService { get; set; }
-        public Product product { get; set; } = new Product();
+        //public Product product { get; set; } = new Product();
         [Parameter]
-        public string CurrentID { get; set; }
+        //public string CurrentID { get; set; }
 
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
@@ -29,32 +29,33 @@ namespace Frontend.Pages
         [Range(1, int.MaxValue, ErrorMessage = "Price must be over 0.")]
         public decimal ProductPrice { get; set; }
 
-        public decimal SalePrice { get; set; }
+        public decimal? SalePrice { get; set; }
 
 
 
-        protected override async Task OnInitializedAsync()
-        {
-            product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
-            //GetProductPrices = await ProductService.GetAllPrices();
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
+        //    //GetProductPrices = await ProductService.GetAllPrices();
 
-            //foreach (var product in products)
-            //{
-            //    bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
-            //    if (hasFound)
-            //        product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
-            //    else
-            //        product.Price = 0;
-            //}
-        }
+        //    //foreach (var product in products)
+        //    //{
+        //    //    bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+        //    //    if (hasFound)
+        //    //        product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
+        //    //    else
+        //    //        product.Price = 0;
+        //    //}
+        //}
 
 
-        protected async void HandleValidSubmit()
-        {
-            await ProductService.Update(product, ProductPrice, SalePrice);
-            product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
-            StateHasChanged();
-            NavigationManager.NavigateTo("manageproducts");
-        }
+        //protected async void HandleValidSubmit()
+        //{
+        //    product.ProductCategoryId = int.Parse(ProductCatId);
+        //    await ProductService.Update(product, ProductPrice, (decimal)SalePrice);
+        //    product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
+        //    StateHasChanged();
+        //    NavigationManager.NavigateTo("manageproducts");
+        //}
     }
 }

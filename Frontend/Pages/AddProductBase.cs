@@ -13,10 +13,9 @@ namespace frontend.Pages
     public class AddProductBase : ComponentBase
     {
         [Inject]
-        public IProductService productService { get; set; }
+        public IProductService ProductService { get; set; }
               
         public IEnumerable<Product> products { get; set; }      
-        public IProductService ProductService { get; set; }
         public Product Product { get; set; } = new Product();
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 

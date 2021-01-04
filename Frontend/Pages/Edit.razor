@@ -86,16 +86,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
-        ProductCategories = (await productService.GetAllProductCategories()).ToList();
+        product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
+        ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
     }
 
 
     protected async void HandleValidSubmit()
     {
+        if (SalePrice == null)
+            SalePrice = 0;
+
+        if (ProductCatId == null)
+            ProductCatId = "1";
+
         product.ProductCategoryId = int.Parse(ProductCatId);
-        await productService.Update(product);
-        product = await Task.Run(() => productService.GetProductById(Convert.ToInt32(CurrentID)));
+        await ProductService.Update(product, ProductPrice, (decimal)SalePrice);
+        product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
         StateHasChanged();
         NavigationManager.NavigateTo("manageproducts");
     }
