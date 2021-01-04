@@ -18,7 +18,6 @@ namespace Frontend.Pages
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
-        //public decimal? CurrentPrice { get; set; }
 
         public string ProductSearchQuery { get; set; }
         public string ProductCategoryId { get; set; } = "0";
@@ -35,7 +34,7 @@ namespace Frontend.Pages
             {
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
-                {                    
+                {
                     var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
                     product.Price = getProductPrices.Price;
                     product.SalePrice = getProductPrices.SalePrice;
@@ -80,10 +79,6 @@ namespace Frontend.Pages
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
                 {
-                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
-                    product.Price = getProductPrices.Price;
-                    product.SalePrice = getProductPrices.SalePrice;
-
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                 }
                 else
@@ -105,10 +100,6 @@ namespace Frontend.Pages
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
                 {
-                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
-                    product.Price = getProductPrices.Price;
-                    product.SalePrice = getProductPrices.SalePrice;
-
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                 }
                 else
@@ -119,7 +110,8 @@ namespace Frontend.Pages
                 }
             }
 
-            products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
+            if(max > 0 )
+                products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
         }
     }
 }
