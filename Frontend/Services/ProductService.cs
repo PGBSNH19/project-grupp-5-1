@@ -52,7 +52,7 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<ProductPrice>(_configuration["ApiHostUrl"] + $"api/v1.0/productsprices/product/{id}");
         }
 
-        public async Task<Product> AddProducts(Product product, decimal productPrice, decimal salePrice)
+        public async Task<Product> AddProducts(Product product, decimal productPrice)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Frontend.Services
                 {
                     ProductPrice price = new ProductPrice();
                     price.Price = productPrice;
-                    price.SalePrice = salePrice;
+                    price.SalePrice = 0;
                     price.DateChanged = DateTime.Now;
                     price.ProductId = result.Id;
 

@@ -18,6 +18,7 @@ namespace Frontend.Pages
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+        //public decimal? CurrentPrice { get; set; }
 
         public string ProductSearchQuery { get; set; }
         public string ProductCategoryId { get; set; } = "0";
@@ -34,17 +35,21 @@ namespace Frontend.Pages
             {
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
-                {
-                    product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
-                    var saleprice = await ProductService.GetPriceByProductId(product.Id);
-                    product.SalePrice = saleprice.SalePrice;
+                {                    
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
+
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                 }
                 else
                 {
                     product.Price = 0;
                     product.SalePrice = 0;
+                    product.CurrentPrice = 0;
                 }
             }
+
             ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
         }
 

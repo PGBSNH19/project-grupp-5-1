@@ -97,28 +97,16 @@ namespace Frontend.Pages
                     bool hasFound = GetProductPrices.Any(x => item.Product.Id == x.ProductId);
                     if (hasFound)
                     {
-                        item.Product.Price = await ProductService.GetLatestPriceByProductId(item.Product.Id);
-                        var saleprice = await ProductService.GetPriceByProductId(item.Product.Id);
-                        item.Product.SalePrice = saleprice.SalePrice;
+                        item.Product.CurrentPrice = await ProductService.GetLatestPriceByProductId(item.Product.Id);                        
                     }
                     else
                     {
-                        item.Product.Price = 0;
-                        item.Product.SalePrice = 0;
+                        item.Product.CurrentPrice = 0;
                     }
                 }
 
-                Coupons = await CouponService.GetCoupons(true);
-                
-                //if(GetCouponId != null)
-                //{
-                //    if(int.Parse(GetCouponId) != 0)
-                //    {
-                //        Coupon coupon = await CouponService.GetCouponById(int.Parse(GetCouponId));
-                //        Discount = coupon.Discount;
-                //    }
-                //}
-
+                Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
+            
                 StateHasChanged();
             }
         }

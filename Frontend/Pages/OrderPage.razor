@@ -42,8 +42,8 @@
                                 <button class="btn btn-sm btn-outline-success mr-1" @onclick="() =>Increase(basketProduct)">+</button>
                             </div>
                         </td>
-                        <td class="text-center">@basketProduct.Product.Price</td>
-                        <td class="text-center">@(basketProduct.Amount * basketProduct.Product.Price)</td>
+                        <td class="text-center">@basketProduct.Product.CurrentPrice</td>
+                        <td class="text-center">@(basketProduct.Amount * basketProduct.Product.CurrentPrice)</td>
                         <td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
                     </tr>
                 }
@@ -86,18 +86,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Total Price: @basketproducts.Sum(x => x.Amount * x.Product.Price)</td>
+                                    <td>Total Price: @basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice)</td>
                                 </tr>
                                 <tr>
                                     <td>Discount: @((Discount*100).ToString("0.##")) %</td>
                                 </tr>
                                 <tr>
                                     @{
-                                        var discSum = (basketproducts.Sum(x => x.Amount * x.Product.Price) * Discount);
-                                        discSum = basketproducts.Sum(x => x.Amount * x.Product.Price) - discSum;
+                                        var discSum = (basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) * Discount);
+                                        discSum = basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) - discSum;
+                                        decimal disc = (decimal)discSum;
                                     }
                                     <td>
-                                        With discount: @discSum.ToString("0.###")
+                                        With discount: @disc.ToString("0.###")
                                     </td>
                                 </tr>
                             </tbody>

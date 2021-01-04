@@ -29,9 +29,6 @@ namespace frontend.Pages
         [Range(1, int.MaxValue, ErrorMessage = "Price must be over 0.")]
         public decimal ProductPrice { get; set; }
 
-        public decimal SalePrice { get; set; }
-
-
         [Parameter]
         public string Id { get; set; }
 
@@ -48,8 +45,10 @@ namespace frontend.Pages
 
         protected async Task HandleValidSubmit()
         {
-            var result = await ProductService.AddProducts(Product,ProductPrice,SalePrice);
+            if(ProductCatId == null) { ProductCatId = "1"; }
             Product.ProductCategoryId = int.Parse(ProductCatId);
+
+            var result = await ProductService.AddProducts(Product, ProductPrice);
 
             if (result != null)
             {

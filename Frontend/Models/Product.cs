@@ -31,7 +31,10 @@ namespace Frontend.Models
 
         public ICollection<ProductPrice> ProductPrices { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Price must be over 0.")]
         public decimal Price { get; set; }
         public decimal? SalePrice { get; set; }
+        public decimal? CurrentPrice { get; set; }
     }
 }

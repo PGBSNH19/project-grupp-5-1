@@ -13,7 +13,7 @@ namespace Frontend.Services
         Task<decimal> GetLatestPriceByProductId(int id);
         Task<ProductPrice> GetPriceByProductId(int id);
         Task<IEnumerable<ProductPrice>> GetAllPrices();
-        Task<Product> AddProducts(Product product, decimal  productPrice, decimal salePrice);
+        Task<Product> AddProducts(Product product, decimal  productPrice);
         Task<Product> Update(Product product, decimal productPrice, decimal salePrice);
         Task<IEnumerable<Product>> SearchProducts(string productName);
         Task<IEnumerable<ProductCategory>> GetAllProductCategories();

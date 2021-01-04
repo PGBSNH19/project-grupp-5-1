@@ -42,14 +42,15 @@ namespace Frontend.Pages
                 bool hasFound = GetProductPrices.Any(x => item.Product.Id == x.ProductId);
                 if (hasFound)
                 {
-                    item.Product.Price = await ProductService.GetLatestPriceByProductId(item.Product.Id);
-                    var saleprice = await ProductService.GetPriceByProductId(item.Product.Id);
-                    item.Product.SalePrice = saleprice.SalePrice;
+                    item.Product.CurrentPrice = await ProductService.GetLatestPriceByProductId(item.Product.Id);
+                    //var saleprice = await ProductService.GetPriceByProductId(item.Product.Id);
+                    //item.Product.SalePrice = saleprice.SalePrice;
                 }
                 else
                 {
-                    item.Product.Price = 0;
-                    item.Product.SalePrice = 0;
+                    item.Product.CurrentPrice = 0;
+                    //item.Product.Price = 0;
+                    //item.Product.SalePrice = 0;
                 }
             }
         }
