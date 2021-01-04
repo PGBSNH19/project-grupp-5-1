@@ -124,7 +124,7 @@ namespace Frontend.Services
                             ProductName = product.Name,
                             Amount = basketProduct.Amount,
                             Description = product.Description,
-                            Price = 10,
+                            TotalPrice = (decimal)basketProduct.Product.CurrentPrice * basketProduct.Amount,
                         };
 
                         buyedProducts.Add(buyedProduct);
@@ -139,6 +139,7 @@ namespace Frontend.Services
                         Address = userInfo.Address,
                         City = userInfo.City,
                         ZipCode = userInfo.ZipCode.ToString(),
+                        TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount,
                         buyedProductsList = buyedProducts
                     };
 

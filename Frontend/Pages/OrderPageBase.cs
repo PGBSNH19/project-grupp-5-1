@@ -22,12 +22,13 @@ namespace Frontend.Pages
 
         [Inject]
         public IProductService ProductService { get; set; }
-        
+
         [Inject]
         public ICouponService CouponService { get; set; }
 
         [Parameter]
         public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
+
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public IEnumerable<Coupon> Coupons { get; set; }
         public string GetCouponId { get; set; }
@@ -70,9 +71,9 @@ namespace Frontend.Pages
             await OrderService.CreateOrder(userInfo);
         }
 
-        public async void  GetDiscount(int couponId)
-        {            
-            if(couponId != 0)
+        public async void GetDiscount(int couponId)
+        {
+            if (couponId != 0)
             {
                 Coupon coupon = new Coupon();
                 coupon = await CouponService.GetCouponById(couponId);
@@ -97,7 +98,7 @@ namespace Frontend.Pages
                     bool hasFound = GetProductPrices.Any(x => item.Product.Id == x.ProductId);
                     if (hasFound)
                     {
-                        item.Product.CurrentPrice = await ProductService.GetLatestPriceByProductId(item.Product.Id);                        
+                        item.Product.CurrentPrice = await ProductService.GetLatestPriceByProductId(item.Product.Id);
                     }
                     else
                     {
@@ -106,7 +107,7 @@ namespace Frontend.Pages
                 }
 
                 Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
-            
+
                 StateHasChanged();
             }
         }

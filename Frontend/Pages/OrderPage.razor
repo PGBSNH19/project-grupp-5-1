@@ -59,19 +59,17 @@
                                         @foreach (var coupon in Coupons)
                                                 {
                                             <option value="@coupon.Id" class="form-control">@coupon.Code</option>
-                                            }
+                                                }
                                     </InputSelect>
                                 </EditForm>
                             </div>
-                            @if(GetCouponId != null)
+                            @if (GetCouponId != null)
                             {
                                 <div class="col-lg-3 pt-4" style="margin-top: auto;">
                                     <button type="submit" class="btn btn-success" @onclick="() => GetDiscount(int.Parse(GetCouponId))">Choose Coupon</button>
-
                                 </div>
                             }
                         }
-
                     </td>
                 </tr>
                 <tr>
@@ -95,10 +93,10 @@
                                     @{
                                         var discSum = (basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) * Discount);
                                         discSum = basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) - discSum;
-                                        decimal disc = (decimal)discSum;
+                                        userInfo.TotalPiceWithDiscount = (decimal)discSum;
                                     }
                                     <td>
-                                        With discount: @disc.ToString("0.###")
+                                        With discount: @userInfo.TotalPiceWithDiscount.ToString("0.##")
                                     </td>
                                 </tr>
                             </tbody>

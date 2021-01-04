@@ -32,6 +32,8 @@ namespace Frontend.Models
         [Range(10000, 99999, ErrorMessage = "Zip Code too long (5 character limit).")]
         public int ZipCode { get; set; }
 
+        public decimal TotalPiceWithDiscount { get; set; } = 0;
+
         public IEnumerable<ProductInBasket> userBasket { get; set; }
     }
 }
