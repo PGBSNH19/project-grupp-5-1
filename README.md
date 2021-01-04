@@ -98,19 +98,19 @@ This will create the local database and insert some seeded data which are define
 
 #### Product owner
 
-| [![Stephan Johansen](.\Documentation\Images\Profile avatars\Stephan.png)](https://github.com/skjohansen) |
+| [![Stephan Johansen](./Documentation/Images/Profile%20avatars/Stephan.png)](https://github.com/skjohansen) |
 | :----------------------------------------------------------: |
 |      [Stephan Johansen](https://github.com/skjohansen)       |
 
 #### Testers
 
-| ![Leila Ershad](.\Documentation\Images\Profile avatars\Default.png) | ![Anna Niemelä](.\Documentation\Images\Profile avatars\Default.png) | ![Monirul Azam](.\Documentation\Images\Profile avatars\Default.png) | ![Jolanta Barkauskaite](.\Documentation\Images\Profile avatars\Default.png) | ![Sara Kristensen](.\Documentation\Images\Profile avatars\Default.png) |
+| ![Leila Ershad](./Documentation/Images/Profile%20avatars/Default.png) | ![Anna Niemelä](./Documentation/Images/Profile%20avatars/Default.png) | ![Monirul Azam](./Documentation/Images/Profile%20avatars/Default.png) | ![Jolanta Barkauskaite](./Documentation/Images/Profile%20avatars/Default.png) | ![Sara Kristensen](./Documentation/Images/Profile%20avatars/Default.png) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                         Leila Ershad                         |                         Anna Niemelä                         |                         Monirul Azam                         |                     Jolanta Barkauskaite                     |                       Sara Kristensen                        |
 
 #### Developers
 
-| [![André Morad](.\Documentation\Images\Profile avatars\Andre.png)](https://github.com/AndreMorad) | [![Nor Shiervani](.\Documentation\Images\Profile avatars\Nor.png)](https://github.com/norshiervani) | [![Ahmad Yassin](.\Documentation\Images\Profile avatars\Ahmad.png)](https://github.com/akyassin) | [![Micael Wollter](.\Documentation\Images\Profile avatars\Mikael.png)](https://github.com/aohzork) | [![Irvin Perez](.\Documentation\Images\Profile avatars\Irvin.png)](https://github.com/Irvper77) |
+| [![André Morad](./Documentation/Images/Profile%20avatars/Andre.png)](https://github.com/AndreMorad) | [![Nor Shiervani](./Documentation/Images/Profile%20avatars/Nor.png)](https://github.com/norshiervani) | [![Ahmad Yassin](./Documentation/Images/Profile%20avatars/Ahmad.png)](https://github.com/akyassin) | [![Micael Wollter](./Documentation/Images/Profile%20avatars/Mikael.png)](https://github.com/aohzork) | [![Irvin Perez](./Documentation/Images/Profile%20avatars/Irvin.png)](https://github.com/Irvper77) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |         [André Morad](https://github.com/AndreMorad)         |       [Nor Shiervani](https://github.com/norshiervani)       |         [Ahmad Yassin](https://github.com/akyassin)          |         [Micael Wollter](https://github.com/aohzork)         |          [Irvin Perez](https://github.com/Irvper77)          |
 
