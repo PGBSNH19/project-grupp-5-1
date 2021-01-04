@@ -37,13 +37,15 @@ namespace Backend.Services.Repositories
                 htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.TotalPrice}</td></tr>";
             }
 
+            DateTime eastern = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
+
             MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
                                .Replace("[productname]", htmlProduct.ProductName)
                                .Replace("[username]", mailRequest.UserName)
                                .Replace("[address]", mailRequest.Address)
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
-                               .Replace("[orderdate]", DateTime.Now.ToString())
+                               .Replace("[orderdate]", eastern.ToString())
                                .Replace("[totalpricewithdiscount]", mailRequest.TotalPiceWithDiscount.ToString("0.##"));
 
             var email = new MimeMessage();
