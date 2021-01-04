@@ -34,7 +34,7 @@ namespace Backend.Services.Repositories
 
             foreach (var item in mailRequest.buyedProductsList)
             {
-                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.Price}</td></tr>";
+                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.TotalPrice}</td></tr>";
             }
 
             MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
@@ -44,7 +44,7 @@ namespace Backend.Services.Repositories
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
                                .Replace("[orderdate]", DateTime.Now.ToString())
-                               .Replace("[total]", htmlProduct.TotalPrice.ToString());
+                               .Replace("[totalpricewithdiscount]", mailRequest.TotalPiceWithDiscount.ToString("0.##"));
 
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
