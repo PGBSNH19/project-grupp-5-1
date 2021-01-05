@@ -7,10 +7,9 @@ The purpose of this project is to enable companies to sell products to their cus
 ## Table of contents
 
 * [1. Technologies used](#1-technologies-used)
-
 * [2. Local development setup](#2-local-development-setup)
-
 * [3. Team](#3-team)
+* [4. Useful links](#4-useful-links)
 
 
 
@@ -45,7 +44,7 @@ Project is created using:
 ## 2. Local development setup
 We use Visual studio 2019 as IDE (for both front- and backend), Microsoft SQL Server Management Studio for browsing the database, Postman for making calls to our API and Docker Desktop for testing our Dockerfiles locally. Before you can run the projects you will need the `appsettings.Development.json`-files for both front- and backend. This is because they are included in our gitignore-file. These will be placed in the root folder of each project. The development appsettings for frontend project contains the url for the locally running API while the development appsettings for the backend project contains the connection string to the local database. Below are the two files that will be needed before running the projects. 
 
-Please make sure to paste in your connection string to the local database in the backend appsettings-file. Furthermore, make sure that the ApiHostUrl matches the url to your local API. In order to know what url your API will be running on navigate to `Backend -> Properties -> launchSettings.json`, then check if your sslPort matches the port of `ApiHostUrl` (44339 in this case) in the frontend appsettings-file. If your sslPort does not match the port defined in `appsettings.Development.json` then you need to replace "44339" with your sslPort defined in `launchSettings.json`. For instance, if your sslPort would be "44350" then your appsetting-file would define the ApiHostUrl like this instead: `"ApiHostUrl": "https://localhost:44350/"`.
+**IMPORTANT: **Please make sure to paste in your connection string to the local database in the backend appsettings-file. Furthermore, make sure that the ApiHostUrl matches the url to your local API. In order to know what url your API will be running on navigate to `Backend -> Properties -> launchSettings.json`, then check if your sslPort matches the port of `ApiHostUrl` (44339 in this case) in the frontend appsettings-file. If your sslPort does not match the port defined in `appsettings.Development.json` then you need to replace "44339" with your sslPort defined in `launchSettings.json`. For instance, if your sslPort would be "44350" then your appsetting-file would define the ApiHostUrl like this instead: `"ApiHostUrl": "https://localhost:44350/"`.
 
 
 
@@ -113,4 +112,20 @@ This will create the local database and insert some seeded data which are define
 | [![André Morad](./Documentation/Images/Profile%20avatars/Andre.png)](https://github.com/AndreMorad) | [![Nor Shiervani](./Documentation/Images/Profile%20avatars/Nor.png)](https://github.com/norshiervani) | [![Ahmad Yassin](./Documentation/Images/Profile%20avatars/Ahmad.png)](https://github.com/akyassin) | [![Micael Wollter](./Documentation/Images/Profile%20avatars/Mikael.png)](https://github.com/aohzork) | [![Irvin Perez](./Documentation/Images/Profile%20avatars/Irvin.png)](https://github.com/Irvper77) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |         [André Morad](https://github.com/AndreMorad)         |       [Nor Shiervani](https://github.com/norshiervani)       |         [Ahmad Yassin](https://github.com/akyassin)          |         [Micael Wollter](https://github.com/aohzork)         |          [Irvin Perez](https://github.com/Irvper77)          |
+
+
+
+## 4. Useful links
+
+- [Jira confluence - School project information/requirements (Requires authentication)](https://plushogskolan.atlassian.net/wiki/spaces/TO/pages/64061445/Systemkrav)
+
+- [Jira confluence - Project documentation (Requires authentication)](https://plushogskolan.atlassian.net/wiki/spaces/G5/overview)
+
+- [Jira software - Project board [Sprints, backlog, charts etc.] (Requires authentication)](https://plushogskolan.atlassian.net/secure/RapidBoard.jspa?rapidView=15&projectKey=G5)
+
+- [API](https://g5store.azurewebsites.net/) 
+
+- [Website](http://storefront5test.azurewebsites.net/)
+
+  
 
