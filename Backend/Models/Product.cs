@@ -32,5 +32,6 @@ namespace Backend.Models
 
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
         public ICollection<ProductPrice> ProductPrices { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; }
     }
 }

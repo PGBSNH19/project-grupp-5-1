@@ -1,32 +1,39 @@
-﻿using Frontend.Models;
+﻿using System;
+using System.Linq;
+using Frontend.Models;
 using Frontend.Services;
+using Frontend.Componenets;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
-
     public class EditBase : ComponentBase
     {
         [Inject]
         public IProductService ProductService { get; set; }
+
+        [Inject]
+        public IImageService ImageService { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         public Product product { get; set; } = new Product();
+
         [Parameter]
         public string CurrentID { get; set; }
-
         public string ProductCatId { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
 
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
+
+        public DropZoneBase child;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -60,6 +67,9 @@ namespace Frontend.Pages
             product.ProductCategoryId = int.Parse(ProductCatId);
             await ProductService.Update(product, product.Price, (decimal)product.SalePrice);
             product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
+
+            await ImageService.UploadImages(child.Images, product.Id);
+
             StateHasChanged();
             NavigationManager.NavigateTo("manageproducts");
         }

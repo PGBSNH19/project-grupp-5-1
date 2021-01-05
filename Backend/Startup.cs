@@ -47,6 +47,7 @@ namespace Backend
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo

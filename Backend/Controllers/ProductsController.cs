@@ -89,6 +89,37 @@ namespace Backend.Controllers
         }
 
         /// <summary>
+        /// Retrieve an default image url by the ProductId.
+        /// </summary>
+        /// <param name="productId">The Id of the requested product.</param>
+        /// <returns>The url of the default image of the requested product.</returns>
+        /// <response code="200">Returns the default image url of the product which matched the given Id.</response>
+        /// <response code="404">No url was found which matched the given ProductId.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch a the url.</response>    
+        [HttpGet("defaultImage/{productId}")]
+        public async Task<ActionResult<string>> GetDefaultImageByProductId(int productId)
+        {
+            try
+            {
+                var product = await _productRepository.GetProductById(productId);
+
+                if (product == null)
+                {
+                    return NotFound($"Product with id {productId} was not found.");
+                }
+
+                var mappedResult = _mapper.Map<ProductDTO>(product);
+
+                return Ok(mappedResult.DefaultImageName);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Failed to get the product. Exception thrown when attempting to add data to the database: {e.Message}");
+            }
+        }
+
+        /// <summary>
         /// Searches for products which contains the given product name.
         /// </summary>
         /// <param name="productname">The query which will be used when attempting to search products by their name.</param>

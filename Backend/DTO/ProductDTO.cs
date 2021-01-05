@@ -16,6 +16,8 @@ namespace Backend.DTO
         public int Stock { get; set; }
         public int ProductCategoryId { get; set; }
         public ICollection<ProductPrice> ProductPrices { get; set; }
+        public string DefaultImageName { get; set; }
+
 
     }
 }

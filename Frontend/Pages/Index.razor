@@ -4,15 +4,13 @@
 @if (products == null)
 {
     <div class="mt-5 text-center w-100">
-        <img src="./Images/spinner.gif" style="width:20%;height:5%" />
+        <img src="./Images/loading.gif" style="width:30%;height:10%" />
     </div>
 }
 else
 {    
     <div>
-        <h1>List of products</h1>
-
-        <div class="pl-4 navbar bg-middle-yellow">
+        <div class="pl-4 navbar bg-middle-yellow mt-4">
             <form @onsubmit="SearchProducts">
                 <table>
                     <tr>
@@ -20,7 +18,7 @@ else
                             <input class="form-control" placeholder="Enter product name..." maxlength="60" @bind="@ProductSearchQuery" />
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
+                            <button type="submit" class="btn btn-secondary mx-sm-2">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -52,7 +50,7 @@ else
                 </EditForm>
             </div>
             <div class="col-lg-3 pt-4" style="margin-top: auto;">
-                <button type="submit" class="btn btn-success" @onclick="() => FilterByProductCategory(int.Parse(ProductCategoryId))">Filter Category</button>
+                <button type="submit" class="btn btn-dark" @onclick="() => FilterByProductCategory(int.Parse(ProductCategoryId))">Filter Category</button>
                 
             </div>
 
@@ -119,21 +117,24 @@ else
                 </EditForm>
             </div>
             <div class="col-lg-3 pt-4" style="margin-top: auto;">
-                <button type="submit" class="btn btn-success" @onclick="() => FilterByPriceRange(int.Parse(MinPrice),int.Parse(MaxPrice))">Filter Price</button>
+                <button type="submit" class="btn btn-dark" @onclick="() => FilterByPriceRange(int.Parse(MinPrice),int.Parse(MaxPrice))">Filter Price</button>
             </div>            
         </div>  
 
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
+        <div id="carouselExampleIndicators" class="carousel slide main-carousel" data-ride="carousel">
+            <div class="carousel-inner main-carousel">
                 @foreach (var product in GetFeaturedProducts())
                 {
-                    <div class="card carousel-item text-white bg-primary mb-3 @(GetFeaturedProducts()[0] == product ? "active" : "")"
+                    <div class="card carousel-item text-white bg-primary mb-3 main-carousel @(GetFeaturedProducts()[0] == product ? "active" : "")"
                          style="max-height:240px">
                         <div class="card-header">
                             Featured products
                         </div>
                         <a href=@($"productdetails/{product.Id}") class="text-white" style="text-decoration: none">
-                            <div class="card-body" href="@($"productdetails/{product.Id}")">
+                            <div class="d-flex justify-content-center p-2">
+
+                            </div>
+                            <div class="card-body">
                                 <h5 class="card-title">@product.Name</h5>
                                 <p class="card-text">@product.Description</p>
                             </div>
@@ -169,7 +170,29 @@ else
                             <div class="card">
                                 <div class="d-flex justify-content-center p-2">
                                     <a href="@($"productdetails/{product.Id}")">
-                                        <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:150px;height:150px" />
+                                        <a href="@($"productdetails/{product.Id}")">
+                                            @{
+                                                string src;
+                                                var image = Images.Where(p => p.ProductId == product.Id).FirstOrDefault();
+                                                if (image != null)
+                                                {
+                                                    src = image.ImageURL;
+                                                }
+                                                else
+                                                {
+                                                    src = null;
+                                                }
+
+                                            }
+                                            @if (src != null)
+                                            {
+                                                <img src="@src" style="width:150px;height:150px" />
+                                            }
+                                            else
+                                            {
+                                                <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:150px;height:150px" />
+                                            }
+                                        </a>
                                     </a>
                                 </div>
                                 <div class="card-body">
@@ -187,7 +210,6 @@ else
         }
     </div>
 }
-
 
 @code {
     private bool collapseNavMenu = true;

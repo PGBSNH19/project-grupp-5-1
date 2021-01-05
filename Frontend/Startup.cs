@@ -10,6 +10,7 @@ using Frontend.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.Authorization;
+using Frontend.Models;
 
 namespace Frontend
 {
@@ -32,16 +33,20 @@ namespace Frontend
             services.AddSingleton<HttpClient>();
             services.AddSingleton<WeatherForecastService>();
 
-            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             services.AddScoped<ITokenValidator, TokenValidator>();
+            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
-            services.AddHttpClient<IProductService, ProductService>();
+            services.AddHttpClient<IUserService, UserService>();
+            services.AddHttpClient<IImageService, ImageService>();
             services.AddHttpClient<IOrderService, OrderService>();
             services.AddHttpClient<ICouponService, CouponService>();
-            services.AddHttpClient<IUserService, UserService>();
+            services.AddHttpClient<IProductService, ProductService>();
 
             services.AddBlazoredModal();
             services.AddBlazoredLocalStorage();
+
+            services.AddOptions();
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,13 +63,13 @@ namespace Frontend
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
