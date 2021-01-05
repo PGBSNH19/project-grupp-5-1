@@ -33,7 +33,8 @@ namespace frontend.Pages
 
             Product = new Product()
             { 
-                ProductCategoryId = 1
+                ProductCategoryId = 1,
+                SalePrice = 0
             };
         }
 
@@ -41,7 +42,6 @@ namespace frontend.Pages
         {
             if(ProductCatId == null) { ProductCatId = "1"; }
             Product.ProductCategoryId = int.Parse(ProductCatId);
-
             var result = await ProductService.AddProducts(Product, Product.Price);
 
             if (result != null)
