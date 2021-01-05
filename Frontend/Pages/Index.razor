@@ -61,6 +61,7 @@ else
                 <EditForm Model="@products">
                     <InputSelect @bind-Value="@MinPrice" class="form-control">
                         <option value="0" class="form-control">Price to ...</option>
+                        <option value="0" class="form-control">0</option>
                         <option value="100" class="form-control">100</option>
                         <option value="200" class="form-control">200</option>
                         <option value="500" class="form-control">500</option>
@@ -118,7 +119,7 @@ else
                 </EditForm>
             </div>
             <div class="col-lg-3 pt-4" style="margin-top: auto;">
-                <button type="submit" class="btn btn-success" @onclick="() => FilterByPriceRange(int.Parse(MinPrice),int.Parse(MinPrice))">Filter Price</button>
+                <button type="submit" class="btn btn-success" @onclick="() => FilterByPriceRange(int.Parse(MinPrice),int.Parse(MaxPrice))">Filter Price</button>
             </div>            
         </div>  
 

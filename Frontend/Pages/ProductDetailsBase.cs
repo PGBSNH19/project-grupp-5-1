@@ -16,23 +16,26 @@ namespace Frontend.Pages
         public IProductService ProductService { get; set; }
 
         public Product product { get; set; } = new Product();
-        public IEnumerable<ProductPrice> GetProductPrices { get; set; }       
+        public IEnumerable<ProductPrice> GetProductPrices { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
         [Parameter]
         public string Id { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            //Id = Id ?? "1";
             product = await ProductService.GetProductById(int.Parse(Id));
 
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
+            product.ProductCategoryName = ProductCategories.Where(p => p.Id == product.ProductCategoryId).SingleOrDefault()?.CategoryName;
+            
             GetProductPrices = await ProductService.GetAllPrices();
+
             bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
             if (hasFound)
             {
-                product.Price = await ProductService.GetLatestPriceByProductId(product.Id);
-                var saleprice = await ProductService.GetPriceByProductId(product.Id);
-                product.SalePrice = saleprice.SalePrice;
+                var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
             }
             else
             {

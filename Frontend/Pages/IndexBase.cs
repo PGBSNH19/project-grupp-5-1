@@ -18,7 +18,6 @@ namespace Frontend.Pages
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
-        //public decimal? CurrentPrice { get; set; }
 
         public string ProductSearchQuery { get; set; }
         public string ProductCategoryId { get; set; } = "0";
@@ -28,18 +27,20 @@ namespace Frontend.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            products = (await ProductService.GetProducts()).ToList();
+            products = (await ProductService.GetProducts()).ToList();            
+            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
             GetProductPrices = await ProductService.GetAllPrices();
 
-            foreach(var product in products)
+            foreach (var product in products)
             {
+                product.ProductCategoryName = ProductCategories.Where(p => p.Id == product.ProductCategoryId).SingleOrDefault()?.CategoryName;
+
                 bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
                 if (hasFound)
-                {                    
+                {
                     var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
                     product.Price = getProductPrices.Price;
                     product.SalePrice = getProductPrices.SalePrice;
-
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                 }
                 else
@@ -47,10 +48,8 @@ namespace Frontend.Pages
                     product.Price = 0;
                     product.SalePrice = 0;
                     product.CurrentPrice = 0;
-                }
-            }
-
-            ProductCategories = (await ProductService.GetAllProductCategories()).ToList();
+                }               
+            }          
         }
 
         protected async Task SearchProducts()
@@ -72,11 +71,47 @@ namespace Frontend.Pages
                 products = await ProductService.GetProducts();
             else
                 products = await ProductService.GetProductsByCategoryId(id);
+
+            GetProductPrices = await ProductService.GetAllPrices();
+
+            foreach (var product in products)
+            {
+                bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+                if (hasFound)
+                {
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                }
+                else
+                {
+                    product.Price = 0;
+                    product.SalePrice = 0;
+                    product.CurrentPrice = 0;
+                }
+            }
         }
 
-        protected async Task FilterByPriceRange(int min, int max)
+        public async Task FilterByPriceRange(int min, int max)
         {
-            products = await ProductService.GetProductsByPriceRange(min, max);
+            products = await ProductService.GetProducts();
+            GetProductPrices = await ProductService.GetAllPrices();
+
+            foreach (var product in products)
+            {
+                bool hasFound = GetProductPrices.Any(x => product.Id == x.ProductId);
+                if (hasFound)
+                {
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                }
+                else
+                {
+                    product.Price = 0;
+                    product.SalePrice = 0;
+                    product.CurrentPrice = 0;
+                }
+            }
+
+            if(max > 0 )
+                products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
         }
     }
 }

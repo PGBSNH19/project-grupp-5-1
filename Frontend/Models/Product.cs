@@ -31,10 +31,42 @@ namespace Frontend.Models
 
         public ICollection<ProductPrice> ProductPrices { get; set; }
 
+        public string ProductCategoryName { get; set; }
+
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Price must be over 0.")]
+        [Range(1, 100000, ErrorMessage = "Price must be between 1 and 100000.")]
         public decimal Price { get; set; }
+        [Required]
+        [PriceLessThan("Price", ErrorMessage = "Sale Price cannot be larger then Original price")]
         public decimal? SalePrice { get; set; }
         public decimal? CurrentPrice { get; set; }
+    }
+
+    public class PriceLessThanAttribute : ValidationAttribute
+    {
+        private readonly string _comparisonProperty;
+
+        public PriceLessThanAttribute(string comparisonProperty)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            ErrorMessage = ErrorMessageString;
+            var currentValue = (decimal)value;
+
+            var property = validationContext.ObjectType.GetProperty(_comparisonProperty, typeof(decimal));
+
+            if (property == null)
+                throw new ArgumentException("Property with this name not found");
+
+            var comparisonValue = (decimal)property.GetValue(validationContext.ObjectInstance);
+
+            if (currentValue > comparisonValue)
+                return new ValidationResult(ErrorMessage);
+
+            return ValidationResult.Success;
+        }
     }
 }
