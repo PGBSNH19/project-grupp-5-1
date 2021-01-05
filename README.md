@@ -127,5 +127,7 @@ This will create the local database and insert some seeded data which are define
 
 - [Website](http://storefront5test.azurewebsites.net/)
 
+- [Website (Production)](https://storefront5prod.azurewebsites.net/)
+
   
 
