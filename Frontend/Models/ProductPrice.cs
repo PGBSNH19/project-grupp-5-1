@@ -13,7 +13,7 @@ namespace Frontend.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(1, 100000, ErrorMessage = "Price must be more then -1.")]
+        [Range(1, 100000, ErrorMessage = "Price must be between 0-100000")]
         public decimal Price { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
