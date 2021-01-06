@@ -1,5 +1,10 @@
 ﻿@page "/edit/{CurrentID}"
+@using Models
 @inherits EditBase
+@inject Frontend.Services.IProductService productService
+@inject Frontend.Services.Interfaces.IImageService imageService
+@inject NavigationManager NavigationManager
+
 
 <h1>Edit</h1>
 
@@ -84,7 +89,12 @@
                     <input type="checkbox" style="height: 100%" @bind="product.IsAvailable">
                 </div>
             </div>
-
+            <label for="Image" class="col-sm-2 col-form-label">
+                Images
+            </label>
+            <div class="col-sm-12 mb-4">
+                <DropZone ProductId="product.Id" @ref="child" />
+            </div>
         </div>
     </div>
     <div class="row">

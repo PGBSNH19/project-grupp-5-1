@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
+﻿using System;
 using Frontend.Models;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace Frontend.Services
 {
@@ -13,11 +13,10 @@ namespace Frontend.Services
         private readonly HttpClient httpClient;
         private readonly IConfiguration _configuration;
 
-
         public ProductService(HttpClient httpClient, IConfiguration configuration)
         {
             this.httpClient = httpClient;
-            this._configuration = configuration;
+            _configuration = configuration;
         }
 
         public async Task<IEnumerable<Product>> GetProducts()
@@ -30,7 +29,6 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] 
                 + $"api/v1.0/products/search/?productname={productName}");
         }
-
 
         public async Task<Product> GetProductById(int id)
         {

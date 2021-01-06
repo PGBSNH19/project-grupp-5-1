@@ -35,6 +35,8 @@ namespace Backend
 
             CreateMap<ProductCategory, ProductCategoryDTO>()
                 .ReverseMap();
+            CreateMap<ProductImage, ProductImageDTO>()
+               .ReverseMap();
         }
     }
 }

@@ -1,13 +1,13 @@
-﻿using Frontend.Models;
+﻿using System;
+using System.Linq;
+using Frontend.Models;
 using Frontend.Services;
+using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
@@ -15,9 +15,15 @@ namespace Frontend.Pages
     {
         [Inject]
         public IProductService ProductService { get; set; }
+
+        [Inject]
+        public IImageService ImageService { get; set; }
+
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
+        public List<Image> Images { get; set; }
 
         public string ProductSearchQuery { get; set; }
         public string ProductCategoryId { get; set; } = "0";
@@ -50,6 +56,7 @@ namespace Frontend.Pages
                     product.CurrentPrice = 0;
                 }               
             }          
+            Images = await ImageService.GetAllDefaultImages();
         }
 
         protected async Task SearchProducts()
@@ -111,7 +118,7 @@ namespace Frontend.Pages
             }
 
             if(max > 0 )
-                products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
+            products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
         }
     }
 }
