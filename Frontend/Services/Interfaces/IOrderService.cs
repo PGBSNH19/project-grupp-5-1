@@ -14,6 +14,6 @@ namespace Frontend.Services.Interfaces
 
         Task DeleteProductFromBasket(ProductInBasket product);
 
-        Task CreateOrder(UserInfo userInfo);
+        Task CreateOrder(UserInfo userInfo, string couponId);
     }
 }

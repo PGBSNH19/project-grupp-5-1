@@ -439,3 +439,22 @@ app {
         margin-left: 0;
     }
 }*/
+
+.login-body {
+    background-image: url(../Images/LoginBg.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    height:100%;
+}
+
+html, body {
+    height: 100%;
+}
+
+@media(max-width: 320px) {
+
+    .mobile-remove {
+        display:none
+    }
+}

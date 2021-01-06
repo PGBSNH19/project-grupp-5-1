@@ -6,6 +6,7 @@ using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Frontend.Services;
 using System.Linq;
+using System;
 
 namespace Frontend.Pages
 {
@@ -31,7 +32,7 @@ namespace Frontend.Pages
 
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public IEnumerable<Coupon> Coupons { get; set; }
-        public string GetCouponId { get; set; }
+        public string GetCouponId { get; set; } = "";
         public decimal Discount { get; set; }
         public decimal TotalPriceWithDiscount { get; set; }
 
@@ -69,7 +70,7 @@ namespace Frontend.Pages
 
         public async void SendOrder(UserInfo userInfo)
         {
-            await OrderService.CreateOrder(userInfo);
+            await OrderService.CreateOrder(userInfo, GetCouponId);
         }
 
         public async void GetDiscount(int couponId)

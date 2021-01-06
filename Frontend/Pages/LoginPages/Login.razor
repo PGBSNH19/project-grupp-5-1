@@ -1,39 +1,36 @@
-﻿@page  "/login"
+﻿@layout LoginLayout
+@page  "/login"
 @inherits LoginBase
 
-    <div class="bg-warning" style="width:100%; height:100%;">
-        <EditForm Model="@user" OnValidSubmit="@ValidateUser">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <div>
-                <br /><br /><br /><br /><br />
-            </div>
-            <div class="container col-lg-4">
-                <div class="row">
-                    <div class="mb-2">
-                        <h4 style="font-weight:bold;">G5Store User Login</h4>
-                    </div>
-                    <div>
-                        <br />
-                    </div>
-                    <div class="col-12 row mb-3">
-                        <InputText class="form-control col-12" @bind-Value="user.Username" placeholder="user name" />
-                    </div>
-                    <br />
-                    <div class="col-12 row mb-3">
-                        <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
-                    </div>
-                    <br />
-                    <div class="col-12 row mb-3">
-                        <span class="col-12"></span>
-                        <input type="submit" class="form-control col-6 btn btn-primary" value="Login" />
-                        <a href="/signup" class="col-6">Sign up</a>
-                    </div>
-                    <br />
-                    <div class="col-12 row" style="text-align:left; font-style:italic; color:red">
-                        <span class="col-12">@ErrorMesssage</span>
-                    </div>
+    <EditForm Model="@user" OnValidSubmit="@ValidateUser">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mobile-remove">
+            <br /><br /><br /><br /><br /><br /><br />
+        </div>
+        <div class="container col-lg-5 mt-3">
+            <div class="row">
+                <div class="mb-2">
+                    <h4 style="font-weight:bold; color:white">Login</h4>
+                </div>
+                <div>
+                </div>
+                <div class="col-12 row mb-3">
+                    <InputText class="form-control col-12" @bind-Value="user.Username" placeholder="user name" />
+                </div>
+                <div class="col-12 row mb-3">
+                    <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
+                </div>
+                <div class="col-12 row mb-3">
+                    <span class="col-12"></span>
+                    <input type="submit" class="form-control col-6 btn btn-danger btn-sm" value="Login" />
+                    <a href="/signup" class="col-6 pt-1" style="color:white; text-decoration:none">Sign up</a>
+                </div>
+                <div class="col-12 row" style="text-align:left; font-style:italic; color:red">
+                    <span class="col-12">@ErrorMesssage</span>
                 </div>
             </div>
-        </EditForm>
-    </div>
+        </div>
+    </EditForm>
+
+

@@ -4,7 +4,7 @@
 @if (products == null)
 {
     <div class="mt-5 text-center w-100">
-        <img src="./Images/loading.gif" style="width:30%;height:10%" />
+        <img src="./Images/loading.gif" style="width:20%;height:8%" />
     </div>
 }
 else
@@ -132,7 +132,6 @@ else
                         </div>
                         <a href=@($"productdetails/{product.Id}") class="text-white" style="text-decoration: none">
                             <div class="d-flex justify-content-center p-2">
-
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">@product.Name</h5>
@@ -190,7 +189,7 @@ else
                                             }
                                             else
                                             {
-                                                <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:150px;height:150px" />
+                                                <img src="./Images//NoImage.png" style="width:150px;height:150px" />
                                             }
                                         </a>
                                     </a>
