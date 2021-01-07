@@ -1,5 +1,5 @@
 ﻿@page "/manageproducts"
-@inherits IndexBase
+@inherits ManageProductsBase
 
 <h1>Manage Products</h1>
 <br />
@@ -42,9 +42,13 @@ else
                 <td>@product.CurrentPrice</td>
                 <td>@product.Price</td>
                 <td>@product.SalePrice</td>
-                @if (@product.Stock < 6)
+                @if (@product.Stock < 6 && product.Stock >= 1)
                 {
-                    <td>@product.Stock <i class="oi oi-warning text-warning float-right" title="Product is running low on stock" aria-hidden="true" /></td>
+                    <td>@product.Stock <i class="iconify text-warning float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is running low on stock" aria-hidden="true" /></td>
+                }
+                else if (@product.Stock <= 0)
+                {
+                    <td>@product.Stock <i class="iconify text-danger float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is out of stock" aria-hidden="true" /></td>
                 }
                 else
                 {
