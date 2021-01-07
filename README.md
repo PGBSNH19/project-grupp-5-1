@@ -36,7 +36,7 @@ Project is created using:
 	
 * Docker
 	
-* MSSQL
+* Microsoft SQL Server
 	
 * MSTest
 	

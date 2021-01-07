@@ -1,3 +1,5 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
 .drag-drop-zone {
   border: 2px dashed dimgrey;
   background-color: #fcf9ff;
@@ -70,11 +72,10 @@
 .main-carousel {
   background-color: #464f58 !important;
 }
-@import url("open-iconic/font/css/open-iconic-bootstrap.min.css");
 
 html,
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 a,
