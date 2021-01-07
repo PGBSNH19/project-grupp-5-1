@@ -17,6 +17,8 @@ namespace Backend.Models.Mail
         public string Address { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
+        public decimal TotalPiceWithDiscount { get; set; }
+        public string Date { get; set; }
         public IEnumerable<BuyedProducts> buyedProductsList { get; set; }
     }
 }

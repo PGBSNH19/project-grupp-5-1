@@ -1,0 +1,42 @@
+﻿@inherits Frontend.Componenets.DropZoneBase
+
+
+<div class="drag-drop-zone">
+    <InputFile OnChange="AddFiles" multiple />
+    @if (Images.Count == 0)
+    {
+        <span>Click or drag to select images...</span>
+    }
+    else
+    {
+        <div class="images-box">
+            <div class="flex-row-reverse">
+                @foreach (var image in Images)
+                {
+                    <form @onsubmit="() => RemoveFile(image)" method="POST">
+                        <div style="position:relative">
+                            <InputCheckbox class="defaultCheckBox" @bind-Value="@image.IsDefault" id="default-check" @onclick="() => CheckboxChange(image)" />
+                            <button type="submit" class="close">
+                                <span>&times;</span>
+                            </button>
+                            @{
+                                var src = image.ImageDataURL != null ? image.ImageDataURL : image.ImageURL;
+                                <div>
+                                    @if(image.IsDefault == true)
+                                    {
+                                        <img src="@src" asp-append-version="true" alt="Not Found" class="drop-image default-image" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@src" asp-append-version="true" alt="Not Found" class="drop-image" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    }
+</div>
+

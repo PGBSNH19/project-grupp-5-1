@@ -42,10 +42,12 @@ namespace Backend
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IWeatherRepository, WeatherRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductsPricesRepository, ProductsPricesRepository>();
             services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -89,7 +91,7 @@ namespace Backend
                         };
                     });
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.AddScoped<IMailService, MailService>();
+            services.AddTransient<IMailService, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

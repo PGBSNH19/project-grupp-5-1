@@ -18,7 +18,9 @@
                     <th scope="col">Product Name</th>
                     <th scope="col">Category</th>
                     <th scope="col">Image</th>
-                    <th scope="col">Ammount</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total Price</th>
                     <th class="text-center" scope="col">Action</th>
                 </tr>
             </thead>
@@ -40,9 +42,67 @@
                                 <button class="btn btn-sm btn-outline-success mr-1" @onclick="() =>Increase(basketProduct)">+</button>
                             </div>
                         </td>
+                        <td class="text-center">@basketProduct.Product.CurrentPrice</td>
+                        <td class="text-center">@(basketProduct.Amount * basketProduct.Product.CurrentPrice)</td>
                         <td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
                     </tr>
                 }
+                <tr>
+                    <td rowspan="4" colspan="5">
+                        @if (Coupons != null)
+                        {
+                            <div class="col-lg-4 pt-4 form-group">
+                                <div><h2>Use coupon</h2></div>
+                                <EditForm Model="@Coupons">
+                                    <InputSelect @bind-Value="@GetCouponId" class="form-control">
+                                        <option value="0" class="form-control">Select Coupon ...</option>
+                                        @foreach (var coupon in Coupons)
+                                                {
+                                                    <option value="@coupon.Id" class="form-control">@coupon.Code</option>
+                                                }
+                                    </InputSelect>
+                                </EditForm>
+                            </div>
+                            @if (GetCouponId != "")
+                            {
+                                <div class="col-lg-3 pt-4" style="margin-top: auto;">
+                                    <button type="submit" class="btn btn-success" @onclick="() => GetDiscount(int.Parse(GetCouponId))">Choose Coupon</button>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <table class="float-right" style="width:100%;">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <td>
+                                        Total Sum
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Price: @basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice)</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount: @((Discount*100).ToString("0.##")) %</td>
+                                </tr>
+                                <tr>
+                                    @{
+                                        var discSum = (basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) * Discount);
+                                        discSum = basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) - discSum;
+                                        userInfo.TotalPiceWithDiscount = (decimal)discSum;
+                                    }
+                                    <td>
+                                        With discount: @userInfo.TotalPiceWithDiscount.ToString("0.###")
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -86,12 +146,12 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="inputZip">Zip Code</label>
-                    <InputText type="text" class="form-control" id="inputZip" placeholder="Zip Code" @bind-Value="userInfo.ZipCode" />
+                    <InputNumber type="text" class="form-control" id="inputZip" placeholder="Zip Code" @bind-Value="userInfo.ZipCode" />
                     <ValidationMessage For="@(()=> userInfo.ZipCode)" />
                 </div>
             </div>
             <div class="w-100 text-right mt-5">
-                <button type="submit" class="btn btn-info">Send Order</button>
+                <button type="submit" class="btn btn-info mb-5">Send Order</button>
             </div>
         </EditForm>
     }

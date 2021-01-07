@@ -114,6 +114,9 @@ namespace Backend.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -129,6 +132,68 @@ namespace Backend.Migrations
                     b.HasIndex("ProductCategoryId");
 
                     b.ToTable("Product");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Pair these Samsung Galaxy Buds True Wireless Earbuds with your device and go.",
+                            IsAvailable = true,
+                            IsFeatured = false,
+                            Name = "SAMSUNG Galaxy Buds",
+                            ProductCategoryId = 1,
+                            Stock = 65
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Stay on top of your fitness with this Apple Watch Series 3.",
+                            IsAvailable = true,
+                            IsFeatured = true,
+                            Name = "Apple Watch Series 3 GPS",
+                            ProductCategoryId = 1,
+                            Stock = 34
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Meet the 2nd generation Nest Mini, the speaker you control with your voice.",
+                            IsAvailable = true,
+                            IsFeatured = false,
+                            Name = "Google Nest Mini (2nd Generation) - Charcoal",
+                            ProductCategoryId = 1,
+                            Stock = 11
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Keep your favorite songs, photos, videos and games, thanks to 32GB of built-in memory.",
+                            IsAvailable = true,
+                            IsFeatured = false,
+                            Name = "SAMSUNG Galaxy Tab A 8.0\" 32 GB",
+                            ProductCategoryId = 1,
+                            Stock = 23
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "At less than four pounds, this thin and light silver Chromebook laptop is easy to take from room to room or on the road.",
+                            IsAvailable = true,
+                            IsFeatured = true,
+                            Name = "HP 14\" Pentium 4GB / 64GB Chromebook",
+                            ProductCategoryId = 1,
+                            Stock = 43
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Enjoy all-day comfort and distraction-free music with the new Studio ANC.",
+                            IsAvailable = false,
+                            IsFeatured = false,
+                            Name = "JLab Audio Studio ANC On-Ear",
+                            ProductCategoryId = 1,
+                            Stock = 37
+                        });
                 });
 
             modelBuilder.Entity("Backend.Models.ProductCategory", b =>
@@ -152,6 +217,30 @@ namespace Backend.Migrations
                             Id = 1,
                             CategoryName = "Uncategorized"
                         });
+                });
+
+            modelBuilder.Entity("Backend.Models.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImage");
                 });
 
             modelBuilder.Entity("Backend.Models.ProductPrice", b =>
@@ -209,6 +298,62 @@ namespace Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FirstName = "Ahmad",
+                            LastName = "Yassin",
+                            Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
+                            Role = 1,
+                            Username = "ayassin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FirstName = "Andre",
+                            LastName = "Morad",
+                            Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
+                            Role = 1,
+                            Username = "amorad"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FirstName = "Nor",
+                            LastName = "Shiervani",
+                            Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
+                            Role = 1,
+                            Username = "nshiervani"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            FirstName = "Irvin",
+                            LastName = "Perez",
+                            Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
+                            Role = 1,
+                            Username = "iperez"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            FirstName = "Micael",
+                            LastName = "Wolter",
+                            Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
+                            Role = 1,
+                            Username = "mwolter"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            FirstName = "Jim",
+                            LastName = "Bob",
+                            Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
+                            Role = 2,
+                            Username = "customerjim"
+                        });
                 });
 
             modelBuilder.Entity("Backend.Models.Weather", b =>
@@ -325,6 +470,17 @@ namespace Backend.Migrations
                     b.Navigation("ProductCategory");
                 });
 
+            modelBuilder.Entity("Backend.Models.ProductImage", b =>
+                {
+                    b.HasOne("Backend.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Backend.Models.ProductPrice", b =>
                 {
                     b.HasOne("Backend.Models.Product", "Product")
@@ -349,6 +505,8 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.Product", b =>
                 {
                     b.Navigation("OrderedProducts");
+
+                    b.Navigation("ProductImages");
 
                     b.Navigation("ProductPrices");
                 });

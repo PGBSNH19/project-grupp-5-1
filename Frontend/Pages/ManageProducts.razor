@@ -1,5 +1,5 @@
 ﻿@page "/manageproducts"
-@inherits frontend.Pages.AddProductBase
+@inherits ManageProductsBase
 
 <h1>Manage Products</h1>
 <br />
@@ -22,9 +22,12 @@ else
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Price</th>
+                <th>Category</th>
+                <th>Curr.Price</th>
+                <th>Org.Price</th>
                 <th>SalePrice</th>
                 <th>Stock</th>
+                <th>Featured</th>
                 <th>Available</th>
                 <th>Edit</th>
             </tr>
@@ -35,16 +38,23 @@ else
             <tr>
                 <td>@product.Name</td>
                 <td>@product.Description</td>
-                <td>price</td>
-                <td>saleprice</td>
-                @if (@product.Stock < 6)
+                <td>@product.ProductCategoryName</td>
+                <td>@product.CurrentPrice</td>
+                <td>@product.Price</td>
+                <td>@product.SalePrice</td>
+                @if (@product.Stock < 6 && product.Stock >= 1)
                 {
-                    <td>@product.Stock <i class="oi oi-warning text-warning float-right" title="Product is running low on stock" aria-hidden="true" /></td>
+                    <td>@product.Stock <i class="iconify text-warning float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is running low on stock" aria-hidden="true" /></td>
+                }
+                else if (@product.Stock <= 0)
+                {
+                    <td>@product.Stock <i class="iconify text-danger float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is out of stock" aria-hidden="true" /></td>
                 }
                 else
                 {
                     <td>@product.Stock</td>
                 }
+                <td>@product.IsFeatured</td>
                 <td>@product.IsAvailable</td>
                 <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
             </tr>

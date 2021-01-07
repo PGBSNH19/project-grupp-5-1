@@ -4,48 +4,219 @@
 @if (products == null)
 {
     <div class="mt-5 text-center w-100">
-        <img src="./Images/spinner.gif" style="width:20%;height:5%" />
+        <img src="./Images/loading.gif" style="width:20%;height:8%" />
     </div>
 }
 else
-{
-<div>
-    <h1>List of products</h1>
-    <form @onsubmit="SearchProducts">
-        <div class="form-inline">
-            <input class="form-control" placeholder="Enter product name..." maxlength="60" @bind="@ProductSearchQuery" />
-            <button type="submit" class="btn btn-primary mx-sm-2">Search</button>
+{    
+    <div>
+        <div class="pl-4 navbar bg-middle-yellow mt-4">
+            <form @onsubmit="SearchProducts">
+                <table>
+                    <tr>
+                        <td>
+                            <input class="form-control" placeholder="Enter product name..." maxlength="60" @bind="@ProductSearchQuery" />
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-secondary mx-sm-2">Search</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <button class="toggler-button align-content-between text-dark-yellow font-weight-bolder" @onclick="ToggleNavMenu">                
+                    Filter  
+                    @if (NavMenuCssClass == null)
+                    {
+                        <span class="oi oi-chevron-bottom text-dark-yellow"></span>
+                    }
+                    else
+                    {
+                        <span class="oi oi-chevron-top text-dark-yellow"></span>
+                    }
+            </button>
         </div>
-    </form>
-    @if (products.Count() <= 0)
-    {
-        <div class="mt-3">Sorry, no matches for “@ProductSearchQuery” could be found.</div>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var product in products)
-            {
-                if (product.Stock > 0)
+        <div class="@NavMenuCssClass bg-light-yellow row form-group ml-0 mr-0 pb-4">
+            <div class="col-lg-2 pt-4">
+                <div>Category</div>
+                <EditForm Model="@products">
+                    <InputSelect @bind-Value="@ProductCategoryId" class="form-control">
+                        <option value="0" class="form-control">Select category ...</option>
+                        @foreach (var category in ProductCategories)
+                            {
+                            <option value="@category.Id" class="form-control">@category.CategoryName</option>
+                            }
+                    </InputSelect>
+                </EditForm>
+            </div>
+            <div class="col-lg-3 pt-4" style="margin-top: auto;">
+                <button type="submit" class="btn btn-dark" @onclick="() => FilterByProductCategory(int.Parse(ProductCategoryId))">Filter Category</button>
+                
+            </div>
+
+            <div class="col-lg-2 pt-4">
+                <div>Price from:</div>
+                <EditForm Model="@products">
+                    <InputSelect @bind-Value="@MinPrice" class="form-control">
+                        <option value="0" class="form-control">Price from ...</option>
+                        <option value="0" class="form-control">0</option>
+                        <option value="100" class="form-control">100</option>
+                        <option value="200" class="form-control">200</option>
+                        <option value="500" class="form-control">500</option>
+                        <option value="1000" class="form-control">1000</option>
+                        <option value="2000" class="form-control">2000</option>
+                        <option value="5000" class="form-control">5000</option>
+                        <option value="10000" class="form-control">10000</option>
+                        <option value="50000" class="form-control">50000</option>
+                        <option value="100000" class="form-control">100000</option>
+                    </InputSelect>
+                </EditForm>
+            </div>
+            <div class="col-lg-2 pt-4">
+                <div>Price to:</div>
+                <EditForm Model="@products">
+                    <InputSelect @bind-Value="@MaxPrice" class="form-control">
+                        <option value="0" class="form-control">Price to ...</option>
+                        @if (int.Parse(MinPrice) <= 100)
+                        {
+                            <option value="100" class="form-control">100</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 200)
+                        {
+                            <option value="200" class="form-control">200</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 500)
+                        {
+                            <option value="500" class="form-control">500</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 1000)
+                        {
+                            <option value="1000" class="form-control">1000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 2000)
+                        {
+                            <option value="2000" class="form-control">2000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 5000)
+                        {
+                            <option value="5000" class="form-control">5000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 10000)
+                        {
+                            <option value="10000" class="form-control">10000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 50000)
+                        {
+                            <option value="50000" class="form-control">50000</option>
+                        }
+                        @if (int.Parse(MinPrice) <= 100000)
+                        {
+                            <option value="100000" class="form-control">100000</option>
+                        }
+                    </InputSelect>
+                </EditForm>
+            </div>
+            <div class="col-lg-3 pt-4" style="margin-top: auto;">
+                <button type="submit" class="btn btn-dark" @onclick="() => FilterByPriceRange(int.Parse(MinPrice),int.Parse(MaxPrice))">Filter Price</button>
+            </div>            
+        </div>  
+
+        <div id="carouselExampleIndicators" class="carousel slide main-carousel" data-ride="carousel">
+            <div class="carousel-inner main-carousel">
+                @foreach (var product in GetFeaturedProducts())
                 {
-                    <div class="col-sm-4 p-3">
-                        <div class="card">
+                    <div class="card carousel-item text-white bg-primary mb-3 main-carousel @(GetFeaturedProducts()[0] == product ? "active" : "")"
+                         style="max-height:240px">
+                        <div class="card-header">
+                            Featured products
+                        </div>
+                        <a href=@($"productdetails/{product.Id}") class="text-white" style="text-decoration: none">
                             <div class="d-flex justify-content-center p-2">
-                                <a href="@($"productdetails/{product.Id}")">
-                                    <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")" style="width:150px;height:150px" />
-                                </a>
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">@product.Name</h5>
                                 <p class="card-text">@product.Description</p>
-                                <p class="text-secondary text-center h2 font-weight-bold">Stock: @product.Stock</p>
-                                <p class="card-text">@(product.IsAvailable ? "Available" : "Not Available")</p>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 }
+            </div>
+            @if (GetFeaturedProducts().Count > 1)
+            {
+                <a class="carousel-control-prev carousel-control-smaller" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon carousel-control-icon-smaller" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next carousel-control-smaller" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon carousel-control-icon-smaller" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             }
         </div>
+        
+        @if (products.Count() <= 0)
+        {
+            <div class="mt-3">Sorry, no matches for “@ProductSearchQuery” could be found.</div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var product in products)
+                {
+                    if (product.Stock > 0)
+                    {
+                        <div class="col-sm-4 p-3">
+                            <div class="card">
+                                <div class="d-flex justify-content-center p-2">
+                                    <a href="@($"productdetails/{product.Id}")">
+                                        <a href="@($"productdetails/{product.Id}")">
+                                            @{
+                                                string src;
+                                                var image = Images.Where(p => p.ProductId == product.Id).FirstOrDefault();
+                                                if (image != null)
+                                                {
+                                                    src = image.ImageURL;
+                                                }
+                                                else
+                                                {
+                                                    src = null;
+                                                }
+
+                                            }
+                                            @if (src != null)
+                                            {
+                                                <img src="@src" style="width:150px;height:150px" />
+                                            }
+                                            else
+                                            {
+                                                <img src="./Images//NoImage.png" style="width:150px;height:150px" />
+                                            }
+                                        </a>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    <p class="card-text">@product.Description</p>
+                                    <p class="text-secondary text-center h2 font-weight-bold">Price: @product.CurrentPrice</p>
+                                    <p class="text-secondary text-center h2 font-weight-bold">Stock: @product.Stock</p>
+                                    <p class="card-text">@(product.IsAvailable ? "Available" : "Not Available")</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
     }
-</div>
 }

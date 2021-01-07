@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Backend.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Backend.Models.Mail;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -35,7 +36,7 @@ namespace Backend.Controllers
         /// <returns>A list of all ordered products.</returns>
         /// <response code="200">Returns a list of all ordered products.</response>
         /// <response code="404">There are no ordered products in the database.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch the ordered products.</response>   
+        /// <response code="500">The API caught an exception when attempting to fetch the ordered products.</response>
         [HttpGet]
         public async Task<ActionResult<OrderedProductDTO[]>> GetAll()
         {
@@ -95,7 +96,7 @@ namespace Backend.Controllers
         /// <returns>The ordered product object which has been added.</returns>
         /// <response code="200">Returns the new ordered product which has been added.</response>
         /// <response code="400">The API failed to save the new ordered product to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save an ordered product.</response> 
+        /// <response code="500">The API caught an exception when attempting to save an ordered product.</response>
         [HttpPost]
         public async Task<ActionResult<OrderedProductDTO>> Add([FromBody] OrderedProductDTO orderProduct)
         {
@@ -127,7 +128,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the ordered product which has been updated.</response>
         /// <response code="404">No ordered product was found which matched the given Id.</response>
         /// <response code="400">The API failed to save the ordered product to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save an ordered product.</response>  
+        /// <response code="500">The API caught an exception when attempting to save an ordered product.</response>
         [HttpPut("{orderProductId}")]
         public async Task<ActionResult<OrderedProduct>> Update(int orderProductId, [FromBody] OrderedProductDTO updatedOrderProduct)
         {
@@ -166,7 +167,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the ordered product which has been deleted.</response>
         /// <response code="404">No ordered product was found which matched the given Id.</response>
         /// <response code="400">The API failed to save changes to database after deleting the ordered product.</response>
-        /// <response code="500">The API caught an exception when attempting to delete an ordered product.</response>  
+        /// <response code="500">The API caught an exception when attempting to delete an ordered product.</response>
         [HttpDelete("{orderProductId}")]
         public async Task<ActionResult<OrderedProductDTO>> Delete(int orderProductId)
         {
@@ -195,6 +196,7 @@ namespace Backend.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPost("send")]
         public async Task<ActionResult> SendMail([FromBody] MailRequest request)
         {
@@ -203,9 +205,9 @@ namespace Backend.Controllers
                 await _mailService.SendEmailAsync(request);
                 return Ok(request);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Failed to send mail: {e.Message}");
             }
         }
     }
