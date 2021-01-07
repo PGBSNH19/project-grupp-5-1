@@ -9,5 +9,6 @@ namespace Backend.Services.Interfaces
     public interface IProductRepository : IRepository<Product>
     {
         Task<Product> GetProductById(int id);
+        Task<IList<Product>> SearchProducts(string productName);
     }
 }

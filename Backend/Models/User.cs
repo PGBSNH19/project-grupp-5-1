@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Models
@@ -23,7 +20,7 @@ namespace Backend.Models
 
     public enum UserRole
     {
-        Customer,
-        Seller
+        Admin = 1,
+        Customer = 2
     }
 }

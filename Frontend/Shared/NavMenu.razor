@@ -18,19 +18,34 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="addproduct">
-                <span class="oi oi-plus" aria-hidden="true"></span> Add product
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="managecoupons">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Coupons
-            </NavLink>
-        </li>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="addproduct">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Add product
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="managecoupons">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Coupons
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="signup">
+                        <span class="oi oi-person" aria-hidden="true"></span> Add User
+                    </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="@(() => modal.Show<ProductBasket>("Product basket"))" style="cursor: pointer;">
                 <span class="oi oi-cart" data-inline="false"></span> View basket
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="manageproducts">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Products
             </NavLink>
         </li>
     </ul>

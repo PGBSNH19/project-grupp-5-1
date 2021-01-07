@@ -9,10 +9,10 @@ namespace Frontend.Services
     public interface IProductService
     {
         Task<IEnumerable<Product>> GetProducts();
-    
+        Task<IEnumerable<Product>> SearchProducts(string productName);
         Task<Product> GetProductById(int id);
-
         Task<Product> AddProducts(Product product);
+        Task<Product> Update(Product product);
     }
 
 }

@@ -5,28 +5,35 @@ using System.Net.Http;
 using Microsoft.JSInterop;
 using Blazored.LocalStorage;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using Frontend.Auth;
+using Frontend.Models.Mail;
 
 namespace Frontend.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly NavigationManager _NavigationManager;
         private readonly HttpClient _httpClient;
+        private readonly NavigationManager _NavigationManager;
+
+        private readonly IJSRuntime _jSRuntime;
         private readonly IConfiguration _configuration;
         private readonly ILocalStorageService _localStorageService;
-        private readonly IJSRuntime _jSRuntime;
+        private readonly ITokenValidator _tokenValidator;
+        private List<BuyedProducts> buyedProducts = new List<BuyedProducts>();
 
-        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime)
+        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime, ITokenValidator tokenValidator)
         {
-            _NavigationManager = NavigationManager;
+            _jSRuntime = jSRuntime;
             _httpClient = httpClient;
             _configuration = configuration;
+            _tokenValidator = tokenValidator;
+            _NavigationManager = NavigationManager;
             _localStorageService = localStorageService;
-            _jSRuntime = jSRuntime;
         }
 
         public async Task<IEnumerable<ProductInBasket>> GetBasketProducts()
@@ -80,38 +87,72 @@ namespace Frontend.Services
             }
         }
 
-        public async Task CreateOrder(IEnumerable<ProductInBasket> basketProducts)
+        public async Task CreateOrder(UserInfo userInfo)
         {
+            await _tokenValidator.CheckToken(_httpClient);
+
             Order order = new Order();
 
             order.DateRegistered = DateTime.Now;
-            order.CouponId = (int?)null;
+            order.CouponId = 1;
             order.UserId = 1;
 
-            var newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
-
-            if (newOrder != null)
+            if (_httpClient.DefaultRequestHeaders.Authorization != null)
             {
-                foreach (var basketProduct in basketProducts)
+                Order newOrder;
+                newOrder = await _httpClient.PostJsonAsync<Order>(_configuration["ApiHostUrl"] + "api/v1.0/orders", order);
+                if (newOrder != null)
                 {
-                    OrderedProduct orderedProduct = new OrderedProduct();
+                    foreach (var basketProduct in userInfo.userBasket)
+                    {
+                        OrderedProduct orderedProduct = new OrderedProduct()
+                        {
+                            Amount = basketProduct.Amount,
+                            OrderId = newOrder.Id,
+                            ProductId = basketProduct.Product.Id,
+                        };
 
-                    orderedProduct.Amount = basketProduct.Amount;
-                    orderedProduct.OrderId = newOrder.Id;
-                    orderedProduct.ProductId = basketProduct.Product.Id;
+                        await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
 
-                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts", orderedProduct);
+                        var product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{basketProduct.Product.Id}");
+
+                        product.Stock -= basketProduct.Amount;
+
+                        await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
+
+                        BuyedProducts buyedProduct = new BuyedProducts()
+                        {
+                            ProductName = product.Name,
+                            Amount = basketProduct.Amount,
+                            Description = product.Description,
+                            Price = 10,
+                        };
+
+                        buyedProducts.Add(buyedProduct);
+                    }
+
+                    MailRequest orderToSend = new MailRequest()
+                    {
+                        ToEmail = userInfo.Email,
+                        OrderId = newOrder.Id,
+                        UserName = userInfo.FirstName,
+                        Subject = "Your order",
+                        Address = userInfo.Address,
+                        City = userInfo.City,
+                        ZipCode = userInfo.ZipCode,
+                        buyedProductsList = buyedProducts
+                    };
+                    await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send", orderToSend);
+
+                    await _localStorageService.RemoveItemAsync("customer-basket");
+                    await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
+                    _NavigationManager.NavigateTo("/");
                 }
-
-                await _localStorageService.ClearAsync();
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
-                _NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
+                else
+                {
+                    await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, we can not send this order...");
+                }
             }
         }
-
     }
 }

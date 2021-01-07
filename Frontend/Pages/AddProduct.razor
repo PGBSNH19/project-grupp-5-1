@@ -1,47 +1,49 @@
 ﻿@page "/addproduct/"
 @inherits frontend.Pages.AddProductBase
+@attribute [Authorize(Roles = "Admin")]
 
-    <EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator />
 
-        <h3>Add product</h3>
-        <hr />
-        <div class="form-group row">
-            <label for="firstName" class="col-sm-2 col-form-label">
-                Name
-            </label>
-            <div class="col-sm-10">
-                <InputText id="Name" class="form-control" placeholder="Name" @bind-Value="product.Name" />
-                <ValidationMessage For="@(()=> product.Name)" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="Description" class="col-sm-2 col-form-label">
-                Description
-            </label>
-            <div class="col-sm-10">
-                <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
-                <ValidationMessage For="@(()=> product.Description)" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
-            <div class="col-sm-10">
-                <select @bind="product.IsAvailable" class="form-control">
-                    <option value="o">Yes</option>
-                    <option value="1">No</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="stock" class="col-sm-2 col-form-label">
-                Stock
-            </label>
-            <div class="col-sm-10">
-                <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
-                <ValidationMessage For="@(()=> product.Stock)" />
-            </div>
-        </div>
+<EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
 
-        <button class="btn btn-primary" type="submit">Save</button>
-    </EditForm>
+    <h3>Add product</h3>
+    <hr />
+    <div class="form-group row">
+        <label for="firstName" class="col-sm-2 col-form-label">
+            Name
+        </label>
+        <div class="col-sm-10">
+            <InputText id="Name" class="form-control" placeholder="Name" @bind-Value="product.Name" />
+            <ValidationMessage For="@(()=> product.Name)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Description" class="col-sm-2 col-form-label">
+            Description
+        </label>
+        <div class="col-sm-10">
+            <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
+            <ValidationMessage For="@(()=> product.Description)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
+        <div class="col-sm-10">
+            <select @bind="product.IsAvailable" class="form-control">
+                <option value="o">Yes</option>
+                <option value="1">No</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="stock" class="col-sm-2 col-form-label">
+            Stock
+        </label>
+        <div class="col-sm-10">
+            <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
+            <ValidationMessage For="@(()=> product.Stock)" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Save</button>
+</EditForm>

@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Frontend.Auth
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 
 <div class="sidebar">
     <NavMenu />
@@ -6,10 +10,44 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+
+        <AuthorizeView>
+            <Authorized>
+                <p class="mt-3 font-weight-bold">Welcome, @context.User.Identity.Name</p>
+            </Authorized>
+            <NotAuthorized>
+                <p class="mt-3 font-weight-bold">Signed out...!</p>
+            </NotAuthorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <p class="mt-3 font-weight-bold">(Admin)</p>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Customer">
+            <Authorized>
+                <p class="mt-3 font-weight-bold">(Customer)</p>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView>
+            <Authorized>
+                <a class="ml-2" href="/" @onclick="(() => Logout())">Logout</a>
+            </Authorized>
+            <NotAuthorized>
+                <a class="ml-2" href="/login">Login</a>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
+
+@code{
+    public async Task Logout()
+    {
+        await ((AuthStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOut();
+        NavigationManager.NavigateTo("/");
+    }
+}

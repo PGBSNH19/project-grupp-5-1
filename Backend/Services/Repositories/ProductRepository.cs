@@ -25,5 +25,13 @@ namespace Backend.Services.Repositories
         {
             return await _context.Set<Product>().FirstOrDefaultAsync(w => w.Id == id);
         }
+
+        public async Task<IList<Product>> SearchProducts(string productName)
+        {
+            _logger.LogInformation($"Fetching entity list of type {typeof(Product)} from the database.");
+            var query = _context.Set<Product>().Where(x => x.Name.ToLower().Contains(productName.ToLower())).ToListAsync();
+
+            return await query;
+        }
     }
 }

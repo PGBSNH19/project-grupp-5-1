@@ -1,16 +1,15 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Frontend.Data;
+using Frontend.Auth;
+using Blazored.Modal;
 using System.Net.Http;
 using Frontend.Services;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Frontend.Services.Interfaces;
-using Blazored.Modal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Frontend
 {
@@ -29,13 +28,20 @@ namespace Frontend
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
             services.AddSingleton<HttpClient>();
-            services.AddBlazoredLocalStorage();
+            services.AddSingleton<WeatherForecastService>();
+
+            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            services.AddScoped<ITokenValidator, TokenValidator>();
+
             services.AddHttpClient<IProductService, ProductService>();
             services.AddHttpClient<IOrderService, OrderService>();
             services.AddHttpClient<ICouponService, CouponService>();
+            services.AddHttpClient<IUserService, UserService>();
+
             services.AddBlazoredModal();
+            services.AddBlazoredLocalStorage();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +62,9 @@ namespace Frontend
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

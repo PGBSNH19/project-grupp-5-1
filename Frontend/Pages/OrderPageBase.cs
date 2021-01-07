@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using Frontend.Models;
+﻿using Frontend.Models;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace Frontend.Pages
 {
@@ -21,6 +20,9 @@ namespace Frontend.Pages
 
         [Parameter]
         public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
+
+        [Parameter]
+        public UserInfo userInfo { get; set; } = new UserInfo();
 
         public async void Increase(ProductInBasket product)
         {
@@ -51,9 +53,9 @@ namespace Frontend.Pages
             StateHasChanged();
         }
 
-        public async void SendOrder(IEnumerable<ProductInBasket> products)
+        public async void SendOrder(UserInfo userInfo)
         {
-            await OrderService.CreateOrder(products);
+            await OrderService.CreateOrder(userInfo);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -61,9 +63,9 @@ namespace Frontend.Pages
             if (firstRender)
             {
                 basketproducts = await OrderService.GetBasketProducts();
+                userInfo.userBasket = basketproducts;
                 StateHasChanged();
             }
         }
-
     }
 }

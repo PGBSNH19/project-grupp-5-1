@@ -28,6 +28,10 @@ jobs:
             tokenSuffix: '}#'
           env:
             CONNECTION_STRING: ${{secrets.NOR_CONNECTION_STRING}}
+            MAILSETTINGS_EMAIL: ${{secrets.MAILSETTINGS_EMAIL}}
+            MAILSETTINGS_COMPANY_NAME: ${{secrets.MAILSETTINGS_COMPANY_NAME}} 
+            MAILSETTINGS_PASSWORD: ${{secrets.MAILSETTINGS_PASSWORD}} 
+            MAILSETTINGS_HOST: ${{secrets.MAILSETTINGS_HOST}}
         - name: Azure Container Registry Login
           uses: Azure/docker-login@v1  
           with:

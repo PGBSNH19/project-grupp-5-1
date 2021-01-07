@@ -1,6 +1,4 @@
-﻿@using Models
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject IJSRuntime JSRuntime
+﻿@inherits ProductBasketBase
 
 <div style="max-width:600px;">
     @if (Basket == null || Basket.Count <= 0)
@@ -44,27 +42,26 @@
             </thead>
         </table>
         <div class="text-center">
-            <a class="btn btn-light" @onclick="Cancel" style="cursor: pointer;">Cancel</a>
+            <a class="btn btn-light" @onclick="@Cancel" style="cursor: pointer;">Cancel</a>
             <a class="btn btn-primary" href="orderpage">Check out</a>
         </div>
     }
 </div>
 
-
 @code {
-    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
-    public List<ProductInBasket> Basket = new List<ProductInBasket>();
+    //[CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+    //public List<ProductInBasket> Basket = new List<ProductInBasket>();
 
-    private async Task GetBasketData()
-    {
-        bool basketExists = await localStorage.ContainKeyAsync("customer-basket");
-        Basket = basketExists ? await localStorage.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
-    }
+    //private async Task GetBasketData()
+    //{
+    //    bool basketExists = await localStorage.ContainKeyAsync("customer-basket");
+    //    Basket = basketExists ? await localStorage.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
+    //}
 
-    protected override async Task OnInitializedAsync()
-    {
-        await GetBasketData();
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await GetBasketData();
+    //}
 
-    async Task Cancel() => await BlazoredModal.Cancel();
+    //async Task Cancel() => await BlazoredModal.Cancel();
 }

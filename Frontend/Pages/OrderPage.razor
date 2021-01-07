@@ -1,13 +1,11 @@
 ﻿@page "/OrderPage"
 @inherits OrderPageBase
-@inject IJSRuntime _jSRuntime;
-
 
 <div class="container mt-5">
     @if (basketproducts == null)
     {
         <div class="mt-5 text-center w-100">
-            <img class="mt-5" src="./images/EmptyCart.png" style="width:70%;height:15%" />
+            <img class="mt-5" src="./Images/EmptyCart.png" style="width:70%;height:15%" />
         </div>
     }
     else
@@ -40,7 +38,6 @@
                                 <button class="btn btn-sm btn-outline-danger mr-1" @onclick="() =>Decrease(basketProduct)">                                                                                            -</button>
                                 <input type="number" class="col-sm-4 text-center" @bind-value="basketProduct.Amount" readonly>
                                 <button class="btn btn-sm btn-outline-success mr-1" @onclick="() =>Increase(basketProduct)">+</button>
-
                             </div>
                         </td>
                         <td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
@@ -48,9 +45,54 @@
                 }
             </tbody>
         </table>
-        <div class="w-100 text-right mt-5">
-            <button class="btn btn-info " @onclick="() => SendOrder(basketproducts)">Send Order</button>
-        </div>
+
+        <h4 class="mb-2">Delivery Address</h4>
+        <EditForm Model="@userInfo" OnValidSubmit="() => SendOrder(userInfo)">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="firstName">First Name</label>
+                    <InputText class="form-control" id="firstname" placeholder="First Name" @bind-Value="userInfo.FirstName" />
+                    <ValidationMessage For="@(()=> userInfo.FirstName)" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="lastName">Last Name</label>
+                    <InputText class="form-control" id="lastname" placeholder="Last Name" @bind-Value="userInfo.LastName" />
+                    <ValidationMessage For="@(()=> userInfo.LastName)" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="emailAddress">Email Address</label>
+                    <InputText type="text" class="form-control" id="emailAddress" placeholder="Email" @bind-Value="userInfo.Email" />
+                    <ValidationMessage For="@(()=> userInfo.Email)" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAddress">Address</label>
+                    <InputText type="text" class="form-control" id="inputAddress" placeholder="Address" @bind-Value="userInfo.Address" />
+                    <ValidationMessage For="@(()=> userInfo.Address)" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputCity">City</label>
+                    <InputText type="text" class="form-control" id="inputCity" placeholder="City" @bind-Value="userInfo.City" />
+                    <ValidationMessage For="@(()=> userInfo.City)" />
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip Code</label>
+                    <InputText type="text" class="form-control" id="inputZip" placeholder="Zip Code" @bind-Value="userInfo.ZipCode" />
+                    <ValidationMessage For="@(()=> userInfo.ZipCode)" />
+                </div>
+            </div>
+            <div class="w-100 text-right mt-5">
+                <button type="submit" class="btn btn-info">Send Order</button>
+            </div>
+        </EditForm>
     }
 </div>
-
