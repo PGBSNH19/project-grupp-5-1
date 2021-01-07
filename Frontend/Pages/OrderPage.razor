@@ -1,13 +1,11 @@
 ﻿@page "/OrderPage"
 @inherits OrderPageBase
-@inject IJSRuntime _jSRuntime;
-
 
 <div class="container mt-5">
     @if (basketproducts == null)
     {
         <div class="mt-5 text-center w-100">
-            <img class="mt-5" src="./images/EmptyCart.png" style="width:70%;height:15%" />
+            <img class="mt-5" src="./Images/EmptyCart.png" style="width:70%;height:15%" />
         </div>
     }
     else
@@ -20,7 +18,9 @@
                     <th scope="col">Product Name</th>
                     <th scope="col">Category</th>
                     <th scope="col">Image</th>
-                    <th scope="col">Ammount</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total Price</th>
                     <th class="text-center" scope="col">Action</th>
                 </tr>
             </thead>
@@ -40,17 +40,119 @@
                                 <button class="btn btn-sm btn-outline-danger mr-1" @onclick="() =>Decrease(basketProduct)">                                                                                            -</button>
                                 <input type="number" class="col-sm-4 text-center" @bind-value="basketProduct.Amount" readonly>
                                 <button class="btn btn-sm btn-outline-success mr-1" @onclick="() =>Increase(basketProduct)">+</button>
-
                             </div>
                         </td>
+                        <td class="text-center">@basketProduct.Product.CurrentPrice</td>
+                        <td class="text-center">@(basketProduct.Amount * basketProduct.Product.CurrentPrice)</td>
                         <td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
                     </tr>
                 }
+                <tr>
+                    <td rowspan="4" colspan="5">
+                        @if (Coupons != null)
+                        {
+                            <div class="col-lg-4 pt-4 form-group">
+                                <div><h2>Use coupon</h2></div>
+                                <EditForm Model="@Coupons">
+                                    <InputSelect @bind-Value="@GetCouponId" class="form-control">
+                                        <option value="0" class="form-control">Select Coupon ...</option>
+                                        @foreach (var coupon in Coupons)
+                                                {
+                                                    <option value="@coupon.Id" class="form-control">@coupon.Code</option>
+                                                }
+                                    </InputSelect>
+                                </EditForm>
+                            </div>
+                            @if (GetCouponId != "")
+                            {
+                                <div class="col-lg-3 pt-4" style="margin-top: auto;">
+                                    <button type="submit" class="btn btn-success" @onclick="() => GetDiscount(int.Parse(GetCouponId))">Choose Coupon</button>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <table class="float-right" style="width:100%;">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <td>
+                                        Total Sum
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Price: @basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice)</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount: @((Discount*100).ToString("0.##")) %</td>
+                                </tr>
+                                <tr>
+                                    @{
+                                        var discSum = (basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) * Discount);
+                                        discSum = basketproducts.Sum(x => x.Amount * x.Product.CurrentPrice) - discSum;
+                                        userInfo.TotalPiceWithDiscount = (decimal)discSum;
+                                    }
+                                    <td>
+                                        With discount: @userInfo.TotalPiceWithDiscount.ToString("0.###")
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <div class="w-100 text-right mt-5">
-            <button class="btn btn-info " @onclick="() => SendOrder(basketproducts)">Send Order</button>
-        </div>
+
+        <h4 class="mb-2">Delivery Address</h4>
+        <EditForm Model="@userInfo" OnValidSubmit="() => SendOrder(userInfo)">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="firstName">First Name</label>
+                    <InputText class="form-control" id="firstname" placeholder="First Name" @bind-Value="userInfo.FirstName" />
+                    <ValidationMessage For="@(()=> userInfo.FirstName)" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="lastName">Last Name</label>
+                    <InputText class="form-control" id="lastname" placeholder="Last Name" @bind-Value="userInfo.LastName" />
+                    <ValidationMessage For="@(()=> userInfo.LastName)" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="emailAddress">Email Address</label>
+                    <InputText type="text" class="form-control" id="emailAddress" placeholder="Email" @bind-Value="userInfo.Email" />
+                    <ValidationMessage For="@(()=> userInfo.Email)" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAddress">Address</label>
+                    <InputText type="text" class="form-control" id="inputAddress" placeholder="Address" @bind-Value="userInfo.Address" />
+                    <ValidationMessage For="@(()=> userInfo.Address)" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputCity">City</label>
+                    <InputText type="text" class="form-control" id="inputCity" placeholder="City" @bind-Value="userInfo.City" />
+                    <ValidationMessage For="@(()=> userInfo.City)" />
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip Code</label>
+                    <InputNumber type="text" class="form-control" id="inputZip" placeholder="Zip Code" @bind-Value="userInfo.ZipCode" />
+                    <ValidationMessage For="@(()=> userInfo.ZipCode)" />
+                </div>
+            </div>
+            <div class="w-100 text-right mt-5">
+                <button type="submit" class="btn btn-info mb-5">Send Order</button>
+            </div>
+        </EditForm>
     }
 </div>
-

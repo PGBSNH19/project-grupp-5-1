@@ -1,10 +1,12 @@
-﻿using System.Linq;
-using Frontend.Models;
+﻿using Frontend.Models;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Frontend.Services;
+using System.Linq;
+using System;
 
 namespace Frontend.Pages
 {
@@ -19,8 +21,23 @@ namespace Frontend.Pages
         [Inject]
         public IOrderService OrderService { get; set; }
 
+        [Inject]
+        public IProductService ProductService { get; set; }
+
+        [Inject]
+        public ICouponService CouponService { get; set; }
+
         [Parameter]
         public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
+
+        public IEnumerable<ProductPrice> GetProductPrices { get; set; }
+        public IEnumerable<Coupon> Coupons { get; set; }
+        public string GetCouponId { get; set; } = "";
+        public decimal Discount { get; set; }
+        public decimal TotalPriceWithDiscount { get; set; }
+
+        [Parameter]
+        public UserInfo userInfo { get; set; } = new UserInfo();
 
         public async void Increase(ProductInBasket product)
         {
@@ -51,9 +68,23 @@ namespace Frontend.Pages
             StateHasChanged();
         }
 
-        public async void SendOrder(IEnumerable<ProductInBasket> products)
+        public async void SendOrder(UserInfo userInfo)
         {
-            await OrderService.CreateOrder(products);
+            await OrderService.CreateOrder(userInfo, GetCouponId);
+        }
+
+        public async void GetDiscount(int couponId)
+        {
+            if (couponId != 0)
+            {
+                Coupon coupon = new Coupon();
+                coupon = await CouponService.GetCouponById(couponId);
+                Discount = coupon.Discount;
+                StateHasChanged();
+            }
+            else { Discount = 0; }
+
+            StateHasChanged();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -61,9 +92,26 @@ namespace Frontend.Pages
             if (firstRender)
             {
                 basketproducts = await OrderService.GetBasketProducts();
+                userInfo.userBasket = basketproducts;
+
+                GetProductPrices = await ProductService.GetAllPrices();
+                foreach (var item in basketproducts)
+                {
+                    bool hasFound = GetProductPrices.Any(x => item.Product.Id == x.ProductId);
+                    if (hasFound)
+                    {
+                        item.Product.CurrentPrice = await ProductService.GetLatestPriceByProductId(item.Product.Id);
+                    }
+                    else
+                    {
+                        item.Product.CurrentPrice = 0;
+                    }
+                }
+
+                Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
+
                 StateHasChanged();
             }
         }
-
     }
 }

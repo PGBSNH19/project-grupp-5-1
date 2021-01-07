@@ -1,47 +1,90 @@
 ﻿@page "/addproduct/"
 @inherits frontend.Pages.AddProductBase
+@attribute [Authorize(Roles = "Admin")]
 
-    <EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator />
+@if (ProductCategories == null)
+{
+    <div class="mt-5 text-center w-100">
+        <img src="./Images/spinner.gif" style="width:20%;height:5%" />
+    </div>
+}
 
-        <h3>Add product</h3>
-        <hr />
-        <div class="form-group row">
-            <label for="firstName" class="col-sm-2 col-form-label">
-                Name
-            </label>
-            <div class="col-sm-10">
-                <InputText id="Name" class="form-control" placeholder="Name" @bind-Value="product.Name" />
-                <ValidationMessage For="@(()=> product.Name)" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="Description" class="col-sm-2 col-form-label">
-                Description
-            </label>
-            <div class="col-sm-10">
-                <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
-                <ValidationMessage For="@(()=> product.Description)" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
-            <div class="col-sm-10">
-                <select @bind="product.IsAvailable" class="form-control">
-                    <option value="o">Yes</option>
-                    <option value="1">No</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="stock" class="col-sm-2 col-form-label">
-                Stock
-            </label>
-            <div class="col-sm-10">
-                <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="product.Stock" />
-                <ValidationMessage For="@(()=> product.Stock)" />
-            </div>
-        </div>
+<EditForm Model="@Product" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
 
-        <button class="btn btn-primary" type="submit">Save</button>
-    </EditForm>
+    <h3>Add product</h3>
+    <hr />
+    <div class="form-group row">
+        <label for="firstName" class="col-sm-2 col-form-label">
+            Name
+        </label>
+        <div class="col-sm-10">
+            <InputText id="Name" class="form-control" placeholder="Name" @bind-Value="Product.Name" />
+            <ValidationMessage For="@(()=> Product.Name)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Description" class="col-sm-2 col-form-label">
+            Description
+        </label>
+        <div class="col-sm-10">
+            <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="Product.Description" />
+            <ValidationMessage For="@(()=> Product.Description)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="stock" class="col-sm-2 col-form-label">
+            Price
+        </label>
+        <div class="col-sm-10">
+            <InputNumber id="price" class="form-control" placeholder="price" @bind-Value="Product.Price" />
+            <ValidationMessage For="@(()=> Product.Price)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Category" class="col-sm-2 col-form-label">
+            Category
+        </label>
+        <div class="col-sm-10">
+            <InputSelect @bind-Value="ProductCatId" class="form-control">
+                @foreach (var category in ProductCategories)
+                {
+                    <option value="@category.Id" class="form-control">@category.CategoryName</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="stock" class="col-sm-2 col-form-label">
+            Stock
+        </label>
+        <div class="col-sm-10">
+            <InputNumber id="stock" class="form-control" placeholder="stock" @bind-Value="Product.Stock" />
+            <ValidationMessage For="@(()=> Product.Stock)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="IsFeatured" class="col-sm-2 col-form-label">Featured</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="height: 100%" @bind="Product.IsFeatured">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="IsAvailable" class="col-sm-2 col-form-label">Is Available</label>
+        <div class="col-sm-10">
+            <input type="checkbox" style="height: 100%" @bind="Product.IsAvailable">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="stock" class="col-sm-2 col-form-label">
+            Add Images
+        </label>
+        <div class="col-sm-10 mb-4">
+            <DropZone @ref="child" />
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <div class="col-sm-2"><button class="btn btn-primary" type="submit">Save</button></div>
+    </div>
+</EditForm>
+

@@ -1,15 +1,22 @@
-﻿@inherits LayoutComponentBase
+﻿@using Frontend.Auth
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="sidebar">
+<body>
     <NavMenu />
-</div>
-
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
-    <div class="content px-4">
+    <div class="container">
         @Body
     </div>
-</div>
+</body>
+
+@*<div class="sidebar">
+    <NavMenu />
+    </div>
+
+    <div class="main">
+
+    <div class="content px-4">
+    @Body
+    </div>
+    </div>*@

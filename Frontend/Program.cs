@@ -25,6 +25,8 @@ namespace Frontend
                             webBuilder
                             .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
                             .UseStartup<Startup>();
+                            
                         });
+
     }
 }

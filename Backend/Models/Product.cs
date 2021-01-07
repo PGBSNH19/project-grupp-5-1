@@ -21,6 +21,9 @@ namespace Backend.Models
         public bool IsAvailable { get; set; }
 
         [Required]
+        public bool IsFeatured { get; set; }
+
+        [Required]
         public int Stock { get; set; }
 
         [ForeignKey("ProductCategory")]
@@ -29,5 +32,6 @@ namespace Backend.Models
 
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
         public ICollection<ProductPrice> ProductPrices { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; }
     }
 }
