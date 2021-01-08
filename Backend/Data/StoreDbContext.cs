@@ -1,10 +1,7 @@
-﻿using Backend.Models;
+﻿using System;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Backend.Data
 {
@@ -84,13 +81,28 @@ namespace Backend.Data
                 Id = 10,
                 Name = "Scorching"
             });
-
+            
             builder.Entity<ProductCategory>().ToTable("ProductCategory");
             builder.Entity<ProductCategory>().HasKey(p => p.Id);
             builder.Entity<ProductCategory>().HasData(new
             {
                 Id = 1,
                 CategoryName = "Uncategorized"
+            },
+            new
+            {
+                Id = 2,
+                CategoryName = "Headphones"
+            },
+            new
+            {
+                Id =3,
+                CategoryName = "Smart Watches"
+            },
+            new
+            {
+                Id = 4,
+                CategoryName = "Tablets"
             });
 
             builder.Entity<Product>().ToTable("Product");
@@ -103,7 +115,7 @@ namespace Backend.Data
                 IsAvailable = true,
                 IsFeatured = false,
                 Stock = 65,
-                ProductCategoryId = 1
+                ProductCategoryId = 2
             },
             new
             {
@@ -113,7 +125,7 @@ namespace Backend.Data
                 IsAvailable = true,
                 IsFeatured = true,
                 Stock = 34,
-                ProductCategoryId = 1
+                ProductCategoryId = 3
             },
             new
             {
@@ -133,7 +145,7 @@ namespace Backend.Data
                 IsAvailable = true,
                 IsFeatured = false,
                 Stock = 23,
-                ProductCategoryId = 1
+                ProductCategoryId = 4
             },
             new
             {
@@ -153,7 +165,7 @@ namespace Backend.Data
                 IsAvailable = false,
                 IsFeatured = false,
                 Stock = 37,
-                ProductCategoryId = 1
+                ProductCategoryId = 2
             });
 
             builder.Entity<User>().ToTable("User");
@@ -163,7 +175,7 @@ namespace Backend.Data
                 Id = 1,
                 FirstName = "Ahmad",
                 LastName = "Yassin",
-                Username = "ayassin",
+                Username = "akyassin",
                 Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
                 Role = UserRole.Admin
             },
@@ -213,6 +225,166 @@ namespace Backend.Data
                 Role = UserRole.Customer
             });
 
+            builder.Entity<Coupon>().ToTable("Coupon");
+            builder.Entity<Coupon>().HasKey(p => p.Id);
+            builder.Entity<Coupon>().HasData(new
+            {
+                Id = 1,
+                Code = "Flash",
+                Description = "Get 25% off on all stocks we have.",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(7),
+                Enabled = true,
+                Discount = 0.25m
+            },
+            new
+            {
+                Id = 2,
+                Code = "Year2021",
+                Description = "You will get 10% discount on every product you buy..",
+                StartDate = DateTime.Now.AddDays(3),
+                EndDate = DateTime.Now.AddDays(13),
+                Enabled = true,
+                Discount = 0.1m
+            });
+
+            builder.Entity<ProductPrice>().ToTable("ProductPrice");
+            builder.Entity<ProductPrice>().HasKey(p => p.Id);
+            builder.Entity<ProductPrice>().HasData(new
+            {
+                Id = 1,
+                Price = 1300m,
+                SalePrice = 900m,
+                DateChanged = DateTime.Now,
+                ProductId = 1,
+            },
+            new
+            {
+                Id = 2,
+                Price = 2290m,
+                DateChanged = DateTime.Now,
+                ProductId = 2,
+            },
+            new
+            {
+                Id = 3,
+                Price = 329m,
+                DateChanged = DateTime.Now,
+                ProductId = 3,
+            },
+            new
+            {
+                Id = 4,
+                Price = 2490m,
+                DateChanged = DateTime.Now,
+                ProductId = 4,
+            },
+            new
+            {
+                Id = 5,
+                Price = 3790m,
+                SalePrice = 3200m,
+                DateChanged = DateTime.Now,
+                ProductId = 5,
+            },
+            new
+            {
+                Id = 6,
+                Price = 319m,
+                SalePrice = 250m,
+                DateChanged = DateTime.Now,
+                ProductId = 6,
+            });
+
+            //Image name must be created as GUID numbers by client side, those number for 
+            //initial seeding only.
+            builder.Entity<ProductImage>().ToTable("ProductImage");
+            builder.Entity<ProductImage>().HasKey(p => p.Id);
+            builder.Entity<ProductImage>().HasData(new
+            {
+                Id = 1,
+                ImageName = "01A.jpg",
+                IsDefault = true,
+                ProductId = 1,
+            },
+            new
+            {
+                Id = 2,
+                ImageName = "01B.jpg",
+                IsDefault = false,
+                ProductId = 1,
+            },
+            new
+            {
+                Id = 3,
+                ImageName = "02A.jpg",
+                IsDefault = true,
+                ProductId = 2,
+            },
+            new
+            {
+                Id = 4,
+                ImageName = "02B.jpg",
+                IsDefault = false,
+                ProductId = 2,
+            },
+            new
+            {
+                Id = 5,
+                ImageName = "03A.jpg",
+                IsDefault = true,
+                ProductId = 3,
+            },
+            new
+            {
+                Id = 6,
+                ImageName = "03B.jpg",
+                IsDefault = false,
+                ProductId = 3,
+            },
+            new
+            {
+                Id = 7,
+                ImageName = "04A.jpg",
+                IsDefault = true,
+                ProductId = 4,
+            },
+            new
+            {
+                Id = 8,
+                ImageName = "04B.jpg",
+                IsDefault = false,
+                ProductId = 4,
+            },
+            new
+            {
+                Id = 9,
+                ImageName = "05A.jpg",
+                IsDefault = true,
+                ProductId = 5,
+            },
+            new
+            {
+                Id = 10,
+                ImageName = "05B.jpg",
+                IsDefault = false,
+                ProductId = 5,
+            },
+            new
+            {
+                Id = 11,
+                ImageName = "06A.jpg",
+                IsDefault = true,
+                ProductId = 6,
+            },
+            new
+            {
+                Id = 12,
+                ImageName = "06B.jpg",
+                IsDefault = false,
+                ProductId = 6,
+            });
+
             base.OnModelCreating(builder);
         }
 
@@ -224,5 +396,6 @@ namespace Backend.Data
         public virtual DbSet<ProductCategory> ProductCategory { get; set; }
         public virtual DbSet<ProductPrice> ProductPrice { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<ProductImage> ProductImage { get; set; }
     }
 }
