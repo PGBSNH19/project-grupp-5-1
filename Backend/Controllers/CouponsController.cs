@@ -19,6 +19,10 @@ namespace Backend.Controllers
         private readonly ICouponRepository _couponRepository;
         private readonly IMapper _mapper;
 
+        public ICouponRepository Object { get; }
+        public ILogger<CouponsController> Logger { get; }
+        public IMapper Mapp { get; }
+
         public CouponsController(ILogger<CouponsController> logger, ICouponRepository couponRepository, IMapper mapper)
         {
             _logger = logger;
@@ -34,7 +38,7 @@ namespace Backend.Controllers
         /// <response code="404">There are no coupons stored in the database.</response>
         /// <response code="500">The API caught an exception when attempting to fetch coupons.</response>    
         [HttpGet]
-        public async Task<ActionResult<CouponDTO[]>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -64,7 +68,7 @@ namespace Backend.Controllers
         /// <response code="404">No coupon was found which matched the given Id.</response>
         /// <response code="500">The API caught an exception when attempting to fetch a coupon.</response>    
         [HttpGet("{couponId}")]
-        public async Task<ActionResult<CouponDTO>> GetById(int couponId)
+        public async Task<IActionResult> GetById(int couponId)
         {
             try
             {
