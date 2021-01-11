@@ -1,6 +1,6 @@
 # G5Store
 
-The purpose of this project is to enable companies to sell products to their customers via the internet by using our application. There are two different roles in the application; sellers (admins) and customers. Salespeople in the company who use this application will be able to handle products, coupons, system users and orders. The customers will be able to log in, easily search/filter for existing products, add products to the shopping cart, use coupons, create orders and finally receive a confirmation email for their created order.
+The purpose of this project is to enable companies to sell electronic hardware to their customers via the internet by using our application. There are two different roles in the application; sellers (admins) and customers. Salespeople in the company who use this application will be able to handle products, coupons, system users and orders. The customers will be able to log in, easily search/filter for existing products, add products to the shopping cart, use coupons, create orders and finally receive a confirmation email for their created order.
 
 
 
