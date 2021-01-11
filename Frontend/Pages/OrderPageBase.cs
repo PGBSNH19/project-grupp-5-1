@@ -32,7 +32,7 @@ namespace Frontend.Pages
 
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public IEnumerable<Coupon> Coupons { get; set; }
-        public string GetCouponId { get; set; } = "";
+        public string GetCouponId { get; set; } = "0";
         public decimal Discount { get; set; }
         public decimal TotalPriceWithDiscount { get; set; }
 
@@ -73,18 +73,20 @@ namespace Frontend.Pages
             await OrderService.CreateOrder(userInfo, GetCouponId);
         }
 
-        public async void GetDiscount(int couponId)
+        public async void GetDiscount(string couponId)
         {
-            if (couponId != 0)
-            {
-                Coupon coupon = new Coupon();
-                coupon = await CouponService.GetCouponById(couponId);
-                Discount = coupon.Discount;
-                StateHasChanged();
-            }
-            else { Discount = 0; }
+            Discount = Coupons.Where(x => x.Id == int.Parse(GetCouponId)).Select(d => d.Discount).FirstOrDefault();
 
-            StateHasChanged();
+            //    if (couponId != 0)
+            //    {
+            //        Coupon coupon = new Coupon();
+            //        coupon = await CouponService.GetCouponById(couponId);
+            //        Discount = coupon.Discount;
+            //        StateHasChanged();
+            //    }
+            //    else { Discount = 0; }
+
+            //StateHasChanged();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
