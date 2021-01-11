@@ -19,7 +19,7 @@ namespace Frontend.Pages
         [Inject]
         public IImageService ImageService { get; set; }
 
-        public IEnumerable<Product> products { get; set; }
+        public IEnumerable<Product> products { get; set; } = new List<Product>();
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
@@ -30,6 +30,7 @@ namespace Frontend.Pages
         public string MinPrice { get; set; } = "0";
         public string MaxPrice { get; set; } = "0";
 
+        public int Rea { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -55,8 +56,8 @@ namespace Frontend.Pages
                     product.Price = 0;
                     product.SalePrice = 0;
                     product.CurrentPrice = 0;
-                }               
-            }          
+                }
+            }
             Images = await ImageService.GetAllDefaultImages();
         }
 
@@ -81,6 +82,9 @@ namespace Frontend.Pages
                 if (hasFound)
                 {
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
                 }
                 else
                 {
@@ -148,7 +152,7 @@ namespace Frontend.Pages
                 }
             }
 
-            if(max > 0)
+            if (max > 0)
             {
                 products = products.Where(c => c.CurrentPrice >= min && c.CurrentPrice <= max);
                 products = products.Where(x => x.IsAvailable == true && x.Stock >= 1).ToList();
