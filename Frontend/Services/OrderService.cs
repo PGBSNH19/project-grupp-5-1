@@ -109,7 +109,7 @@ namespace Frontend.Services
                     Order order = new Order();
 
                     order.DateRegistered = DateTime.Now;
-                    if (couponId != "")
+                    if (couponId != "0")
                     {
                         order.CouponId = int.Parse(couponId);
                     }

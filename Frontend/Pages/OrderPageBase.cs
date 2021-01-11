@@ -69,11 +69,11 @@ namespace Frontend.Pages
         }
 
         public async void SendOrder(UserInfo userInfo)
-        {
+        {            
             await OrderService.CreateOrder(userInfo, GetCouponId);
         }
 
-        public async void GetDiscount(string couponId)
+        public void GetDiscount(string couponId)
         {
             Discount = Coupons.Where(x => x.Id == int.Parse(GetCouponId)).Select(d => d.Discount).FirstOrDefault();
 
