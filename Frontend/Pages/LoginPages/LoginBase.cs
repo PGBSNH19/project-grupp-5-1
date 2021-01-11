@@ -20,6 +20,8 @@ namespace Frontend.Pages.LoginPages
         public IUserService userService { get; set; }
 
         public User user = new User();
+        
+        private User returnedUser;
         public string ErrorMesssage { get; set; }
 
         ClaimsPrincipal claimsPrincipal;
@@ -41,11 +43,9 @@ namespace Frontend.Pages.LoginPages
 
         public async Task<bool> ValidateUser()
         {
-            User returnedUser;
-
             try
             {
-                 returnedUser = await userService.LoginAsync(user);
+                returnedUser = await userService.LoginAsync(user);
             }
             catch (System.Exception)
             {
@@ -59,9 +59,8 @@ namespace Frontend.Pages.LoginPages
             }
             else
             {
-                ErrorMesssage = "Invalid username or password";
+                ErrorMesssage = "Invalid login info";
             }
-
             return await Task.FromResult(true);
         }
     }
