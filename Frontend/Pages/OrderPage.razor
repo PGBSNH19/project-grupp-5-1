@@ -57,17 +57,15 @@
                                     <InputSelect @bind-Value="@GetCouponId" class="form-control">
                                         <option value="0" class="form-control">Select Coupon ...</option>
                                         @foreach (var coupon in Coupons)
-                                                {
-                                                    <option value="@coupon.Id" class="form-control">@coupon.Code</option>
-                                                }
+                                        {
+                                            <option value="@coupon.Id" class="form-control">@coupon.Code</option>
+                                        }
                                     </InputSelect>
                                 </EditForm>
                             </div>
-                            @if (GetCouponId != "")
+                            if (GetCouponId != "")
                             {
-                                <div class="col-lg-3 pt-4" style="margin-top: auto;">
-                                    <button type="submit" class="btn btn-success" @onclick="() => GetDiscount(int.Parse(GetCouponId))">Choose Coupon</button>
-                                </div>
+                                GetDiscount(GetCouponId);
                             }
                         }
                     </td>
