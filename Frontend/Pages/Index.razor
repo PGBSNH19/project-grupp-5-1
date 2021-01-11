@@ -240,26 +240,29 @@ else
                                         </div>
                                     }
                                 </div>
+     
                                 <div class="card-body">
-                                    <h5 class="card-title ">@product.Name</h5>
-                                    <p class="card-text">@product.Description</p>
-                                    @if (product.SalePrice > 0)
-                                    {
-                                        <p class="currentprice text-center h2 font-weight-bold">@product.CurrentPrice:-</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-secondary text-center h2 font-weight-bold">@product.CurrentPrice:-</p>
-                                    }
+                                    <a href="@($"productdetails/{product.Id}")" style="text-decoration:none ;color:black">
+                                        <h5 class="card-title ">@product.Name</h5>
+                                        <p class="card-text">@product.Description</p>
+                                        @if (product.SalePrice > 0)
+                                        {
+                                            <p class="currentprice text-center h2 font-weight-bold">@product.CurrentPrice:-</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-secondary text-center h2 font-weight-bold">@product.CurrentPrice:-</p>
+                                        }
 
-                                    @if (product.SalePrice > 0)
-                                    {
-                                        <p class="price text-secondary text-center h2 font-weight-bold">@product.Price:-</p>
-                                    }
-
-                                    @* <p class="text-secondary text-center h2 font-weight-bold">Stock: @product.Stock</p>
-                                        <p class="card-text">@(product.IsAvailable ? "Available" : "Not Available")</p> *@
+                                        @if (product.SalePrice > 0)
+                                        {
+                                            <p class="price text-secondary text-center h2 font-weight-bold">@product.Price:-</p>
+                                        }
+                                    </a>
+                                        @* <p class="text-secondary text-center h2 font-weight-bold">Stock: @product.Stock</p>
+            <p class="card-text">@(product.IsAvailable ? "Available" : "Not Available")</p> *@
                                 </div>
+
                                 <div class="card-footer">
                                     @if (@product.Stock < 6 && product.Stock >= 1)
                                     {
@@ -274,6 +277,7 @@ else
                                     }
 
                                     <small class="available text-muted float-right">@(product.IsAvailable ? "Available" : "Not Available")</small>
+
                                 </div>
                             </div>
                         </div>
