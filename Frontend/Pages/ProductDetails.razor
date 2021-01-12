@@ -6,7 +6,7 @@
 @using MatBlazor
 @inject IMatToaster Toaster
 
-@if (product == null)
+@if (product.Id == 0)
 {
     <div class="mt-5 text-center w-100">
         <img src="./Images/loading.gif" style="width:20%;height:8%" />
