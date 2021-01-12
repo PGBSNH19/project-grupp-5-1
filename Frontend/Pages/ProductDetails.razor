@@ -3,7 +3,8 @@
 @inherits ProductDetailsBase
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JSRuntime
-
+@using MatBlazor
+@inject IMatToaster Toaster
 
 @if (product == null)
 {
@@ -101,13 +102,13 @@ else
                 Amount = 1
             };
             basket.Add(newProductInBasket);
-            //await JSRuntime.InvokeAsync<bool>("You add a product to basket");
         }
         else
         {
             if (productInBasket.Amount >= product.Stock)
             {
-                await JSRuntime.InvokeAsync<bool>("confirm", $"You can't order more than {product.Stock} of this product.");
+                Toaster.Add($"You can't order more than {product.Stock} of this product.", MatToastType.Danger, "Failed to add product");
+                return;
             }
             else
             {
@@ -115,6 +116,7 @@ else
             }
         }
 
+        Toaster.Add($"You have added \"{product.Name}\" to your basket.", MatToastType.Success, "Added product");
         await localStorage.SetItemAsync("customer-basket", basket);
     }
 }
