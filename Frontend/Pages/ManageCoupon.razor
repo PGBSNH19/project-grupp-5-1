@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-2">
                 <div><br /></div>
-                <button type="submit" class="btn btn-success">Create</button>
+                <button type="submit" class="createbtn btn btn-success">Create</button>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
 <br />
 <br />
 <div class="row">
-    <h3> <b>Active Coupons</b></h3>
+    <h3> Active Coupons</h3>
     <table class="table">
         <thead class="bg-dark text-white">
             <tr>
@@ -87,13 +87,13 @@
 
                 @if (coupon.Enabled)
                 {
-                    <td class="text-success">Active</td>
+                    <td class="activetext text-success"><strong>Active</strong></td>
                 }
                 else
                 {
                     <td class="tex-danger">Disabled</td>
                 }
-                <td><button type="submit" class="btn btn-danger" @onclick="() => UpdateCouponStatus(coupon.Id,coupon)">Disable</button></td>
+                <td><button type="submit" class="disabledbtn btn btn-danger" @onclick="() => UpdateCouponStatus(coupon.Id,coupon)">Disable</button></td>
             </tr>
             }
         </tbody>
