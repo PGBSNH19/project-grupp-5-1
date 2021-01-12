@@ -176,8 +176,8 @@ namespace Frontend.Services
                         {
                             var activeDiscount = await _httpClient.GetJsonAsync<Coupon>(_configuration["ApiHostUrl"] + $"api/v1.0/Coupons/{couponId}");
 
-                            orderToSend.Discount = (activeDiscount.Discount * 100).ToString("0");
-                            orderToSend.DiscountName = activeDiscount.Code;
+                            orderToSend.Discount = (activeDiscount.Discount * 100).ToString("0") + "%";
+                            orderToSend.DiscountName = "<strong> Discount: </strong>" + activeDiscount.Code + " give you";
                         }
                         else
                         {

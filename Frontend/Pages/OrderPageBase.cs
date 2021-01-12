@@ -31,8 +31,13 @@ namespace Frontend.Pages
         [Inject]
         protected IMatToaster Toaster { get; set; }
 
+        [Inject]
+        public IImageService ImageService { get; set; }
+
         [Parameter]
         public IEnumerable<ProductInBasket> basketproducts { get; set; } = null;
+
+        public List<Image> images { get; set; }
 
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public IEnumerable<Coupon> Coupons { get; set; }
@@ -42,6 +47,11 @@ namespace Frontend.Pages
 
         [Parameter]
         public UserInfo userInfo { get; set; } = new UserInfo();
+
+        protected override async Task OnInitializedAsync()
+        {
+            images = await ImageService.GetAllDefaultImages();
+        }
 
         public async void Increase(ProductInBasket productInBasket)
         {
@@ -66,7 +76,6 @@ namespace Frontend.Pages
             }
             else
             {
-               
                 Toaster.Add($"Removed one \"{productInBasket.Product.Name}\" from your basket.", MatToastType.Info, "Removed product");
                 productInBasket.Amount--;
                 await OrderService.DecreaseProductToBasket(productInBasket.Product);
@@ -83,7 +92,7 @@ namespace Frontend.Pages
         }
 
         public async void SendOrder(UserInfo userInfo)
-        {            
+        {
             await OrderService.CreateOrder(userInfo, GetCouponId);
         }
 
