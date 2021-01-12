@@ -68,7 +68,7 @@ namespace Backend.Controllers
         }
 
         /// <summary>
-        /// Regiter a new user in the system.
+        /// Register a new user in the system.
         /// </summary>
         /// <param name="user">The user details which will be used to register.</param>
         /// <returns>The login details of the authenticated user.</returns>

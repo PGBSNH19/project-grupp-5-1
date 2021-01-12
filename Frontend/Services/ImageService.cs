@@ -14,66 +14,75 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.JSInterop;
 
 namespace Frontend.Services
 {
     public class ImageService : IImageService
     {
+        private readonly IJSRuntime _jSRuntime;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly IOptions<AzureStorageConfig> _options;
 
-        public ImageService(HttpClient httpClient, IOptions<AzureStorageConfig> options, IConfiguration configuration)
+        public ImageService(HttpClient httpClient, IOptions<AzureStorageConfig> options, IConfiguration configuration, IJSRuntime jSRuntime)
         {
             _options = options;
+            _jSRuntime = jSRuntime;
             _httpClient = httpClient;
             _configuration = configuration;
         }
 
-        public async Task UploadImages(List<Image> images, int productId)
+        public async Task<bool> UploadImages(List<Image> images, int productId)
         {
-            if (!images.Any(a => a.IsDefault == true) && images.Count != 0)
+            if (images.All(a => a.IsDefault != true))
             {
-                images.FirstOrDefault().IsDefault = true;
+                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorr, you have to select an default image..");
+                return false;
             }
-
-            foreach (var image in images)
+            else
             {
-                if (image.ImageURL == null)
+
+                foreach (var image in images)
                 {
-                    //extract just base64 string without data:image/png;base64 (for example)
-                    var base64Data = Regex.Match(image.ImageDataURL, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
-                    var bytes = Convert.FromBase64String(base64Data);
-
-                    using (var stream = new MemoryStream(bytes))
+                    if (image.ImageURL == null)
                     {
-                        //assign an unique image name.
-                        var extension = image.ImageFile.Name.Substring(image.ImageFile.Name.Length - 4);
-                        var fileName = Guid.NewGuid().ToString() + extension;
+                        //extract just base64 string without data:image/png;base64 (for example)
+                        var base64Data = Regex.Match(image.ImageDataURL, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+                        var bytes = Convert.FromBase64String(base64Data);
 
-                        //send the images to Azure blob.
-                        var uploadedUri = await UploadFileToAzureStorage(stream, _options.Value.Container, fileName);
-
-                        //send the image names to the database.
-                        if (uploadedUri != null)
+                        using (var stream = new MemoryStream(bytes))
                         {
-                            var productImage = new ProductImageName();
-                            productImage.ImageName = fileName;
-                            productImage.ProductId = productId;
-                            productImage.IsDefault = image.IsDefault;
-                            await _httpClient.PostJsonAsync<Image>(_configuration["ApiHostUrl"] + "api/v1.0/productimages", productImage);
+                            //assign an unique image name.
+                            var extension = image.ImageFile.Name.Substring(image.ImageFile.Name.Length - 4);
+                            var fileName = Guid.NewGuid().ToString() + extension;
+
+                            //send the images to Azure blob.
+                            var uploadedUri = await UploadFileToAzureStorage(stream, _options.Value.Container, fileName);
+
+                            //send the image names to the database.
+                            if (uploadedUri != null)
+                            {
+                                var productImage = new ProductImageName();
+                                productImage.ImageName = fileName;
+                                productImage.ProductId = productId;
+                                productImage.IsDefault = image.IsDefault;
+                                await _httpClient.PostJsonAsync<Image>(_configuration["ApiHostUrl"] + "api/v1.0/productimages", productImage);
+                            }
                         }
                     }
+                    else
+                    {
+                        var productImage = new ProductImageName();
+                        productImage.ImageName = Path.GetFileName(image.ImageURL);
+                        productImage.ProductId = productId;
+                        productImage.IsDefault = image.IsDefault;
+                        await _httpClient.PutJsonAsync<Image>(_configuration["ApiHostUrl"] + "api/v1.0/productimages/" + image.Id, productImage);
+                    }
                 }
-                else
-                {
-                    var productImage = new ProductImageName();
-                    productImage.ImageName = Path.GetFileName(image.ImageURL);
-                    productImage.ProductId = productId;
-                    productImage.IsDefault = image.IsDefault;
-                    await _httpClient.PutJsonAsync<Image>(_configuration["ApiHostUrl"] + "api/v1.0/productimages/" + image.Id, productImage);
-                }
+                return true;
             }
+
         }
 
         public async Task<Uri> UploadFileToAzureStorage(Stream stream, string container, string fileName)
