@@ -19,7 +19,7 @@ namespace Frontend.Pages
         [Inject]
         public IImageService ImageService { get; set; }
 
-        public IEnumerable<Product> products { get; set; } = new List<Product>();
+        public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
@@ -97,6 +97,7 @@ namespace Frontend.Pages
 
         protected List<Product> GetFeaturedProducts()
         {
+            var s = products.Where(x => x.IsFeatured).ToList();
             return products.Where(x => x.IsFeatured).ToList();
         }
 
