@@ -787,4 +787,8 @@ background-color:darkgreen !important;
 .btn-danger {
 background-color: darkred !important;
 }
+.activetext {
+    color: darkgreen !important;
+    font-size: 18px;
+}
 /**********************************/
