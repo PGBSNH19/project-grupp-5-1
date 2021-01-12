@@ -47,15 +47,17 @@ namespace Frontend.Pages
             if (hasFound)
             {
                 var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                product.Price = getProductPrices.Price;
+                product.SalePrice = getProductPrices.SalePrice;
                 product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
             }
             else
             {
                 product.Price = 0;
                 product.SalePrice = 0;
+                product.CurrentPrice = 0;
             }
             Images = await ImageService.GetImagesByProductId(product.Id);
-
         }
     }
 }
