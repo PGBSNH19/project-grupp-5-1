@@ -52,8 +52,14 @@ namespace frontend.Pages
 
             if (result != null)
             {
-                await imageService.UploadImages(child.Images, result.Id);
-                NavigationManager.NavigateTo("/manageproducts");
+                if (await imageService.UploadImages(child.Images, result.Id))
+                {
+                    NavigationManager.NavigateTo("/manageproducts");
+                }
+                else
+                {
+                    await ProductService.DeleteProduct(result.Id);
+                } 
             }
         }
     }
