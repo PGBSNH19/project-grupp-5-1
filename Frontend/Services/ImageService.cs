@@ -37,7 +37,7 @@ namespace Frontend.Services
         {
             if (images.All(a => a.IsDefault != true))
             {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorr, you have to select an default image..");
+                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, you have to select an default image..");
                 return false;
             }
             else
