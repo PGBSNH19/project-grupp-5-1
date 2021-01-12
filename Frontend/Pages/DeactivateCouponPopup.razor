@@ -1,0 +1,51 @@
+﻿@page "/managecoupons/deactivate"
+@inherits DeactivateCouponPopupBase
+@attribute [Authorize(Roles = "Admin")]
+
+<div style="max-width:600px;">
+    <div class="row">
+        <content>
+            @if (CouponHasBeenDeactivated == false)
+            {
+                <div class="col-md-auto mb-2">
+                    <strong>Are you sure you want to deactivate this coupon?</strong>
+                </div>
+                <div class="col-md-auto">
+                    <i>
+                        <strong>Coupon code: </strong>@CouponToDeactivate.Code <br />
+                        <strong>From: </strong>@CouponToDeactivate.StartDate.ToString("yyyy-MM-dd") <br />
+                        <strong>To: </strong>@CouponToDeactivate.StartDate.ToString("yyyy-MM-dd") <br />
+                        <strong>Discount: </strong>@((CouponToDeactivate.Discount*100).ToString("0.##")) %                                                
+                    </i>
+                </div>
+                <div class="col-md-auto mt-3 mb-2">
+                    <button class="btn btn-danger" @onclick="() => Deactivate()">Deactivate</button>
+                    <button class="btn btn-dark" @onclick="() => Cancel()">Cancel</button>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-auto mb-2">
+                    <strong>Coupon has been deactivated!</strong>                    
+                </div>
+                <div class="col-md-auto">
+                    <i>
+                        Coupon code: @CouponToDeactivate.Code <br />
+                        From: @CouponToDeactivate.StartDate <br />
+                        To: @CouponToDeactivate.StartDate <br />
+                        Discount: @(CouponToDeactivate.Discount*100) %
+                    </i>
+                </div>
+                <div class="col-md-auto mt-3 mb-2">                    
+                    <button class="btn btn-dark" @onclick="() => Cancel()">Close</button>
+                </div>
+            }
+        </content>
+    </div>
+
+</div>
+
+
+@code {
+
+}

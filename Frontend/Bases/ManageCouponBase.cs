@@ -1,4 +1,7 @@
-﻿using Frontend.Models;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Frontend.Models;
+using Frontend.Pages;
 using Frontend.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -15,6 +18,8 @@ namespace Frontend.Bases
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        [CascadingParameter] public IModalService Modal { get; set; }
+
         public static int CreatedCouponId { get; set; }
         public Coupon CreateCoupon = new Coupon()
         {
@@ -27,11 +32,10 @@ namespace Frontend.Bases
         public IEnumerable<Coupon> Coupons { get; set; } = new List<Coupon>();
         public static int GetCoupnIdToUpodate { get; set; }
 
+
         protected async override Task OnInitializedAsync()
         {
-            Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
-
-           
+            Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);           
         }
 
         protected async Task HandleValidSubmit()
@@ -56,11 +60,21 @@ namespace Frontend.Bases
             }            
         }
 
-        public async Task UpdateCouponStatus(int id, Coupon coupon)
+       
+        public async Task ShowCouponPopup(int couponId, Coupon coupon)
         {
-            coupon.Enabled = false;
+            var parameters = new ModalParameters();
+            parameters.Add(nameof(DeactivateCouponPopupBase.CouponId), couponId);
+            parameters.Add(nameof(DeactivateCouponPopupBase.CouponToDeactivate), coupon);
 
-            await CouponService.UpdateCoupon(id, coupon);
+            var shopModal = Modal.Show<DeactivateCouponPopup>("Deactivate Coupon", parameters);
+            
+            var result = await shopModal.Result;
+
+            if (result.Cancelled) { Console.WriteLine("Modal was cancelled"); }
+            else { StateHasChanged(); }
+
+            
         }
     }
 }
