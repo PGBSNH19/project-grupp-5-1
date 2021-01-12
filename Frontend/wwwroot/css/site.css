@@ -771,24 +771,35 @@ a,
  font-size: 25px;   
  font-family: Bodoni MT Black;
 }
+
 .buttoncolorred { 
 font-size: 25px;   
 font-family: Bodoni MT Black;
- 
 }
+
 .buttonaction {
 font-size: 25px;
-
 }
+
 .btn-success{
 background-color:darkgreen !important;
-
 }
-.btn-danger {
+
+.btn-success:hover {
+background-color: #004000 !important;
+}
+
+.btn-danger{
 background-color: darkred !important;
 }
+
+.btn-danger:hover {   
+ background-color: #5A0000 !important;
+ }
+
 .activetext {
     color: darkgreen;
     font-size: 18px;
 }
+
 /**********************************/
