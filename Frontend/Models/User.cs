@@ -10,10 +10,10 @@ namespace Frontend.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "please enter a valid user name")]
+        [Required(ErrorMessage = "Please enter a valid user name.")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "please enter a valid password")]
+        [Required(ErrorMessage = "Please enter a valid password.")]
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string AccessToken { get; set; }
