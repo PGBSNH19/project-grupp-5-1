@@ -2,35 +2,31 @@
 @page  "/login"
 @inherits LoginBase
 
-    <EditForm Model="@user" OnValidSubmit="@ValidateUser">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="mobile-remove">
-            <br /><br /><br /><br /><br /><br /><br />
-        </div>
-        <div class="container col-lg-5 mt-3">
-            <div class="row">
-                <div class="mb-2">
-                    <h4 style="font-weight:bold; color:white">Login</h4>
+<div class="container col-sm-4">
+    <div class="row justify-content-center">
+        <EditForm Model="@user" OnValidSubmit="@ValidateUser">
+            <DataAnnotationsValidator />
+            <div class="login-box">
+                <img alt="" class="avatar" src="https://i.postimg.cc/zDyt7KCv/a1.jpg">
+                <h2>Login</h2>
+                <InputText type=text @bind-Value="user.Username" placeholder="user name" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.Username)" />
                 </div>
-                <div>
+                <InputText type="password" @bind-Value="user.Password" placeholder="password" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.Password)" />
                 </div>
-                <div class="col-12 row mb-3">
-                    <InputText class="form-control col-12" @bind-Value="user.Username" placeholder="user name" />
-                </div>
-                <div class="col-12 row mb-3">
-                    <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
-                </div>
-                <div class="col-12 row mb-3">
-                    <span class="col-12"></span>
-                    <input type="submit" class="form-control col-6 btn btn-danger btn-sm" value="Login" />
-                    <a href="/signup" class="col-6 pt-1" style="color:white; text-decoration:none">Sign up</a>
-                </div>
-                <div class="col-12 row" style="text-align:left; font-style:italic; color:red">
-                    <span class="col-12">@ErrorMesssage</span>
-                </div>
+
+                <input type="submit" class="btn btn-sm" value="Login" />
+                <p class="login-signup-button"><a href="/signup">Sign up</a></p>
+                @if (ErrorMesssage != null)
+                {
+                    <div class="error-message">
+                        <div class="validation-message">@ErrorMesssage</div>
+                    </div>
+                }
             </div>
-        </div>
-    </EditForm>
-
-
+        </EditForm>    
+    </div>
+</div>

@@ -31,7 +31,6 @@ namespace Frontend.Pages.LoginPages
         ClaimsPrincipal loggedInUser;
         public bool IsUserAuthenticated;
         public bool IsUserAdmin;
-        public string ErrorMesssage { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
