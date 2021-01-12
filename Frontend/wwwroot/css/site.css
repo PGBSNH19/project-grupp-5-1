@@ -763,20 +763,28 @@ a,
     border: 3px solid crimson;
 }
 /**********************************/
+
+
+/***********Bootstrap buttons***********/
+
 .buttoncolorgreen {
-    background-color: limegreen;
-    font-size: 25px;
-    font-family: Bodoni MT Black;
+ font-size: 25px;   
+ font-family: Bodoni MT Black;
 }
-.buttoncolorred {
-    background-color: red;
-    font-size: 25px;
-    font-family: Bodoni MT Black;
+.buttoncolorred { 
+font-size: 25px;   
+font-family: Bodoni MT Black;
  
 }
 .buttonaction {
-    background-color: red;
-    font-size: 25px;
+font-size: 25px;
 
 }
+.btn-success{
+background-color:darkgreen !important;
 
+}
+.btn-danger {
+background-color: darkred !important;
+}
+/**********************************/
