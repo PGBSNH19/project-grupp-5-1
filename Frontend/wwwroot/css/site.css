@@ -568,17 +568,30 @@ a,
     padding: 10% 7%;
 }
 
-.login-box input , .signup-box input {
+.login-box input, .signup-box input{
     border: none;
     border-bottom: 1px solid #fff;
     background: transparent;
     outline: none;
-    height: 40px;   
+    height: 40px;
     color: #fff;
     font-size: 100%;
     width: 100%;
-    margin-bottom:5px;
+    margin-bottom: 5px;
 }
+
+.signup-box select, .select-options {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 100%;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
 
 .login-box h2, .signup-box h2 {
     margin: 25px 0 15px 0;
@@ -586,6 +599,7 @@ a,
     color: #fff;
     text-align: center;
     text-transform: uppercase;
+    font-size:25px
 }
 
 .login-box input[type=submit], .signup-box input[type=submit] {
@@ -612,12 +626,12 @@ a,
 
 .signup-box img {
     position: absolute;
-    width: 27%;
-    height: 20%;
+    width: 23%;
+    height: 17%;
     border-radius: 50%;
     overflow: hidden;
     top: calc(-20%/2);
-    left: 36%;
+    left: 38%;
 }
 
 .login-signup-button, .signup-login-buton {
@@ -630,7 +644,7 @@ a,
     text-decoration: none;
 }
 
-.login-box input:not([type="checkbox"]), .signup-box input:not([type="checkbox"]) {
+.login-box input:not([type="checkbox"]), .signup-box input:not([type="checkbox"]), .signup-box select:not([type="select"]) {
     outline: none !important;
 }
 

@@ -61,17 +61,18 @@ namespace Frontend.Pages
 
         protected async void HandleValidSubmit()
         {
-            if (ProductCatId == null)
-                ProductCatId = "1";
+            if (await ImageService.UploadImages(child.Images, product.Id))
+            {
+                if (ProductCatId == null)
+                    ProductCatId = "1";
 
-            product.ProductCategoryId = int.Parse(ProductCatId);
-            await ProductService.Update(product, product.Price, (decimal)product.SalePrice);
-            product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
+                product.ProductCategoryId = int.Parse(ProductCatId);
+                await ProductService.Update(product, product.Price, (decimal)product.SalePrice);
+                product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
 
-            await ImageService.UploadImages(child.Images, product.Id);
-
-            StateHasChanged();
-            NavigationManager.NavigateTo("manageproducts");
+                StateHasChanged();
+                NavigationManager.NavigateTo("manageproducts");
+            }
         }
 
         public void Cancel()
