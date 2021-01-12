@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Security.Claims;
 using Microsoft.JSInterop;
+using MatBlazor;
 
 namespace Frontend.Pages.LoginPages
 {
@@ -20,6 +21,9 @@ namespace Frontend.Pages.LoginPages
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        protected IMatToaster Toaster { get; set; }
 
         [Inject]
         public IUserService userService { get; set; }
@@ -57,21 +61,22 @@ namespace Frontend.Pages.LoginPages
             {
                 if (IsUserAdmin)
                 {
-                    await _jSRuntime.InvokeAsync<bool>("confirm", $"You have added the user successfully..");
+                    Toaster.Add($"User \"{returnedUser.Username}\" has successfully been registered.", MatToastType.Success, "Account registered");
                     user = new RegisterUser();
                     user.Role = "2";
                     StateHasChanged();
                 }
                 else
                 {
-                  await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
-                  NavigationManager.NavigateTo("/");
+                    Toaster.Add("Your account has successfully been registered!", MatToastType.Success, "Account registered");
+                    await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
+                    NavigationManager.NavigateTo("/");
                 }
 
             }
             else
             {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"This user is already registered..");
+                Toaster.Add($"An account with the username \"{user.Username}\" already exists.", MatToastType.Danger, "Username already exists");
             }
             return await Task.FromResult(true);
         }

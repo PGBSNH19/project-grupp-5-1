@@ -35,6 +35,11 @@ namespace Frontend.Services
             return await httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{id}");
         }
 
+        public async Task DeleteProduct(int id)
+        {
+            await httpClient.DeleteAsync(_configuration["ApiHostUrl"] + id);
+        }
+
         public async Task<IEnumerable<ProductPrice>> GetAllPrices()
         {
             return await httpClient.GetJsonAsync<IEnumerable<ProductPrice>>(_configuration["ApiHostUrl"] + $"api/v1.0/productsprices");

@@ -37,12 +37,10 @@
 
                 <AuthorizeView Roles="Admin">
                     <Authorized Context="Auth">
-                        <div class="col-12 row mb-3">
                             <InputSelect @bind-Value="user.Role">
-                                <option value="1">Admin</option>
-                                <option value="2">Customer</option>
+                                <option class="select-options text-dark" value="1">Admin</option>
+                                <option class="select-options text-dark" value="2">Customer</option>
                             </InputSelect>
-                        </div>
                     </Authorized>
                 </AuthorizeView>
                 <AuthorizeView Roles="Admin">

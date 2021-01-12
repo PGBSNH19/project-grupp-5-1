@@ -18,6 +18,8 @@ namespace Frontend.Services
         Task<IEnumerable<Product>> SearchProducts(string productName);
         Task<IEnumerable<ProductCategory>> GetAllProductCategories();
         Task<IEnumerable<Product>> GetProductsByCategoryId(int id);
+        Task DeleteProduct(int id);
+
     }
 
 }
