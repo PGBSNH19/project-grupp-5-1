@@ -66,7 +66,7 @@ else
                             <br />
                         </div>
                         <div><strong>Category: </strong>@product.ProductCategoryName<br /><br /></div>
-                        @if (product.SalePrice != null)
+                        @if (product.SalePrice > 0)
                         {
                             <p class="text-danger" style="font-size:18px;margin-bottom:3px">Sale Price: @product.CurrentPrice kr</p>
                             <p style="font-size:13px" class="text-muted mt-0 pt-0 mb-0 pb-0 text-"><del>Original price: @product.Price kr</del></p>
