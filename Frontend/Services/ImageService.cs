@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Azure.Storage;
 using System.Net.Http;
 using Frontend.Models;
@@ -13,7 +14,6 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
-using System.Linq;
 
 namespace Frontend.Services
 {
@@ -134,16 +134,11 @@ namespace Frontend.Services
 
         public string ReadFileFromStorage(string fileName)
         {
-            
-            return new Uri("https://" +
-                                    _options.Value.AccountName +
-                                    ".blob.core.windows.net/" +
-                                    _options.Value.Container + "/" + fileName).ToString();
+            return new Uri("https://" + _options.Value.AccountName + ".blob.core.windows.net/"  + _options.Value.Container + "/" + fileName).ToString();
         }
 
         public async Task DeleteImage(string imageName)
         {
-            var a = _configuration["ApiHostUrl"] + "api/v1.0/productimages/" + imageName;
             //Delete the imageName from database.
             await _httpClient.SendJsonAsync<Image>(HttpMethod.Delete,_configuration["ApiHostUrl"] + "api/v1.0/productimages/deleteImage/" + imageName, null);
 

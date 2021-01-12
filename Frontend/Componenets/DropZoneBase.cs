@@ -30,9 +30,11 @@ namespace Frontend.Componenets
         [Parameter]
         public int ProductId { get; set; }
 
-        protected override void OnInitialized()
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
             Images = new List<Image>();
+
+            await base.SetParametersAsync(parameters);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
