@@ -27,7 +27,7 @@ namespace Frontend.Services
         {
             try
             {
-                var response = await _httpClient.PostJsonAsync<User>(_configuration["ApiHostUrl"] + "api/v1.0/login/register", user);
+                var response = await _httpClient.PostJsonAsync<User>(_configuration["ApiHostUrl"] + "api/v1.0/users", user);
                 return await Task.FromResult(response);
             }
             catch (System.Exception)

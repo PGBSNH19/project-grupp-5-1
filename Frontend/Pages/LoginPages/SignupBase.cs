@@ -64,8 +64,8 @@ namespace Frontend.Pages.LoginPages
                 }
                 else
                 {
-                    await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
-                    NavigationManager.NavigateTo("/");
+                  await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
+                  NavigationManager.NavigateTo("/");
                 }
 
             }
