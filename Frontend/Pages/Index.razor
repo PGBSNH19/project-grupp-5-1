@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inherits IndexBase
+@inject NavigationManager NavigationManager 
 
 @if (products == null)
 {
@@ -198,7 +199,7 @@ else
             {
                 if (product.Stock > 0)
                 {
-                    <div class="card-group col-sm-4 p-3">
+                    <div class="card-group col-sm-4 p-3" style="cursor:pointer" @onclick="()=> OpenDetails(product.Id)">
                         <div class="card product-card">
                             <div class="d-flex justify-content-center p-2">
                                 @if (product.SalePrice > 0)
@@ -241,7 +242,7 @@ else
                                     <p class="card-title">@product.Name</p>
                                 </div>
                                 <p class="card-text">@product.Description.Substring(0, Math.Min(50, product.Description.Length)) ...</p>
-                                @if (product.SalePrice != null)
+                                @if (product.SalePrice > 0)
                                 {
                                     <p class="text-danger" style="font-size:18px;margin-bottom:3px">Sale Price: @product.CurrentPrice kr</p>
                                     <p style="font-size:13px" class="text-muted mt-0 pt-0 mb-0 pb-0 text-"><del>Original price: @product.Price kr</del></p>
