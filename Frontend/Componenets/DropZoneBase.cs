@@ -1,13 +1,13 @@
-﻿using BlazorInputFile;
-using Frontend.Models;
-using Frontend.Services.Interfaces;
-using MatBlazor;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
+using MatBlazor;
+using BlazorInputFile;
+using Frontend.Models;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Frontend.Services.Interfaces;
+using Microsoft.AspNetCore.Components;
 
 namespace Frontend.Componenets
 {

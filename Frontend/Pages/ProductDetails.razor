@@ -1,10 +1,10 @@
-﻿@page "/productdetails/{id}"
-@page  "/productdetails/"
+﻿@page  "/productdetails/"
+@page "/productdetails/{id}"
 @inherits ProductDetailsBase
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject IJSRuntime JSRuntime
-@using MatBlazor
 @inject IMatToaster Toaster
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService localStorage
+
 
 @if (product.Id == 0)
 {

@@ -1,20 +1,20 @@
-﻿using Azure.Storage;
-using Azure.Storage.Blobs;
-using Frontend.Models;
-using Frontend.Services.Interfaces;
+﻿using System;
 using MatBlazor;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Azure.Storage;
+using Frontend.Models;
 using System.Net.Http;
-using System.Text.RegularExpressions;
+using Azure.Storage.Blobs;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Frontend.Services.Interfaces;
+using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Frontend.Services
 {

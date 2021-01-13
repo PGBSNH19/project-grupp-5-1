@@ -1,13 +1,13 @@
-﻿using Blazored.LocalStorage;
-using Frontend.Models;
+﻿using System;
 using MatBlazor;
+using Frontend.Models;
+using System.Net.Http;
+using Microsoft.JSInterop;
+using Blazored.LocalStorage;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace Frontend.Auth
 {

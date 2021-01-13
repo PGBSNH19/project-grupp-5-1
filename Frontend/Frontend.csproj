@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\LoginPages\Login.razor" />
+    <None Include="Pages\Login.razor" />
   </ItemGroup>
 
 </Project>

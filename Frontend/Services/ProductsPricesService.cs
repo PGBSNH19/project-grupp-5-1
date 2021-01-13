@@ -1,10 +1,10 @@
-﻿using Frontend.Models;
+﻿using System.Net.Http;
+using Frontend.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Frontend.Services
 {
