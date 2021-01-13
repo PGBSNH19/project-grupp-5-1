@@ -30,9 +30,11 @@ namespace Frontend.Componenets
         [Parameter]
         public int ProductId { get; set; }
 
-        protected override void OnInitialized()
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
             Images = new List<Image>();
+
+            await base.SetParametersAsync(parameters);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -88,8 +90,10 @@ namespace Frontend.Componenets
         {
             bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
             if (confirmed && Images.Contains(image))
+
             {
-                if(image.ImageURL != null)
+
+                if (image.ImageURL != null)
                 {
                     var name = Path.GetFileName(image.ImageURL);
                     await imageService.DeleteImage(name);
@@ -103,7 +107,7 @@ namespace Frontend.Componenets
         {
             foreach (var image in Images)
             {
-                if (image.IsDefault == true && image.Id != productImage.Id)
+                if (image.IsDefault == true)
                 {
                     image.IsDefault = false;
                 }

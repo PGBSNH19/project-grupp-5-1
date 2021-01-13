@@ -22,7 +22,7 @@
                             @{
                                 var src = image.ImageDataURL != null ? image.ImageDataURL : image.ImageURL;
                                 <div>
-                                    @if(image.IsDefault == true)
+                                    @if (image.IsDefault == true)
                                     {
                                         <img src="@src" asp-append-version="true" alt="Not Found" class="drop-image default-image" />
                                     }

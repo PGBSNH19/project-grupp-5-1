@@ -2,74 +2,60 @@
 @page  "/signup"
 @inherits SignupBase
 
-<EditForm Model="@user" OnValidSubmit="@RegisterUser">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="mobile-remove">
-        <br /><br /><br /><br /><br /><br /><br />
-    </div>
-    <div class="container col-lg-5 mt-3">
-        <div class="row">
-            <AuthorizeView Roles="Admin">
-                <Authorized Context="Auth">
-                    <div>
-                        <h3 style="font-weight:bold;" class="mb-3 text-white">Create new user</h3>
-                    </div>
-                </Authorized>
-                <NotAuthorized Context="Auth">
-                    <div>
-                        <h3 style="font-weight:bold;" class="mb-3 text-white">Sign Up</h3>
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>
-
-            <div>
-            </div>
-            <div class="col-12 row mb-3">
-                <InputText class="form-control col-12" @bind-Value="user.FirstName" placeholder="first name (optional)" />
-            </div>
-            <div class="col-12 row mb-3">
-                <InputText class="form-control col-12" @bind-Value="user.LastName" placeholder="last name (optional)" />
-            </div>
-            <div class="col-12 row mb-3">
-                <InputText class="form-control col-12" @bind-Value="user.Username" placeholder="user name" />
-            </div>
-            <div class="col-12 row mb-3">
-                <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
-            </div>
-            <div class="col-12 row mb-3">
-                <InputText type="password" class="form-control col-12" @bind-Value="user.ConfirmPassword" placeholder="confirm password" />
-            </div>
-            <AuthorizeView Roles="Admin">
-                <Authorized Context="Auth">
-                    <div class="col-12 row mb-3">
-                        <InputSelect class="form-control col-12" @bind-Value="user.Role">
-                            <option value="1">Admin</option>
-                            <option value="2">Customer</option>
-                        </InputSelect>
-                    </div>
-                </Authorized>
-            </AuthorizeView>
-            <br />
-            <div class="col-12 row mb-3">
-                <span class="col-12"></span>
+<div class="container col-sm-4">
+    <div class="row justify-content-center">
+        <EditForm Model="@user" OnValidSubmit="@RegisterUser">
+            <DataAnnotationsValidator />
+            <div class="signup-box">
+                <img alt="" class="avatar" src="https://i.postimg.cc/zDyt7KCv/a1.jpg">
                 <AuthorizeView Roles="Admin">
                     <Authorized Context="Auth">
-                        <input type="submit" class="form-control col-6 btn btn-sm btn-danger" value="Create" />
+                        <h2>Create new user</h2>
                     </Authorized>
                     <NotAuthorized Context="Auth">
-                        <input type="submit" class="form-control col-6 btn btn-sm btn-danger" value="Sign Up" />
+                        <h2>Sign Up</h2>
+                    </NotAuthorized>
+                </AuthorizeView>
+                <InputText @bind-Value="user.FirstName" placeholder="first name (optional)" />
+
+                <InputText @bind-Value="user.LastName" placeholder="last name (optional)" />
+
+                <InputText @bind-Value="user.Username" placeholder="user name" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.Username)" />
+                </div>
+
+                <InputText type="password" @bind-Value="user.Password" placeholder="password" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.Password)" />
+                </div>
+
+                <InputText type="password" @bind-Value="user.ConfirmPassword" placeholder="confirm password" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.ConfirmPassword)" />
+                </div>
+
+                <AuthorizeView Roles="Admin">
+                    <Authorized Context="Auth">
+                            <InputSelect @bind-Value="user.Role">
+                                <option class="select-options text-dark" value="1">Admin</option>
+                                <option class="select-options text-dark" value="2">Customer</option>
+                            </InputSelect>
+                    </Authorized>
+                </AuthorizeView>
+                <AuthorizeView Roles="Admin">
+                    <Authorized Context="Auth">
+                        <input type="submit" class="btn btn-sm" value="Create" />
+                    </Authorized>
+                    <NotAuthorized Context="Auth">
+                        <input type="submit" class="btn btn-sm" value="Sign Up" />
                     </NotAuthorized>
                 </AuthorizeView>
                 @if (!IsUserAdmin)
                 {
-                    <a href="/login" class="col-6 pt-1" style="color:white; text-decoration:none">Already an user?</a>
+                    <p class="signup-login-buton"><a href="/login">Already an user?</a></p>
                 }
             </div>
-            <br />
-            <div class="col-12 row" style="text-align:left; font-style:italic; color:red">
-                <span class="col-12">@ErrorMesssage</span>
-            </div>
-        </div>
+        </EditForm>
     </div>
-</EditForm>
+</div>

@@ -109,7 +109,7 @@ namespace Frontend.Services
                     Order order = new Order();
 
                     order.DateRegistered = DateTime.Now;
-                    if (couponId != "")
+                    if (couponId != "0")
                     {
                         order.CouponId = int.Parse(couponId);
                     }
@@ -162,20 +162,31 @@ namespace Frontend.Services
                         // Convert the current UTC time to the time in Sweden
                         DateTimeOffset currentTimeInSweden = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, tzi);
 
-                        //DateTime dateNow = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
-                        MailRequest orderToSend = new MailRequest()
+                        MailRequest orderToSend = new MailRequest();
+
+                        orderToSend.ToEmail = userInfo.Email;
+                        orderToSend.OrderId = newOrder.Id;
+                        orderToSend.Subject = "Your order";
+                        orderToSend.UserName = userInfo.FirstName + " " + userInfo.LastName;
+                        orderToSend.Address = userInfo.Address;
+                        orderToSend.City = userInfo.City;
+                        orderToSend.ZipCode = userInfo.ZipCode.ToString();
+                        orderToSend.Date = currentTimeInSweden.ToString("F");
+                        if (couponId != "0")
                         {
-                            ToEmail = userInfo.Email,
-                            OrderId = newOrder.Id,
-                            Subject = "Your order",
-                            UserName = userInfo.FirstName + " " + userInfo.LastName,
-                            Address = userInfo.Address,
-                            City = userInfo.City,
-                            ZipCode = userInfo.ZipCode.ToString(),
-                            Date = currentTimeInSweden.ToString("F"),
-                            TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount,
-                            buyedProductsList = buyedProducts
-                        };
+                            var activeDiscount = await _httpClient.GetJsonAsync<Coupon>(_configuration["ApiHostUrl"] + $"api/v1.0/Coupons/{couponId}");
+
+                            orderToSend.Discount = (activeDiscount.Discount * 100).ToString("0");
+                            orderToSend.DiscountName = activeDiscount.Code;
+                        }
+                        else
+                        {
+                            orderToSend.Discount = "";
+                            orderToSend.DiscountName = "";
+                        }
+                        orderToSend.TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount;
+
+                        orderToSend.buyedProductsList = buyedProducts;
 
                         //The fourth step is to send the email to the customer
                         await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send/", orderToSend);
