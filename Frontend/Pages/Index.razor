@@ -142,6 +142,17 @@ else
                             <div class="carouselstyle2 card ">
                                 <div class="card-body row">
                                     <div class="col-md-4 col-sm-12">
+                                        @if (product.SalePrice > 0)
+                                        {
+                                            <img class="sale2" src="/Images/SALE.png" style="width:40px;height:40px;" />
+                                        }
+                                        @if (product.SalePrice > 0)
+                                        {
+                                            <div class="salepro2">
+                                                <h6 class="saleproprice2">@{ Rea = (int)((product.Price - product.CurrentPrice) / (product.Price / 100));} @Rea%</h6>
+                                                <img src="/Images/descountred.png" style="width:40px;height:40px;" />
+                                            </div>
+                                        }
                                         <a href="@($"productdetails/{product.Id}")">
                                             @{
                                                 string src;

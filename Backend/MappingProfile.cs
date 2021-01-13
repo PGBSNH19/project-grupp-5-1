@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Backend.DTO;
 using Backend.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Backend
 {
@@ -23,7 +19,7 @@ namespace Backend
 
             CreateMap<Product, ProductDTO>()
                 .ReverseMap();
-            
+
             CreateMap<ProductPrice, ProductPriceDTO>()
                .ReverseMap();
 

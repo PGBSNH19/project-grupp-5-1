@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Models
@@ -10,8 +7,10 @@ namespace Backend.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public string CategoryName { get; set; }
+
         public ICollection<Product> Products { get; set; }
     }
 }

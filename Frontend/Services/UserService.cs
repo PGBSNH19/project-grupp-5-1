@@ -1,8 +1,8 @@
 ﻿using Frontend.Models;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Frontend.Services
 {
@@ -35,6 +35,5 @@ namespace Frontend.Services
                 return null;
             }
         }
-
     }
 }

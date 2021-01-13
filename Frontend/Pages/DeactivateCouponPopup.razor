@@ -15,7 +15,7 @@
                         <strong>Coupon code: </strong>@CouponToDeactivate.Code <br />
                         <strong>From: </strong>@CouponToDeactivate.StartDate.ToString("yyyy-MM-dd") <br />
                         <strong>To: </strong>@CouponToDeactivate.StartDate.ToString("yyyy-MM-dd") <br />
-                        <strong>Discount: </strong>@((CouponToDeactivate.Discount*100).ToString("0.##")) %                                                
+                        <strong>Discount: </strong>@((CouponToDeactivate.Discount*100).ToString("0.##")) %
                     </i>
                 </div>
                 <div class="col-md-auto mt-3 mb-2">
@@ -26,7 +26,7 @@
             else
             {
                 <div class="col-md-auto mb-2">
-                    <strong>Coupon has been deactivated!</strong>                    
+                    <strong>Coupon has been deactivated!</strong>
                 </div>
                 <div class="col-md-auto">
                     <i>
@@ -36,15 +36,13 @@
                         Discount: @(CouponToDeactivate.Discount*100) %
                     </i>
                 </div>
-                <div class="col-md-auto mt-3 mb-2">                    
+                <div class="col-md-auto mt-3 mb-2">
                     <button class="btn btn-dark" @onclick="() => Cancel()">Close</button>
                 </div>
             }
         </content>
     </div>
-
 </div>
-
 
 @code {
 

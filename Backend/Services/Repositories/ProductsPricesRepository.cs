@@ -4,7 +4,6 @@ using Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,13 +20,12 @@ namespace Backend.Services.Repositories
             _logger = logger;
         }
 
-     
         public async Task<Decimal> GetLatestPrice(int productId)
         {
             var query = await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
                 .Select(x => x.SalePrice ?? x.Price).LastAsync();
 
-            if(query == 0)
+            if (query == 0)
             {
                 query = await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
                 .Select(x => x.Price).LastAsync();

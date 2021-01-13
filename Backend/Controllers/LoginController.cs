@@ -1,21 +1,21 @@
-﻿using System;
-using AutoMapper;
-using System.Linq;
+﻿using AutoMapper;
 using Backend.DTO;
-using System.Text;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Backend.Services.Interfaces;
-using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
 using Backend.Models;
+using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
@@ -42,7 +42,7 @@ namespace Backend.Controllers
         /// <param name="user">The user details which will be used to login.</param>
         /// <returns>The login details of the authenticated user.</returns>
         /// <response code="200">Returns the login details of the authenticated user.</response>
-        /// <response code="401">The given login details were wrong.</response>   
+        /// <response code="401">The given login details were wrong.</response>
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login([FromBody] UserDTO user)
@@ -51,7 +51,6 @@ namespace Backend.Controllers
             UserDTO authenticationResult = AuthenticateUser(user);
             if (authenticationResult != null)
             {
-                
                 var token = GenerateJWTToken(authenticationResult);
                 response = Ok(new
                 {
@@ -123,7 +122,6 @@ namespace Backend.Controllers
             }
             return BadRequest();
         }
-
 
         [NonAction]
         private IEnumerable<UserDTO> Users()

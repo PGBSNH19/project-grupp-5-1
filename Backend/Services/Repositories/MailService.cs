@@ -2,14 +2,10 @@
 using Backend.Services.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Backend.Services.Repositories

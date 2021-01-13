@@ -1,8 +1,5 @@
 ﻿using Backend.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Backend.DTO
 {
@@ -17,7 +14,5 @@ namespace Backend.DTO
         public int ProductCategoryId { get; set; }
         public ICollection<ProductPrice> ProductPrices { get; set; }
         public string DefaultImageName { get; set; }
-
-
     }
 }

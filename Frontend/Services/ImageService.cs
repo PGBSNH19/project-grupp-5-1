@@ -1,20 +1,20 @@
-﻿using System;
-using System.IO;
-using MatBlazor;
-using System.Linq;
-using Azure.Storage;
-using System.Net.Http;
-using Frontend.Models;
+﻿using Azure.Storage;
 using Azure.Storage.Blobs;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using Frontend.Models;
 using Frontend.Services.Interfaces;
-using Microsoft.Extensions.Options;
-using System.Text.RegularExpressions;
-using Microsoft.WindowsAzure.Storage;
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Frontend.Services
 {
@@ -24,6 +24,7 @@ namespace Frontend.Services
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly IOptions<AzureStorageConfig> _options;
+
         public ImageService(HttpClient httpClient, IOptions<AzureStorageConfig> options, IConfiguration configuration, IMatToaster toaster)
         {
             _options = options;
@@ -34,14 +35,13 @@ namespace Frontend.Services
 
         public async Task<bool> UploadImages(List<Image> images, int productId)
         {
-            if (images.Count !=0 && images.All(a => a.IsDefault != true))
+            if (images.Count != 0 && images.All(a => a.IsDefault != true))
             {
                 _toaster.Add($"Sorry, you have to select an default image..", MatToastType.Danger, "Did not select default image");
                 return false;
             }
             else
             {
-
                 foreach (var image in images)
                 {
                     if (image.ImageURL == null)
@@ -81,7 +81,6 @@ namespace Frontend.Services
                 }
                 return true;
             }
-
         }
 
         public async Task<Uri> UploadFileToAzureStorage(Stream stream, string container, string fileName)
@@ -106,7 +105,7 @@ namespace Frontend.Services
         public async Task<List<Image>> GetImagesByProductId(int productId)
         {
             List<Image> images = new List<Image>();
-            var imageNames =  await MatHttpClientExtension.GetJsonAsync<ProductImageName[]>(_httpClient,_configuration["ApiHostUrl"] + "api/v1.0/productimages/product/" + productId);
+            var imageNames = await MatHttpClientExtension.GetJsonAsync<ProductImageName[]>(_httpClient, _configuration["ApiHostUrl"] + "api/v1.0/productimages/product/" + productId);
             foreach (var imageName in imageNames)
             {
                 var Url = ReadFileFromStorage(imageName.ImageName);
@@ -124,7 +123,7 @@ namespace Frontend.Services
         public async Task<List<Image>> GetAllDefaultImages()
         {
             List<Image> images = new List<Image>();
-            var imageNames = (await MatHttpClientExtension.GetJsonAsync<ProductImageName[]>(_httpClient,_configuration["ApiHostUrl"] + "api/v1.0/productimages")).Where(p => p.IsDefault == true);
+            var imageNames = (await MatHttpClientExtension.GetJsonAsync<ProductImageName[]>(_httpClient, _configuration["ApiHostUrl"] + "api/v1.0/productimages")).Where(p => p.IsDefault == true);
             foreach (var imageName in imageNames)
             {
                 var Url = ReadFileFromStorage(imageName.ImageName);
@@ -142,13 +141,13 @@ namespace Frontend.Services
 
         public string ReadFileFromStorage(string fileName)
         {
-            return new Uri("https://" + _options.Value.AccountName + ".blob.core.windows.net/"  + _options.Value.Container + "/" + fileName).ToString();
+            return new Uri("https://" + _options.Value.AccountName + ".blob.core.windows.net/" + _options.Value.Container + "/" + fileName).ToString();
         }
 
         public async Task DeleteImage(string imageName)
         {
             //Delete the imageName from database.
-            await _httpClient.SendJsonAsync<Image>(HttpMethod.Delete,_configuration["ApiHostUrl"] + "api/v1.0/productimages/deleteImage/" + imageName, null);
+            await _httpClient.SendJsonAsync<Image>(HttpMethod.Delete, _configuration["ApiHostUrl"] + "api/v1.0/productimages/deleteImage/" + imageName, null);
 
             //Set the connection string variable
             string storageConnectionString = _options.Value.ConnectionString;

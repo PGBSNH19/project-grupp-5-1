@@ -1,13 +1,13 @@
-﻿using Frontend.Models;
-using System.Net.Http;
-using Microsoft.JSInterop;
-using Blazored.LocalStorage;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Components;
-using System;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Blazored.LocalStorage;
+using Frontend.Models;
 using MatBlazor;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace Frontend.Auth
 {
@@ -19,7 +19,6 @@ namespace Frontend.Auth
         private readonly IMatToaster _toaster;
         private readonly IJSRuntime _jSRuntime;
         private readonly ILocalStorageService _localStorageService;
-
 
         public TokenValidator(NavigationManager NavigationManager, ILocalStorageService localStorageService, IJSRuntime jSRuntime, AuthenticationStateProvider authenticationStateProvider, IMatToaster toaster)
         {

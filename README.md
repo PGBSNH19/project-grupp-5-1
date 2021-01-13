@@ -100,7 +100,7 @@ This will create the local database and insert some seeded data which are define
 
 #### Before to run the project
 
-Make sure the you have active Multiple Startup Projects. You can do it by right click on the Solution -> Property -> Startup Project -> Multiple Startup Project -> chose Start for Backend and Frontend.
+Make sure the you have active Multiple Startup Projects. You can do it by `right click on the Solution -> Property -> Startup Project -> Multiple Startup Project -> chose Start for Backend and Frontend`.
 
 
 

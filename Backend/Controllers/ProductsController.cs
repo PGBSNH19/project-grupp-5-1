@@ -4,11 +4,9 @@ using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Backend.Controllers
@@ -34,7 +32,7 @@ namespace Backend.Controllers
         /// <returns>A list of all existing products.</returns>
         /// <response code="200">Returns a list of existing products.</response>
         /// <response code="404">There are no products stored in the database.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch products.</response>  
+        /// <response code="500">The API caught an exception when attempting to fetch products.</response>
         [HttpGet]
         public async Task<ActionResult<ProductDTO[]>> GetAll()
         {
@@ -64,7 +62,7 @@ namespace Backend.Controllers
         /// <returns>The product which has the specified Id.</returns>
         /// <response code="200">Returns the product which matched the given Id.</response>
         /// <response code="404">No product was found which matched the given Id.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch a product.</response>    
+        /// <response code="500">The API caught an exception when attempting to fetch a product.</response>
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
@@ -95,7 +93,7 @@ namespace Backend.Controllers
         /// <returns>The url of the default image of the requested product.</returns>
         /// <response code="200">Returns the default image url of the product which matched the given Id.</response>
         /// <response code="404">No url was found which matched the given ProductId.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch a the url.</response>    
+        /// <response code="500">The API caught an exception when attempting to fetch a the url.</response>
         [HttpGet("defaultImage/{productId}")]
         public async Task<ActionResult<string>> GetDefaultImageByProductId(int productId)
         {
@@ -126,7 +124,7 @@ namespace Backend.Controllers
         /// <returns>A list of products whose name contain the search query.</returns>
         /// <response code="200">The API has successfully retrieved the product search result.</response>
         /// <response code="404">No product was found which matched the given search criteria.</response>
-        /// <response code="500">The API caught an exception when attempting to search for products.</response>   
+        /// <response code="500">The API caught an exception when attempting to search for products.</response>
         [HttpGet("search")]
         public async Task<ActionResult<ProductDTO>> SearchProducts([FromQuery] string productname)
         {
@@ -158,7 +156,7 @@ namespace Backend.Controllers
         /// <returns>Products that contains category</returns>
         /// <response code="200">Returns products that found by category</response>
         /// <response code="404">No product was found which matched the given category.</response>
-        /// <response code="500">The API caught an exception when attempting to search for given category.</response> 
+        /// <response code="500">The API caught an exception when attempting to search for given category.</response>
         [HttpGet("categories/{category}")]
         public async Task<ActionResult<ProductDTO>> GetByCategoryName(string category)
         {
@@ -189,7 +187,7 @@ namespace Backend.Controllers
         /// <returns>Products that contains category</returns>
         /// <response code="200">Returns products that found by category</response>
         /// <response code="404">No product was found which matched the given category.</response>
-        /// <response code="500">The API caught an exception when attempting to search for given category.</response> 
+        /// <response code="500">The API caught an exception when attempting to search for given category.</response>
         [HttpGet("categories/{id:int}")]
         public async Task<ActionResult<ProductDTO>> GetByCategoryId(int id)
         {
@@ -219,7 +217,7 @@ namespace Backend.Controllers
         /// <returns>Products that contains category</returns>
         /// <response code="200">Returns products that found by category</response>
         /// <response code="404">No product was found which matched the given category.</response>
-        /// <response code="500">The API caught an exception when attempting to search for given category.</response> 
+        /// <response code="500">The API caught an exception when attempting to search for given category.</response>
         [HttpGet("categories")]
         public async Task<ActionResult<ProductCategoryDTO>> GetProductCategories()
         {
@@ -249,7 +247,7 @@ namespace Backend.Controllers
         /// <returns>The product object which has been added.</returns>
         /// <response code="201">Returns details of the new product which has been added.</response>
         /// <response code="400">The API failed to save the new product to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save a product.</response>    
+        /// <response code="500">The API caught an exception when attempting to save a product.</response>
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO product)
         {
@@ -284,7 +282,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the product which has been deleted.</response>
         /// <response code="404">No product was found which matched the given Id.</response>
         /// <response code="400">The API failed to save changes to database after deleting the product.</response>
-        /// <response code="500">The API caught an exception when attempting to delete a product.</response>  
+        /// <response code="500">The API caught an exception when attempting to delete a product.</response>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ProductDTO>> Delete(int id)
         {

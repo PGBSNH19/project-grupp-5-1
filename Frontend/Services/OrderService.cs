@@ -1,17 +1,17 @@
-﻿using System;
-using MatBlazor;
-using System.Linq;
+﻿using Blazored.LocalStorage;
 using Frontend.Auth;
 using Frontend.Models;
-using System.Net.Http;
 using Frontend.Models.Mail;
-using Blazored.LocalStorage;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
-using System.Runtime.InteropServices;
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace Frontend.Services
 {
@@ -27,7 +27,7 @@ namespace Frontend.Services
 
         private List<BuyedProducts> buyedProducts = new List<BuyedProducts>();
 
-        public OrderService(NavigationManager NavigationManager, HttpClient httpClient,IConfiguration configuration,
+        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration,
                             ILocalStorageService localStorageService, ITokenValidator tokenValidator, IMatToaster toaster)
         {
             _toaster = toaster;
@@ -84,7 +84,6 @@ namespace Frontend.Services
             else
             {
                 _toaster.Add($"This product is not exist in your basket.", MatToastType.Danger, "Alert:");
-
             }
 
             await _localStorageService.SetItemAsync("customer-basket", basket);
@@ -137,7 +136,7 @@ namespace Frontend.Services
 
                             if (newOrder != null && newOrderedProduct != null)
                             {
-                                product = await MatHttpClientExtension.GetJsonAsync<Product>(_httpClient,_configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
+                                product = await MatHttpClientExtension.GetJsonAsync<Product>(_httpClient, _configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
 
                                 product.Stock -= productInBasket.Amount;
 
@@ -176,7 +175,7 @@ namespace Frontend.Services
                         orderToSend.Date = currentTimeInSweden.ToString("F");
                         if (couponId != "0")
                         {
-                            var activeDiscount = await MatHttpClientExtension.GetJsonAsync<Coupon>(_httpClient,_configuration["ApiHostUrl"] + $"api/v1.0/Coupons/{couponId}");
+                            var activeDiscount = await MatHttpClientExtension.GetJsonAsync<Coupon>(_httpClient, _configuration["ApiHostUrl"] + $"api/v1.0/Coupons/{couponId}");
 
                             orderToSend.Discount = (activeDiscount.Discount * 100).ToString("0") + "%";
                             orderToSend.DiscountName = "<strong> Discount: </strong>" + activeDiscount.Code + " give you";
@@ -206,7 +205,7 @@ namespace Frontend.Services
                 //If something wrong happened when sending the order, first we delete the steps which was already created
                 if (newOrderedProduct != null && newOrder != null)
                 {
-                    product = await MatHttpClientExtension.GetJsonAsync<Product>(_httpClient,_configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
+                    product = await MatHttpClientExtension.GetJsonAsync<Product>(_httpClient, _configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
                     product.Stock += productInBasket.Amount;
 
                     await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);

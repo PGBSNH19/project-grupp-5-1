@@ -1,13 +1,12 @@
 ﻿using Frontend.Models;
-using Microsoft.JSInterop;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Frontend.Services.Interfaces;
-using Microsoft.AspNetCore.Components;
 using Frontend.Services;
-using System.Linq;
-using System;
+using Frontend.Services.Interfaces;
 using MatBlazor;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
