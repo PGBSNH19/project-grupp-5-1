@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using Frontend.Componenets;
 using Frontend.Models;
 using Frontend.Services;
-using Frontend.Componenets;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace frontend.Pages
 {
@@ -59,7 +59,7 @@ namespace frontend.Pages
                 else
                 {
                     await ProductService.DeleteProduct(result.Id);
-                } 
+                }
             }
         }
     }

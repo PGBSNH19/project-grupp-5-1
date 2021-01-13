@@ -1,16 +1,16 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Backend.DTO;
 using Backend.Models;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
@@ -141,7 +141,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the user which has been updated.</response>
         /// <response code="404">No user was found which matched the given Id.</response>
         /// <response code="400">The API failed to save the updated user to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save an user.</response>  
+        /// <response code="500">The API caught an exception when attempting to save an user.</response>
         [HttpPut("{userId}")]
         public async Task<ActionResult<User>> Update(int userId, [FromBody] UserDTO updatedUser)
         {
@@ -180,7 +180,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the user which has been deleted.</response>
         /// <response code="404">No user was found which matched the given Id.</response>
         /// <response code="400">The API failed to save changes to database after deleting the user.</response>
-        /// <response code="500">The API caught an exception when attempting to delete an user.</response>  
+        /// <response code="500">The API caught an exception when attempting to delete an user.</response>
         [HttpDelete("{userId}")]
         public async Task<ActionResult<UserDTO>> Delete(int userId)
         {

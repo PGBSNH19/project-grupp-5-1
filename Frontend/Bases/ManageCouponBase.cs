@@ -11,31 +11,33 @@ using System.Threading.Tasks;
 
 namespace Frontend.Bases
 {
-    public class ManageCouponBase  : ComponentBase
+    public class ManageCouponBase : ComponentBase
     {
         [Inject]
         public ICouponService CouponService { get; set; }
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
         [CascadingParameter] public IModalService Modal { get; set; }
 
         public static int CreatedCouponId { get; set; }
+
         public Coupon CreateCoupon = new Coupon()
         {
             StartDate = DateTime.Today,
             EndDate = DateTime.Today.AddDays(1),
             Enabled = true
         };
+
         public Coupon GetCreatedCoupon;
 
         public IEnumerable<Coupon> Coupons { get; set; } = new List<Coupon>();
         public static int GetCoupnIdToUpodate { get; set; }
 
-
         protected async override Task OnInitializedAsync()
         {
-            Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);           
+            Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
         }
 
         protected async Task HandleValidSubmit()
@@ -57,10 +59,9 @@ namespace Frontend.Bases
                 };
 
                 Coupons = (await CouponService.GetCoupons(true)).Where(x => x.Enabled == true);
-            }            
+            }
         }
 
-       
         public async Task ShowCouponPopup(int couponId, Coupon coupon)
         {
             var parameters = new ModalParameters();
@@ -68,13 +69,11 @@ namespace Frontend.Bases
             parameters.Add(nameof(DeactivateCouponPopupBase.CouponToDeactivate), coupon);
 
             var shopModal = Modal.Show<DeactivateCouponPopup>("Deactivate Coupon", parameters);
-            
+
             var result = await shopModal.Result;
 
             if (result.Cancelled) { Console.WriteLine("Modal was cancelled"); }
             else { StateHasChanged(); }
-
-            
         }
     }
 }

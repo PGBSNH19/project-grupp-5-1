@@ -1,17 +1,17 @@
-using Frontend.Auth;
-using Blazored.Modal;
-using System.Net.Http;
-using Frontend.Services;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Hosting;
+using Blazored.Modal;
+using Frontend.Auth;
+using Frontend.Models;
+using Frontend.Services;
 using Frontend.Services.Interfaces;
+using MatBlazor;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Components.Authorization;
-using Frontend.Models;
-using MatBlazor;
+using Microsoft.Extensions.Hosting;
+using System.Net.Http;
 
 namespace Frontend
 {

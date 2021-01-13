@@ -1,19 +1,18 @@
-﻿using System;
-using System.IO;
-using MatBlazor;
+﻿using BlazorInputFile;
 using Frontend.Models;
-using BlazorInputFile;
-using Microsoft.JSInterop;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Frontend.Componenets
 {
     public class DropZoneBase : ComponentBase
     {
-
         [Inject]
         public IImageService imageService { get; set; }
 
@@ -28,7 +27,6 @@ namespace Frontend.Componenets
 
         [Parameter]
         public int ProductId { get; set; }
-
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
@@ -92,7 +90,6 @@ namespace Frontend.Componenets
             if (confirmed && Images.Contains(image))
 
             {
-
                 if (image.ImageURL != null)
                 {
                     var name = Path.GetFileName(image.ImageURL);

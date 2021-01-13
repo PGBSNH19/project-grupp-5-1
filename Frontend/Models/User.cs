@@ -15,6 +15,7 @@ namespace Frontend.Models
 
         [Required(ErrorMessage = "Please enter a valid password.")]
         public string Password { get; set; }
+
         public string ConfirmPassword { get; set; }
         public string AccessToken { get; set; }
         public DateTime expiry { get; set; }

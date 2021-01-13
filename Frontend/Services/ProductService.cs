@@ -1,10 +1,10 @@
-﻿using System;
-using Frontend.Models;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using Frontend.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Frontend.Services
 {
@@ -26,7 +26,7 @@ namespace Frontend.Services
 
         public async Task<IEnumerable<Product>> SearchProducts(string productName)
         {
-            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"] 
+            return await httpClient.GetJsonAsync<Product[]>(_configuration["ApiHostUrl"]
                 + $"api/v1.0/products/search/?productname={productName}");
         }
 
@@ -59,7 +59,7 @@ namespace Frontend.Services
         {
             try
             {
-             var result = await httpClient.PostJsonAsync<Product>(_configuration["ApiHostUrl"] + "api/v1.0/products", product);
+                var result = await httpClient.PostJsonAsync<Product>(_configuration["ApiHostUrl"] + "api/v1.0/products", product);
                 if (result != null)
                 {
                     ProductPrice price = new ProductPrice();
@@ -72,20 +72,15 @@ namespace Frontend.Services
                     return result;
                 }
                 return null;
-
             }
             catch (System.Exception)
             {
-
                 return null;
             }
-            
         }
 
         public async Task<Product> Update(Product product, decimal productPrice, decimal salePrice)
         {
-          //return await httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
-
             try
             {
                 var result = await httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
@@ -97,15 +92,13 @@ namespace Frontend.Services
                     price.DateChanged = DateTime.Now;
                     price.ProductId = product.Id;
 
-                 var respons =  await httpClient.PostJsonAsync<ProductPrice>(_configuration["ApiHostUrl"] + "api/v1.0/productsprices", price);
-                return result;
+                    var respons = await httpClient.PostJsonAsync<ProductPrice>(_configuration["ApiHostUrl"] + "api/v1.0/productsprices", price);
+                    return result;
                 }
                 return null;
-
             }
             catch (System.Exception)
             {
-
                 return null;
             }
         }

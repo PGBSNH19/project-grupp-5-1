@@ -1,9 +1,8 @@
-﻿using Frontend.Models;
-using Microsoft.JSInterop;
-using Blazored.LocalStorage;
-using System.Threading.Tasks;
-using System.Security.Claims;
+﻿using Blazored.LocalStorage;
+using Frontend.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Frontend.Auth
 {
@@ -18,7 +17,6 @@ namespace Frontend.Auth
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-
             var storedUser = await _localStorageService.GetItemAsync<User>("user-details");
 
             ClaimsIdentity identity;
@@ -30,9 +28,9 @@ namespace Frontend.Auth
             else
             {
                 identity = new ClaimsIdentity();
-            }          
+            }
 
-            var claimsPrincipal = new ClaimsPrincipal(identity);            
+            var claimsPrincipal = new ClaimsPrincipal(identity);
 
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
         }
@@ -64,11 +62,11 @@ namespace Frontend.Auth
             var claimsIdentity = new ClaimsIdentity();
 
             if (user.Username != null)
-            { 
+            {
                 claimsIdentity = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, string.IsNullOrEmpty(user.FirstName) ? user.Username : user.FirstName),
-                    new Claim(ClaimTypes.UserData, user.Username),                                   
+                    new Claim(ClaimTypes.UserData, user.Username),
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }, "apiauth_type");
             }

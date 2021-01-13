@@ -3,14 +3,11 @@ using Backend.Controllers;
 using Backend.DTO;
 using Backend.Models;
 using Backend.Services.Interfaces;
-using Backend.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -34,7 +31,7 @@ namespace XUnitTestBackend
                     new CouponDTO(){Id = 1},
                     new CouponDTO(){Id = 2}
                 });
-            
+
             var controller = new CouponsController(logger, mockRepo.Object, mockMapper.Object);
 
             // Act
@@ -45,7 +42,6 @@ namespace XUnitTestBackend
             var returnValue = Assert.IsAssignableFrom<IList<CouponDTO>>(okResult.Value);
             var coupons = returnValue;
             Assert.Equal(2, coupons.Count());
-            
         }
 
         [Theory]
@@ -68,8 +64,8 @@ namespace XUnitTestBackend
             var controller = new CouponsController(logger, mockRepo.Object, mockMapper.Object);
 
             // Act
-            var result = await controller.GetById(input);   
-            
+            var result = await controller.GetById(input);
+
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<CouponDTO>(okResult.Value);
@@ -117,13 +113,11 @@ namespace XUnitTestBackend
             {
                 Id = 1,
                 Code = "Coupon1",
-
             });
             sessions.Add(new Coupon()
             {
                 Id = 2,
                 Code = "Coupon2",
-
             });
             return sessions;
         }

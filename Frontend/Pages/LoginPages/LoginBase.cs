@@ -1,14 +1,14 @@
 ﻿using Frontend.Auth;
 using Frontend.Models;
 using Frontend.Services;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Frontend.Pages.LoginPages
 {
-    public class LoginBase: ComponentBase
+    public class LoginBase : ComponentBase
     {
         [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
@@ -20,11 +20,11 @@ namespace Frontend.Pages.LoginPages
         public IUserService userService { get; set; }
 
         public User user = new User();
-        
+
         private User returnedUser;
         public string ErrorMesssage { get; set; }
 
-        ClaimsPrincipal claimsPrincipal;
+        private ClaimsPrincipal claimsPrincipal;
 
         [CascadingParameter]
         public Task<AuthenticationState> authenticationStateTask { get; set; }

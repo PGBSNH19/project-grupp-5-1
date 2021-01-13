@@ -1,7 +1,7 @@
-﻿using System;
-using Backend.Models;
+﻿using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace Backend.Data
 {
@@ -9,12 +9,10 @@ namespace Backend.Data
     {
         public StoreDbContext()
         {
-
         }
 
         public StoreDbContext(DbContextOptions options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -26,7 +24,6 @@ namespace Backend.Data
                 entity.Property(e => e.Role)
                     .HasConversion(userRoleEnumConverter)
                     .HasDefaultValueSql("((0))");
-
             });
 
             builder.Entity<Weather>().ToTable("Weather");
@@ -81,7 +78,7 @@ namespace Backend.Data
                 Id = 10,
                 Name = "Scorching"
             });
-            
+
             builder.Entity<ProductCategory>().ToTable("ProductCategory");
             builder.Entity<ProductCategory>().HasKey(p => p.Id);
             builder.Entity<ProductCategory>().HasData(new
@@ -96,7 +93,7 @@ namespace Backend.Data
             },
             new
             {
-                Id =3,
+                Id = 3,
                 CategoryName = "Smart Watches"
             },
             new
@@ -296,7 +293,7 @@ namespace Backend.Data
                 ProductId = 6,
             });
 
-            //Image name must be created as GUID numbers by client side, those number for 
+            //Image name must be created as GUID numbers by client side, those number for
             //initial seeding only.
             builder.Entity<ProductImage>().ToTable("ProductImage");
             builder.Entity<ProductImage>().HasKey(p => p.Id);

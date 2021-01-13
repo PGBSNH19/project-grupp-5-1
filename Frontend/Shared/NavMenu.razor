@@ -14,8 +14,8 @@
         </a>
     </div>
     <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse"
-        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation">
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="container">
@@ -32,21 +32,21 @@
                         <li class="nav-item">
                             <NavLink class="nav-link" href="manageproducts">
                                 <span class="iconify" data-icon="carbon:product" data-inline="false"
-                                    style="width: 40px;"></span>
+                                      style="width: 40px;"></span>
                                 <span> Manage Products</span>
                             </NavLink>
                         </li>
                         <li class="nav-item">
                             <NavLink class="nav-link" href="managecoupons">
                                 <span class="iconify" data-icon="whh:coupon" data-inline="false"
-                                    style="width: 40px;"></span>
+                                      style="width: 40px;"></span>
                                 <span> Manage Coupons</span>
                             </NavLink>
                         </li>
                         <li class="nav-item">
                             <NavLink class="nav-link" href="signup">
                                 <span class="iconify" data-icon="whh:adduseralt" data-inline="false"
-                                    style="width: 30px;"></span>
+                                      style="width: 30px;"></span>
                                 <span>Add User</span>
                             </NavLink>
                         </li>
@@ -54,9 +54,9 @@
                 </AuthorizeView>
                 <li class="nav-item">
                     <NavLink class="nav-link" href="javascript: void(0);" style="cursor: pointer;"
-                             @onclick="@(() => modal.Show<ProductBasket>("Productbasket"))" >
+                             @onclick="@(() => modal.Show<ProductBasket>("Productbasket"))">
                         <span class="iconify" data-icon="emojione-v1:shopping-bags" data-inline="false"
-                            style="width: 30px;"></span>
+                              style="width: 30px;"></span>
                         <span>View basket</span>
                     </NavLink>
                 </li>
@@ -91,7 +91,7 @@
                             <span class="mt-3 font-weight-bold text-white">
                                 <a class="" href="/" @onclick="(() => Logout())">
                                     <span class="iconify" data-icon="clarity:logout-solid" data-inline="false"
-                                        style="width: 30px;"></span>
+                                          style="width: 30px;"></span>
                                     <span> Logout</span>
                                 </a>
                             </span>
@@ -99,7 +99,7 @@
                         <NotAuthorized>
                             <a class="ml-2" href="/login">
                                 <span class="iconify" data-icon="clarity:login-solid" data-inline="false"
-                                    style="width: 30px;"></span>
+                                      style="width: 30px;"></span>
                                 <span> Login</span>
                             </a>
                         </NotAuthorized>

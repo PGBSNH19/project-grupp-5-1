@@ -4,11 +4,8 @@ using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Backend.Controllers
@@ -34,7 +31,7 @@ namespace Backend.Controllers
         /// <returns>A list of all existing products.</returns>
         /// <response code="200">Returns a list of existing products.</response>
         /// <response code="404">There are no products stored in the database.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch products.</response>  
+        /// <response code="500">The API caught an exception when attempting to fetch products.</response>
         [HttpGet]
         public async Task<ActionResult<ProductPriceDTO[]>> GetAll()
         {
@@ -64,7 +61,7 @@ namespace Backend.Controllers
         /// <returns>The product which has the specified Id.</returns>
         /// <response code="200">Returns the product which matched the given Id.</response>
         /// <response code="404">No product was found which matched the given Id.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch a product.</response>    
+        /// <response code="500">The API caught an exception when attempting to fetch a product.</response>
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductPriceDTO>> GetById(int id)
         {
@@ -95,7 +92,7 @@ namespace Backend.Controllers
         /// <returns>The product which has the specified Id.</returns>
         /// <response code="200">Returns the latest price which is lower (price or saleprice)</response>
         /// <response code="404">No price was found which matched the given product Id.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch a price.</response>   
+        /// <response code="500">The API caught an exception when attempting to fetch a price.</response>
         [HttpGet("price/{productId:int}")]
         public async Task<ActionResult<decimal>> GetLatestPriceByProductId(int productId)
         {
@@ -119,7 +116,7 @@ namespace Backend.Controllers
         /// <returns>The product which has the specified Id.</returns>
         /// <response code="200">Returns the latest price which is lower (price or saleprice)</response>
         /// <response code="404">No price was found which matched the given product Id.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch a price.</response>   
+        /// <response code="500">The API caught an exception when attempting to fetch a price.</response>
         [HttpGet("product/{id:int}")]
         public async Task<ActionResult<ProductPriceDTO>> GetProductPriceByProductId(int id)
         {
@@ -141,7 +138,6 @@ namespace Backend.Controllers
             }
         }
 
-
         /// <summary>
         /// Adds a new product.
         /// </summary>
@@ -149,7 +145,7 @@ namespace Backend.Controllers
         /// <returns>The product object which has been added.</returns>
         /// <response code="201">Returns details of the new product which has been added.</response>
         /// <response code="400">The API failed to save the new product to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save a product.</response>    
+        /// <response code="500">The API caught an exception when attempting to save a product.</response>
         [HttpPost]
         public async Task<ActionResult<ProductPriceDTO>> PostProductPrice(ProductPriceDTO productPrice)
         {
@@ -184,7 +180,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the product which has been deleted.</response>
         /// <response code="404">No product was found which matched the given Id.</response>
         /// <response code="400">The API failed to save changes to database after deleting the product.</response>
-        /// <response code="500">The API caught an exception when attempting to delete a product.</response>  
+        /// <response code="500">The API caught an exception when attempting to delete a product.</response>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ProductPriceDTO>> Delete(int id)
         {

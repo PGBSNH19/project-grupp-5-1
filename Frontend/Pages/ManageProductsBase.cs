@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-using Frontend.Models;
+﻿using Frontend.Models;
 using Frontend.Services;
-using System.Threading.Tasks;
-using System.Security.Claims;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
@@ -29,7 +26,6 @@ namespace Frontend.Pages
         public string ProductCategoryId { get; set; } = "0";
         public string MinPrice { get; set; } = "0";
         public string MaxPrice { get; set; } = "0";
-
 
         protected override async Task OnInitializedAsync()
         {
