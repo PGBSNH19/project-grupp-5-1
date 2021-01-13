@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using MatBlazor;
 using System.Linq;
 using Azure.Storage;
 using System.Net.Http;
@@ -14,30 +15,28 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.JSInterop;
 
 namespace Frontend.Services
 {
     public class ImageService : IImageService
     {
-        private readonly IJSRuntime _jSRuntime;
+        private readonly IMatToaster _toaster;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly IOptions<AzureStorageConfig> _options;
-
-        public ImageService(HttpClient httpClient, IOptions<AzureStorageConfig> options, IConfiguration configuration, IJSRuntime jSRuntime)
+        public ImageService(HttpClient httpClient, IOptions<AzureStorageConfig> options, IConfiguration configuration, IMatToaster toaster)
         {
             _options = options;
-            _jSRuntime = jSRuntime;
+            _toaster = toaster;
             _httpClient = httpClient;
             _configuration = configuration;
         }
 
         public async Task<bool> UploadImages(List<Image> images, int productId)
         {
-            if (images.All(a => a.IsDefault != true))
+            if (images.Count !=0 && images.All(a => a.IsDefault != true))
             {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry, you have to select an default image..");
+                _toaster.Add($"Sorry, you have to select an default image..", MatToastType.Danger, "Did not select default image");
                 return false;
             }
             else
@@ -107,7 +106,7 @@ namespace Frontend.Services
         public async Task<List<Image>> GetImagesByProductId(int productId)
         {
             List<Image> images = new List<Image>();
-            var imageNames =  await _httpClient.GetJsonAsync<ProductImageName[]>(_configuration["ApiHostUrl"] + "api/v1.0/productimages/product/" + productId);
+            var imageNames =  await MatHttpClientExtension.GetJsonAsync<ProductImageName[]>(_httpClient,_configuration["ApiHostUrl"] + "api/v1.0/productimages/product/" + productId);
             foreach (var imageName in imageNames)
             {
                 var Url = ReadFileFromStorage(imageName.ImageName);
@@ -125,7 +124,7 @@ namespace Frontend.Services
         public async Task<List<Image>> GetAllDefaultImages()
         {
             List<Image> images = new List<Image>();
-            var imageNames = (await _httpClient.GetJsonAsync<ProductImageName[]>(_configuration["ApiHostUrl"] + "api/v1.0/productimages")).Where(p => p.IsDefault == true);
+            var imageNames = (await MatHttpClientExtension.GetJsonAsync<ProductImageName[]>(_httpClient,_configuration["ApiHostUrl"] + "api/v1.0/productimages")).Where(p => p.IsDefault == true);
             foreach (var imageName in imageNames)
             {
                 var Url = ReadFileFromStorage(imageName.ImageName);

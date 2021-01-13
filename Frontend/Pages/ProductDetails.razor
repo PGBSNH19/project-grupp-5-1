@@ -6,7 +6,7 @@
 @using MatBlazor
 @inject IMatToaster Toaster
 
-@if (product == null)
+@if (product.Id == 0)
 {
     <div class="mt-5 text-center w-100">
         <img src="./Images/loading.gif" style="width:20%;height:8%" />
@@ -55,7 +55,9 @@ else
                         }
                         else
                         {
-                            <img src="./Images//NoImage.png" style="width:150px;height:250px" />
+                            <div class="border mb-1">
+                                <img class="d-block p-3 w-100 justify-content-center" src="/Images/noimage2.png" />
+                            </div>
                         }
                     </div>
                     <div class="col-sm-7 mb-1">
@@ -66,7 +68,7 @@ else
                             <br />
                         </div>
                         <div><strong>Category: </strong>@product.ProductCategoryName<br /><br /></div>
-                        @if (product.SalePrice != null)
+                        @if (product.SalePrice > 0)
                         {
                             <p class="text-danger" style="font-size:18px;margin-bottom:3px">Sale Price: @product.CurrentPrice kr</p>
                             <p style="font-size:13px" class="text-muted mt-0 pt-0 mb-0 pb-0 text-"><del>Original price: @product.Price kr</del></p>

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
+using MatBlazor;
 using Frontend.Models;
 using BlazorInputFile;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Hosting;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -22,13 +21,14 @@ namespace Frontend.Componenets
         public IJSRuntime JsRuntime { get; set; }
 
         [Inject]
-        private IWebHostEnvironment _env { get; set; }
+        public IMatToaster Toaster { get; set; }
 
         [Parameter]
         public List<Image> Images { get; set; }
 
         [Parameter]
         public int ProductId { get; set; }
+
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
@@ -70,7 +70,7 @@ namespace Frontend.Componenets
                     }
                     else
                     {
-                        await JsRuntime.InvokeAsync<bool>("confirm", "Your file is not acceptable type..");
+                        Toaster.Add($"Your file type is not acceptable..", MatToastType.Danger, "Wrong file type:");
                     }
                 }
                 StateHasChanged();
