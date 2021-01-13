@@ -1,17 +1,17 @@
-﻿using Blazored.LocalStorage;
+﻿using System;
+using MatBlazor;
+using System.Linq;
 using Frontend.Auth;
+using System.Net.Http;
 using Frontend.Models;
 using Frontend.Models.Mail;
+using Blazored.LocalStorage;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Frontend.Services.Interfaces;
-using MatBlazor;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace Frontend.Services
 {

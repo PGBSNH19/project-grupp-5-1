@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Frontend.Pages.LoginPages
+namespace frontend.Pages.Bases
 {
     public class LoginBase : ComponentBase
     {
