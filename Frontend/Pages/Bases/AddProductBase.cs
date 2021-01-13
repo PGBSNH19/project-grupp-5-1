@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace frontend.Pages
+namespace frontend.Pages.Bases
 {
     public class AddProductBase : ComponentBase
     {

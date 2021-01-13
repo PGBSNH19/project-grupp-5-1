@@ -1,8 +1,8 @@
-﻿using Blazored.LocalStorage;
-using Frontend.Models;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Frontend.Models;
+using Blazored.LocalStorage;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Frontend.Auth
 {

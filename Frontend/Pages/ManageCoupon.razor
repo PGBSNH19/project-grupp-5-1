@@ -1,5 +1,5 @@
 ﻿@page "/managecoupons/"
-@inherits Frontend.Bases.ManageCouponBase
+@inherits ManageCouponBase
 @attribute [Authorize(Roles = "Admin")]
 
 <EditForm Model="@CreateCoupon" OnValidSubmit="@HandleValidSubmit">

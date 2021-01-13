@@ -5,7 +5,7 @@ using Frontend.Services;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace Frontend.Pages
+namespace frontend.Pages.Bases
 {
     public class DeactivateCouponPopupBase : ComponentBase
     {
