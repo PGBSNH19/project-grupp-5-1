@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-2">
                 <div><br /></div>
-                <button type="submit" class="btn btn-success">Create</button>
+                <button type="submit" class="createbtn btn btn-success">Create</button>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
 <br />
 <br />
 <div class="row">
-    <h3> <b>Active Coupons</b></h3>
+    <h3> Active Coupons</h3>
     <table class="table">
         <thead class="bg-dark text-white">
             <tr>
@@ -75,34 +75,24 @@
         <tbody>
             @foreach (var coupon in Coupons)
             {
-                //string discount = (coupon.Discount * 100).ToString();
-                //int discountIndex = discount.IndexOf(',');
-                //discount = discount.Remove(discountIndex);
-            <tr>
-                <td>@coupon.Code</td>
-                <td>@coupon.Description</td>
-                <td>@coupon.StartDate.ToString("yyyyMMdd")</td>
-                <td>@coupon.EndDate.ToString("yyyyMMdd")</td>
-                <td>@coupon.Discount</td>
+                <tr>
+                    <td>@coupon.Code</td>
+                    <td>@coupon.Description</td>
+                    <td>@coupon.StartDate.ToString("yyyyMMdd")</td>
+                    <td>@coupon.EndDate.ToString("yyyyMMdd")</td>
+                    <td>@coupon.Discount</td>
 
-                @if (coupon.Enabled)
-                {
-                    <td class="text-success">Active</td>
-                }
-                else
-                {
-                    <td class="tex-danger">Disabled</td>
-                }
-                <td><button type="submit" class="btn btn-danger" @onclick="() => UpdateCouponStatus(coupon.Id,coupon)">Disable</button></td>
-            </tr>
+                    @if (coupon.Enabled)
+                    {
+                        <td><strong class="activetext">Active</strong></td>
+                    }
+                    else
+                    {
+                        <td class="tex-danger">Disabled</td>
+                    }
+                    <td><button type="submit" class="btn btn-danger" @onclick="() => ShowCouponPopup(coupon.Id, coupon)">Disable</button></td>
+                </tr>
             }
         </tbody>
     </table>
 </div>
-
-
-
-
-@code {
- 
-}

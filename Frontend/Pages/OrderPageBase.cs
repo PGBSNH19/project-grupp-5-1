@@ -60,9 +60,13 @@ namespace Frontend.Pages
 
         public async void Decrease(ProductInBasket productInBasket)
         {
-            if (productInBasket.Amount <= 1) await _jSRuntime.InvokeAsync<bool>("confirm", $"You can't order less than one product.");
+            if (productInBasket.Amount <= 1)
+            {
+                Toaster.Add("You can't order less than one product.", MatToastType.Danger, "Error");
+            }
             else
             {
+               
                 Toaster.Add($"Removed one \"{productInBasket.Product.Name}\" from your basket.", MatToastType.Info, "Removed product");
                 productInBasket.Amount--;
                 await OrderService.DecreaseProductToBasket(productInBasket.Product);
