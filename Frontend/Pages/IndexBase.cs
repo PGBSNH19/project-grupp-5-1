@@ -50,9 +50,9 @@ namespace Frontend.Pages
                 if (hasFound)
                 {
                     var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                     product.Price = getProductPrices.Price;
                     product.SalePrice = getProductPrices.SalePrice;
-                    product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
                 }
                 else
                 {
@@ -125,6 +125,9 @@ namespace Frontend.Pages
                 if (hasFound)
                 {
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
                 }
                 else
                 {
@@ -147,6 +150,9 @@ namespace Frontend.Pages
                 if (hasFound)
                 {
                     product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
+                    var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                    product.Price = getProductPrices.Price;
+                    product.SalePrice = getProductPrices.SalePrice;
                 }
                 else
                 {
