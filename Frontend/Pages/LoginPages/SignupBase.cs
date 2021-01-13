@@ -1,17 +1,16 @@
 ﻿using Frontend.Auth;
 using Frontend.Models;
 using Frontend.Services;
-using System.Threading.Tasks;
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System;
-using System.Security.Claims;
 using Microsoft.JSInterop;
-using MatBlazor;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Frontend.Pages.LoginPages
 {
-    public class SignupBase: ComponentBase
+    public class SignupBase : ComponentBase
     {
         [Inject]
         public IJSRuntime _jSRuntime { get; set; }
@@ -32,7 +31,8 @@ namespace Frontend.Pages.LoginPages
 
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
-        ClaimsPrincipal loggedInUser;
+
+        private ClaimsPrincipal loggedInUser;
         public bool IsUserAuthenticated;
         public bool IsUserAdmin;
 
@@ -42,7 +42,7 @@ namespace Frontend.Pages.LoginPages
 
             if (loggedInUser.Identity.IsAuthenticated)
             {
-               IsUserAuthenticated = true;
+                IsUserAuthenticated = true;
             }
             if (loggedInUser.IsInRole("Admin"))
             {
@@ -51,7 +51,7 @@ namespace Frontend.Pages.LoginPages
 
             user = new RegisterUser();
             user.Role = "2";
-        }   
+        }
 
         public async Task<bool> RegisterUser()
         {
@@ -72,7 +72,6 @@ namespace Frontend.Pages.LoginPages
                     await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
                     NavigationManager.NavigateTo("/");
                 }
-
             }
             else
             {
@@ -80,6 +79,5 @@ namespace Frontend.Pages.LoginPages
             }
             return await Task.FromResult(true);
         }
-
     }
 }

@@ -1,10 +1,6 @@
-﻿using BlazorInputFile;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Frontend.Models
 {
@@ -38,9 +34,11 @@ namespace Frontend.Models
         [Required]
         [Range(1, 100000, ErrorMessage = "Price must be between 1 and 100000.")]
         public decimal Price { get; set; }
+
         [Required]
         [PriceLessThan("Price", ErrorMessage = "Sale Price cannot be larger then Original price")]
         public decimal? SalePrice { get; set; }
+
         public decimal? CurrentPrice { get; set; }
     }
 

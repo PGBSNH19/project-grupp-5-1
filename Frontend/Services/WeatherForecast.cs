@@ -1,9 +1,7 @@
-using System;
-
 namespace Frontend.Services
 {
     public class WeatherForecast
     {
-       public string Name { get; set; }
+        public string Name { get; set; }
     }
 }

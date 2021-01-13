@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Backend.DTO
+﻿namespace Backend.DTO
 {
     public class UserDTO
     {
@@ -9,8 +7,6 @@ namespace Backend.DTO
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        //[Required]
-        //[Range(1, 2, ErrorMessage = "You need to write a number betweem 1 and 2")]
         public int Role { get; set; }
     }
 }

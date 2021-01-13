@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using Frontend.Componenets;
 using Frontend.Models;
 using Frontend.Services;
-using Frontend.Componenets;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Frontend.Pages
 {
@@ -25,15 +25,14 @@ namespace Frontend.Pages
 
         [Parameter]
         public string CurrentID { get; set; }
+
         public string ProductCatId { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
 
-
         public DropZoneBase child;
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -79,6 +78,5 @@ namespace Frontend.Pages
         {
             NavigationManager.NavigateTo("manageproducts");
         }
-
     }
 }

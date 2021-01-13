@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Backend.DTO;
 using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
@@ -36,7 +36,7 @@ namespace Backend.Controllers
         /// <returns>A list of all existing coupons.</returns>
         /// <response code="200">Returns a list of existing coupons.</response>
         /// <response code="404">There are no coupons stored in the database.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch coupons.</response>    
+        /// <response code="500">The API caught an exception when attempting to fetch coupons.</response>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -66,7 +66,7 @@ namespace Backend.Controllers
         /// <returns>The coupon which has the specified Id.</returns>
         /// <response code="200">Returns the coupon which matched the given Id.</response>
         /// <response code="404">No coupon was found which matched the given Id.</response>
-        /// <response code="500">The API caught an exception when attempting to fetch a coupon.</response>    
+        /// <response code="500">The API caught an exception when attempting to fetch a coupon.</response>
         [HttpGet("{couponId}")]
         public async Task<IActionResult> GetById(int couponId)
         {
@@ -96,7 +96,7 @@ namespace Backend.Controllers
         /// <returns>The coupon object which has been added.</returns>
         /// <response code="200">Returns the new coupon which has been added.</response>
         /// <response code="400">The API failed to save the new coupon to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save a coupon.</response>    
+        /// <response code="500">The API caught an exception when attempting to save a coupon.</response>
         [HttpPost]
         public async Task<ActionResult<Coupon>> Add(Coupon coupon)
         {
@@ -131,7 +131,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the coupon which has been updated.</response>
         /// <response code="404">No coupon was found which matched the given Id.</response>
         /// <response code="400">The API failed to save the updated coupon to the database.</response>
-        /// <response code="500">The API caught an exception when attempting to save a coupon.</response>  
+        /// <response code="500">The API caught an exception when attempting to save a coupon.</response>
         [HttpPut("{couponId}")]
         public async Task<ActionResult<CouponDTO>> Update(int couponId, [FromBody] CouponDTO updatedCoupon)
         {
@@ -170,7 +170,7 @@ namespace Backend.Controllers
         /// <response code="200">Returns the coupon which has been deleted.</response>
         /// <response code="404">No coupon was found which matched the given Id.</response>
         /// <response code="400">The API failed to save changes to database after deleting the coupon.</response>
-        /// <response code="500">The API caught an exception when attempting to delete a coupon.</response>  
+        /// <response code="500">The API caught an exception when attempting to delete a coupon.</response>
         [HttpDelete("{couponId}")]
         public async Task<ActionResult<CouponDTO>> Delete(int couponId)
         {

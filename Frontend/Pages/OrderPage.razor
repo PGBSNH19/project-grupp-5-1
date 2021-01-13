@@ -32,27 +32,27 @@
                         <td>@basketProduct.Product.Name</td>
                         <td class="text-center">@basketProduct.Product.ProductCategoryName</td>
                         <td class="text-center">
-                                @{
-                                    string src;
-                                    var image = images.Where(p => p.ProductId == basketProduct.Product.Id).FirstOrDefault();
-                                    if (image != null)
-                                    {
-                                        src = image.ImageURL;
-                                    }
-                                    else
-                                    {
-                                        src = null;
-                                    }
-
-                                }
-                                @if (src != null)
+                            @{
+                                string src;
+                                var image = images.Where(p => p.ProductId == basketProduct.Product.Id).FirstOrDefault();
+                                if (image != null)
                                 {
-                                    <img style="width:60px;height:60px" class="pic" src="@src" />
+                                    src = image.ImageURL;
                                 }
                                 else
                                 {
-                                    <img src="/Images/noimage2.png" style="width:50px;height:50px;" />
+                                    src = null;
                                 }
+
+                            }
+                            @if (src != null)
+                            {
+                                <img style="width:60px;height:60px" class="pic" src="@src" />
+                            }
+                            else
+                            {
+                                <img src="/Images/noimage2.png" style="width:50px;height:50px;" />
+                            }
                         </td>
                         <td class="text-center">
                             <div class="">
