@@ -60,8 +60,8 @@
                     </Authorized>
                 </AuthorizeView>
                 <li class="nav-item">
-                    <NavLink class="nav-link" @onclick="@(() => modal.Show<ProductBasket>("Productbasket"))"
-                        style="cursor: pointer;">
+                    <NavLink class="nav-link" href="javascript: void(0);" style="cursor: pointer;"
+                             @onclick="@(() => modal.Show<ProductBasket>("Productbasket"))" >
                         <span class="iconify" data-icon="emojione-v1:shopping-bags" data-inline="false"
                             style="width: 30px;"></span>
                         <span>View basket</span>
@@ -119,83 +119,6 @@
         </div>
     </div>
 </nav>
-
-@*remove this comment before merge to main*@
-
-@*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
-    <div class="container">
-    <div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand text-light" href="">Frontend</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse"
-    data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-    </div>
-
-    <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
-
-    <ul class="navbar-nav flex-grow-1">
-    <li class="nav-item">
-    <NavLink class="nav-link text-light" href="" Match="NavLinkMatch.All">Home</NavLink>
-    </li>
-    <li class="nav-item">
-    <NavLink class="nav-link text-light" href="addproduct">Add product</NavLink>
-    </li>
-    <li class="nav-item">
-    <NavLink class="nav-link text-light" href="managecoupons">Manage Coupons</NavLink>
-    </li>
-    <li class="nav-item">
-    <NavLink class="nav-link text-light glyphicon glyphicon-shopping-cart" @onclick="@(() =>
-    modal.Show<ProductBasket>("Product basket"))"
-    style="cursor: pointer;">
-    </NavLink>
-    </li>
-    <li class="nav-item">
-    <a href="#">
-    <span class="nav-link text-light glyphicon glyphicon-log-in">Login</span>
-    </a>
-    </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="text" placeholder="Search">
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    </div>
-    </div>
-    </nav>*@
-
-@*<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Frontend</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-    </div>
-
-    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-    <li class="nav-item px-3">
-    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-    <span class="oi oi-home" aria-hidden="true"></span> Home
-    </NavLink>
-    </li>
-    <li class="nav-item px-3">
-    <NavLink class="nav-link" href="addproduct">
-    <span class="oi oi-plus" aria-hidden="true"></span> Add product
-    </NavLink>
-    </li>
-    <li class="nav-item px-3">
-    <NavLink class="nav-link" href="managecoupons">
-    <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Coupons
-    </NavLink>
-    </li>
-    <li class="nav-item px-3">
-    <NavLink class="nav-link" @onclick="@(() => modal.Show<ProductBasket>("Product basket"))" style="cursor: pointer;">
-    <span class="oi oi-cart" data-inline="false"></span> View basket
-    </NavLink>
-    </li>
-    </ul>
-    </div>*@
 
 @code {
     private bool collapseNavMenu = true;
