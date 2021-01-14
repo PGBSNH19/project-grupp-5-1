@@ -1,9 +1,9 @@
 ﻿using System;
+using MatBlazor;
 using System.Linq;
 using Frontend.Auth;
-using Frontend.Models;
 using System.Net.Http;
-using Microsoft.JSInterop;
+using Frontend.Models;
 using Frontend.Models.Mail;
 using Blazored.LocalStorage;
 using System.Threading.Tasks;
@@ -20,16 +20,17 @@ namespace Frontend.Services
         private readonly HttpClient _httpClient;
         private readonly NavigationManager _NavigationManager;
 
-        private readonly IJSRuntime _jSRuntime;
+        private readonly IMatToaster _toaster;
         private readonly IConfiguration _configuration;
         private readonly ITokenValidator _tokenValidator;
         private readonly ILocalStorageService _localStorageService;
 
         private List<BuyedProducts> buyedProducts = new List<BuyedProducts>();
 
-        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration, ILocalStorageService localStorageService, IJSRuntime jSRuntime, ITokenValidator tokenValidator)
+        public OrderService(NavigationManager NavigationManager, HttpClient httpClient, IConfiguration configuration,
+                            ILocalStorageService localStorageService, ITokenValidator tokenValidator, IMatToaster toaster)
         {
-            _jSRuntime = jSRuntime;
+            _toaster = toaster;
             _httpClient = httpClient;
             _configuration = configuration;
             _tokenValidator = tokenValidator;
@@ -82,7 +83,7 @@ namespace Frontend.Services
             }
             else
             {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"This product is not in your basket.");
+                _toaster.Add($"This product is not exist in your basket.", MatToastType.Danger, "Alert:");
             }
 
             await _localStorageService.SetItemAsync("customer-basket", basket);
@@ -109,7 +110,7 @@ namespace Frontend.Services
                     Order order = new Order();
 
                     order.DateRegistered = DateTime.Now;
-                    if (couponId != "")
+                    if (couponId != "0")
                     {
                         order.CouponId = int.Parse(couponId);
                     }
@@ -135,7 +136,7 @@ namespace Frontend.Services
 
                             if (newOrder != null && newOrderedProduct != null)
                             {
-                                product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
+                                product = await MatHttpClientExtension.GetJsonAsync<Product>(_httpClient, _configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
 
                                 product.Stock -= productInBasket.Amount;
 
@@ -162,27 +163,39 @@ namespace Frontend.Services
                         // Convert the current UTC time to the time in Sweden
                         DateTimeOffset currentTimeInSweden = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, tzi);
 
-                        //DateTime dateNow = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
-                        MailRequest orderToSend = new MailRequest()
+                        MailRequest orderToSend = new MailRequest();
+
+                        orderToSend.ToEmail = userInfo.Email;
+                        orderToSend.OrderId = newOrder.Id;
+                        orderToSend.Subject = "Your order";
+                        orderToSend.UserName = userInfo.FirstName + " " + userInfo.LastName;
+                        orderToSend.Address = userInfo.Address;
+                        orderToSend.City = userInfo.City;
+                        orderToSend.ZipCode = userInfo.ZipCode.ToString();
+                        orderToSend.Date = currentTimeInSweden.ToString("F");
+                        if (couponId != "0")
                         {
-                            ToEmail = userInfo.Email,
-                            OrderId = newOrder.Id,
-                            Subject = "Your order",
-                            UserName = userInfo.FirstName + " " + userInfo.LastName,
-                            Address = userInfo.Address,
-                            City = userInfo.City,
-                            ZipCode = userInfo.ZipCode.ToString(),
-                            Date = currentTimeInSweden.ToString("F"),
-                            TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount,
-                            buyedProductsList = buyedProducts
-                        };
+                            var activeDiscount = await MatHttpClientExtension.GetJsonAsync<Coupon>(_httpClient, _configuration["ApiHostUrl"] + $"api/v1.0/Coupons/{couponId}");
+
+                            orderToSend.Discount = (activeDiscount.Discount * 100).ToString("0") + "%";
+                            orderToSend.DiscountName = "<strong> Discount: </strong>" + activeDiscount.Code + " give you";
+                        }
+                        else
+                        {
+                            orderToSend.Discount = "";
+                            orderToSend.DiscountName = "";
+                        }
+                        orderToSend.TotalPiceWithDiscount = userInfo.TotalPiceWithDiscount;
+
+                        orderToSend.buyedProductsList = buyedProducts;
 
                         //The fourth step is to send the email to the customer
                         await _httpClient.PostJsonAsync<OrderedProduct>(_configuration["ApiHostUrl"] + "api/v1.0/orderedproducts/send/", orderToSend);
 
                         //The fifth and last step is to remove products from the basket, notify the customer with succes message and nivigate to the home page
                         await _localStorageService.RemoveItemAsync("customer-basket");
-                        await _jSRuntime.InvokeAsync<bool>("confirm", $"Thank you for your order. You are welcome back...");
+                        _toaster.Add($"Thank you for your order. You are welcome back...", MatToastType.Success, "Order Sent:");
+
                         _NavigationManager.NavigateTo("/");
                     }
                 }
@@ -192,7 +205,7 @@ namespace Frontend.Services
                 //If something wrong happened when sending the order, first we delete the steps which was already created
                 if (newOrderedProduct != null && newOrder != null)
                 {
-                    product = await _httpClient.GetJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
+                    product = await MatHttpClientExtension.GetJsonAsync<Product>(_httpClient, _configuration["ApiHostUrl"] + $"api/v1.0/products/{productInBasket.Product.Id}");
                     product.Stock += productInBasket.Amount;
 
                     await _httpClient.PutJsonAsync<Product>(_configuration["ApiHostUrl"] + $"api/v1.0/products/{product.Id}", product);
@@ -207,7 +220,7 @@ namespace Frontend.Services
                 }
 
                 //Then we notify the customer with unsuccess message
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"Sorry something wrong, we can not send this order...");
+                _toaster.Add($"Sorry something wrong, we can not send this order...", MatToastType.Danger, "Failed Sending:");
             }
         }
     }

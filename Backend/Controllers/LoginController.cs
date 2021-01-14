@@ -1,18 +1,21 @@
-﻿using System;
-using AutoMapper;
-using System.Linq;
+﻿using AutoMapper;
 using Backend.DTO;
-using System.Text;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Backend.Services.Interfaces;
-using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
 using Backend.Models;
+using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
@@ -23,12 +26,14 @@ namespace Backend.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private IConfiguration _config;
+        private readonly ILogger<LoginController> _logger;
 
-        public LoginController(IConfiguration config, IUserRepository userRepository, IMapper mapper)
+        public LoginController(IConfiguration config, IUserRepository userRepository, IMapper mapper, ILogger<LoginController> logger)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _config = config;
+            _logger = logger;
         }
 
         /// <summary>
@@ -37,7 +42,7 @@ namespace Backend.Controllers
         /// <param name="user">The user details which will be used to login.</param>
         /// <returns>The login details of the authenticated user.</returns>
         /// <response code="200">Returns the login details of the authenticated user.</response>
-        /// <response code="401">The given login details were wrong.</response>   
+        /// <response code="401">The given login details were wrong.</response>
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login([FromBody] UserDTO user)
@@ -46,7 +51,6 @@ namespace Backend.Controllers
             UserDTO authenticationResult = AuthenticateUser(user);
             if (authenticationResult != null)
             {
-                
                 var token = GenerateJWTToken(authenticationResult);
                 response = Ok(new
                 {
@@ -60,6 +64,63 @@ namespace Backend.Controllers
                 });
             }
             return response;
+        }
+
+        /// <summary>
+        /// Register a new user in the system.
+        /// </summary>
+        /// <param name="user">The user details which will be used to register.</param>
+        /// <returns>The login details of the authenticated user.</returns>
+        /// <response code="200">Returns the registered and login details of the new user.</response>
+        /// <response code="404">There are no users stored in the database.</response>
+        /// <response code="500">The API caught an exception when attempting to fetch users.</response>
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<ActionResult<UserDTO>> Register([FromBody] UserDTO user)
+        {
+            try
+            {
+                var mappedResult = _mapper.Map<User>(user);
+
+                var users = await _userRepository.GetAll();
+
+                if (users.Where(u => u.Username == user.Username).FirstOrDefault() == null)
+                {
+                    mappedResult.Password = HashPassword(mappedResult.Password);
+
+                    await _userRepository.Add(mappedResult);
+
+                    if (await _userRepository.Save())
+                    {
+                        _logger.LogInformation($"Inserting an new user to the database.");
+
+                        UserDTO authenticationResult = AuthenticateUser(user);
+
+                        var token = GenerateJWTToken(authenticationResult);
+                        return Ok(new
+                        {
+                            id = authenticationResult.Id,
+                            firstName = authenticationResult.FirstName,
+                            lastName = authenticationResult.LastName,
+                            username = authenticationResult.Username,
+                            role = authenticationResult.Role,
+                            accesstoken = new JwtSecurityTokenHandler().WriteToken(token.TokenBody),
+                            expiry = token.ExpiryDate,
+                        });
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation($"This user is already exist in database.");
+                    return StatusCode(409, $"User '{user.Username}' already exists.");
+                }
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Failed to add the order. Exception thrown when attempting to add data to the database: {e.Message}");
+            }
+            return BadRequest();
         }
 
         [NonAction]

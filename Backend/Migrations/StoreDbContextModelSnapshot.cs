@@ -49,6 +49,28 @@ namespace Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Coupon");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "Flash",
+                            Description = "Get 25% off on all stocks we have.",
+                            Discount = 0.25m,
+                            Enabled = true,
+                            EndDate = new DateTime(2021, 1, 15, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(1048),
+                            StartDate = new DateTime(2021, 1, 8, 15, 36, 42, 703, DateTimeKind.Local).AddTicks(4219)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "Year2021",
+                            Description = "You will get 10% discount on every product you buy..",
+                            Discount = 0.1m,
+                            Enabled = true,
+                            EndDate = new DateTime(2021, 1, 21, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(2930),
+                            StartDate = new DateTime(2021, 1, 11, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(2909)
+                        });
                 });
 
             modelBuilder.Entity("Backend.Models.Order", b =>
@@ -141,7 +163,7 @@ namespace Backend.Migrations
                             IsAvailable = true,
                             IsFeatured = false,
                             Name = "SAMSUNG Galaxy Buds",
-                            ProductCategoryId = 1,
+                            ProductCategoryId = 2,
                             Stock = 65
                         },
                         new
@@ -151,7 +173,7 @@ namespace Backend.Migrations
                             IsAvailable = true,
                             IsFeatured = true,
                             Name = "Apple Watch Series 3 GPS",
-                            ProductCategoryId = 1,
+                            ProductCategoryId = 3,
                             Stock = 34
                         },
                         new
@@ -171,7 +193,7 @@ namespace Backend.Migrations
                             IsAvailable = true,
                             IsFeatured = false,
                             Name = "SAMSUNG Galaxy Tab A 8.0\" 32 GB",
-                            ProductCategoryId = 1,
+                            ProductCategoryId = 4,
                             Stock = 23
                         },
                         new
@@ -191,7 +213,7 @@ namespace Backend.Migrations
                             IsAvailable = false,
                             IsFeatured = false,
                             Name = "JLab Audio Studio ANC On-Ear",
-                            ProductCategoryId = 1,
+                            ProductCategoryId = 2,
                             Stock = 37
                         });
                 });
@@ -216,6 +238,21 @@ namespace Backend.Migrations
                         {
                             Id = 1,
                             CategoryName = "Uncategorized"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Headphones"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Smart Watches"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryName = "Tablets"
                         });
                 });
 
@@ -241,6 +278,92 @@ namespace Backend.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImage");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ImageName = "01A.jpg",
+                            IsDefault = true,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ImageName = "01B.jpg",
+                            IsDefault = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ImageName = "02A.jpg",
+                            IsDefault = true,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ImageName = "02B.jpg",
+                            IsDefault = false,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ImageName = "03A.jpg",
+                            IsDefault = true,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ImageName = "03B.jpg",
+                            IsDefault = false,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ImageName = "04A.jpg",
+                            IsDefault = true,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ImageName = "04B.jpg",
+                            IsDefault = false,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ImageName = "05A.jpg",
+                            IsDefault = true,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ImageName = "05B.jpg",
+                            IsDefault = false,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ImageName = "06A.jpg",
+                            IsDefault = true,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ImageName = "06B.jpg",
+                            IsDefault = false,
+                            ProductId = 6
+                        });
                 });
 
             modelBuilder.Entity("Backend.Models.ProductPrice", b =>
@@ -267,6 +390,53 @@ namespace Backend.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductPrice");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateChanged = new DateTime(2021, 1, 8, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(5736),
+                            Price = 1300m,
+                            ProductId = 1,
+                            SalePrice = 900m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateChanged = new DateTime(2021, 1, 8, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(7207),
+                            Price = 2290m,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateChanged = new DateTime(2021, 1, 8, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(8171),
+                            Price = 329m,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DateChanged = new DateTime(2021, 1, 8, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(8206),
+                            Price = 2490m,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DateChanged = new DateTime(2021, 1, 8, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(8210),
+                            Price = 3790m,
+                            ProductId = 5,
+                            SalePrice = 3200m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            DateChanged = new DateTime(2021, 1, 8, 15, 36, 42, 706, DateTimeKind.Local).AddTicks(8222),
+                            Price = 319m,
+                            ProductId = 6,
+                            SalePrice = 250m
+                        });
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -307,7 +477,7 @@ namespace Backend.Migrations
                             LastName = "Yassin",
                             Password = "7c4a8d09ca3762af61e59520943dc26494f8941b",
                             Role = 1,
-                            Username = "ayassin"
+                            Username = "akyassin"
                         },
                         new
                         {

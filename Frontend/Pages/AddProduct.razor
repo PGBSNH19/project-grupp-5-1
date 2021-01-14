@@ -1,5 +1,5 @@
 ﻿@page "/addproduct/"
-@inherits frontend.Pages.AddProductBase
+@inherits AddProductBase
 @attribute [Authorize(Roles = "Admin")]
 
 @if (ProductCategories == null)
@@ -87,4 +87,3 @@
         <div class="col-sm-2"><button class="btn btn-primary" type="submit">Save</button></div>
     </div>
 </EditForm>
-

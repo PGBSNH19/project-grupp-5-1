@@ -1,22 +1,21 @@
-﻿using System;
-using System.IO;
-using AutoMapper;
-using System.Text;
+﻿using AutoMapper;
 using Backend.Data;
-using System.Reflection;
-using Microsoft.OpenApi.Models;
 using Backend.Models.Mail;
-using Backend.Services;
 using Backend.Services.Interfaces;
+using Backend.Services.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Backend.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 namespace Backend
 {

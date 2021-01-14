@@ -1,16 +1,17 @@
+using MatBlazor;
 using Frontend.Auth;
 using Blazored.Modal;
+using Frontend.Models;
 using System.Net.Http;
 using Frontend.Services;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Hosting;
 using Frontend.Services.Interfaces;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.Authorization;
-using Frontend.Models;
 
 namespace Frontend
 {
@@ -44,6 +45,16 @@ namespace Frontend
 
             services.AddBlazoredModal();
             services.AddBlazoredLocalStorage();
+            services.AddMatToaster(config =>
+            {
+                config.Position = MatToastPosition.BottomRight;
+                config.PreventDuplicates = false;
+                config.NewestOnTop = true;
+                config.ShowCloseButton = true;
+                config.MaximumOpacity = 100;
+                config.MaxDisplayedToasts = 3;
+                config.VisibleStateDuration = 2300;
+            });
 
             services.AddOptions();
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));

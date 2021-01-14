@@ -2,14 +2,13 @@
 using Frontend.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
-using System;
-using Frontend.Services.Interfaces;
 
 namespace Frontend.Services
 {
-    public class ProductsPricesService: IProductsPricesService
+    public class ProductsPricesService : IProductsPricesService
     {
         private readonly HttpClient httpClient;
         private readonly IConfiguration _configuration;

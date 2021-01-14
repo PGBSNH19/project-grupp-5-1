@@ -1,13 +1,13 @@
-﻿using System.Linq;
+﻿using Frontend.Componenets;
 using Frontend.Models;
 using Frontend.Services;
-using Frontend.Componenets;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace frontend.Pages
+namespace frontend.Pages.Bases
 {
     public class AddProductBase : ComponentBase
     {
@@ -52,8 +52,14 @@ namespace frontend.Pages
 
             if (result != null)
             {
-                await imageService.UploadImages(child.Images, result.Id);
-                NavigationManager.NavigateTo("/manageproducts");
+                if (await imageService.UploadImages(child.Images, result.Id))
+                {
+                    NavigationManager.NavigateTo("/manageproducts");
+                }
+                else
+                {
+                    await ProductService.DeleteProduct(result.Id);
+                }
             }
         }
     }

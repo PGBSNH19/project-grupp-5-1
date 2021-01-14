@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using Frontend.Models;
+using MatBlazor;
 using BlazorInputFile;
+using Frontend.Models;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Hosting;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -14,7 +13,6 @@ namespace Frontend.Componenets
 {
     public class DropZoneBase : ComponentBase
     {
-
         [Inject]
         public IImageService imageService { get; set; }
 
@@ -22,7 +20,7 @@ namespace Frontend.Componenets
         public IJSRuntime JsRuntime { get; set; }
 
         [Inject]
-        private IWebHostEnvironment _env { get; set; }
+        public IMatToaster Toaster { get; set; }
 
         [Parameter]
         public List<Image> Images { get; set; }
@@ -30,9 +28,11 @@ namespace Frontend.Componenets
         [Parameter]
         public int ProductId { get; set; }
 
-        protected override void OnInitialized()
+        public override async Task SetParametersAsync(ParameterView parameters)
         {
             Images = new List<Image>();
+
+            await base.SetParametersAsync(parameters);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -68,7 +68,7 @@ namespace Frontend.Componenets
                     }
                     else
                     {
-                        await JsRuntime.InvokeAsync<bool>("confirm", "Your file is not acceptable type..");
+                        Toaster.Add($"Your file type is not acceptable..", MatToastType.Danger, "Wrong file type:");
                     }
                 }
                 StateHasChanged();
@@ -88,8 +88,9 @@ namespace Frontend.Componenets
         {
             bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
             if (confirmed && Images.Contains(image))
+
             {
-                if(image.ImageURL != null)
+                if (image.ImageURL != null)
                 {
                     var name = Path.GetFileName(image.ImageURL);
                     await imageService.DeleteImage(name);
@@ -103,7 +104,7 @@ namespace Frontend.Componenets
         {
             foreach (var image in Images)
             {
-                if (image.IsDefault == true && image.Id != productImage.Id)
+                if (image.IsDefault == true)
                 {
                     image.IsDefault = false;
                 }

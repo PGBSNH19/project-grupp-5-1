@@ -1,13 +1,10 @@
 ﻿@page "/edit/{CurrentID}"
-@using Models
 @inherits EditBase
-@inject Frontend.Services.IProductService productService
-@inject Frontend.Services.Interfaces.IImageService imageService
+@inject IImageService imageService
+@inject IProductService productService
 @inject NavigationManager NavigationManager
 
-
 <h1>Edit</h1>
-
 
 <EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />

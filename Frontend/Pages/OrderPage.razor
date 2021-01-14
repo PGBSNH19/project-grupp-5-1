@@ -30,21 +30,40 @@
                     <tr>
                         <th class="text-center" scope="row">@basketProduct.Product.Id</th>
                         <td>@basketProduct.Product.Name</td>
-                        <td class="text-center">@basketProduct.Product.ProductCategoryId</td>
+                        <td class="text-center">@basketProduct.Product.ProductCategoryName</td>
                         <td class="text-center">
-                            <img src="@("https://promoboxx.com/wp-content/uploads/2013/01/promoboxx_icon__white_200x2002.png")"
-                                 style="width:40px;height:40px" />
+                            @{
+                                string src;
+                                var image = images.Where(p => p.ProductId == basketProduct.Product.Id).FirstOrDefault();
+                                if (image != null)
+                                {
+                                    src = image.ImageURL;
+                                }
+                                else
+                                {
+                                    src = null;
+                                }
+
+                            }
+                            @if (src != null)
+                            {
+                                <img style="width:60px;height:60px" class="pic" src="@src" />
+                            }
+                            else
+                            {
+                                <img src="/Images/noimage2.png" style="width:50px;height:50px;" />
+                            }
                         </td>
                         <td class="text-center">
                             <div class="">
-                                <button class="btn btn-sm btn-outline-danger mr-1" @onclick="() =>Decrease(basketProduct)">                                                                                            -</button>
+                                <button class="buttoncolorred btn btn-danger" @onclick="() =>Decrease(basketProduct)">                                                                                          -</button>
                                 <input type="number" class="col-sm-4 text-center" @bind-value="basketProduct.Amount" readonly>
-                                <button class="btn btn-sm btn-outline-success mr-1" @onclick="() =>Increase(basketProduct)">+</button>
+                                <button class="buttoncolorgreen btn btn-success" @onclick="() =>Increase(basketProduct)">+</button>
                             </div>
                         </td>
                         <td class="text-center">@basketProduct.Product.CurrentPrice</td>
                         <td class="text-center">@(basketProduct.Amount * basketProduct.Product.CurrentPrice)</td>
-                        <td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" @onclick="() => Remove(basketProduct)">X</button></td>
+                        <td class="text-center"><button type="button" class="buttonaction btn btn-danger" @onclick="() => Remove(basketProduct)">X</button></td>
                     </tr>
                 }
                 <tr>
@@ -58,16 +77,14 @@
                                         <option value="0" class="form-control">Select Coupon ...</option>
                                         @foreach (var coupon in Coupons)
                                                 {
-                                                    <option value="@coupon.Id" class="form-control">@coupon.Code</option>
+                                            <option value="@coupon.Id" class="form-control">@coupon.Code</option>
                                                 }
                                     </InputSelect>
                                 </EditForm>
                             </div>
-                            @if (GetCouponId != "")
+                            if (GetCouponId != "0")
                             {
-                                <div class="col-lg-3 pt-4" style="margin-top: auto;">
-                                    <button type="submit" class="btn btn-success" @onclick="() => GetDiscount(int.Parse(GetCouponId))">Choose Coupon</button>
-                                </div>
+                                GetDiscount(GetCouponId);
                             }
                         }
                     </td>

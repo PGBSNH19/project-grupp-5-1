@@ -2,14 +2,10 @@
 using Backend.Services.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Backend.Services.Repositories
@@ -34,10 +30,8 @@ namespace Backend.Services.Repositories
 
             foreach (var item in mailRequest.buyedProductsList)
             {
-                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.TotalPrice}</td></tr>";
+                htmlProduct.ProductName += $"<tr><td class={"tabel-style"}>{item.ProductName}</td><td class={"tabel-style"}>{item.Amount}</td><td class={"tabel-style"}>{item.TotalPrice}:-</td></tr>";
             }
-
-            //DateTime eastern = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "W. Europe Standard Time");
 
             MailText = MailText.Replace("[orderid]", mailRequest.OrderId.ToString())
                                .Replace("[productname]", htmlProduct.ProductName)
@@ -46,6 +40,8 @@ namespace Backend.Services.Repositories
                                .Replace("[city]", mailRequest.City)
                                .Replace("[zipcode]", mailRequest.ZipCode)
                                .Replace("[orderdate]", mailRequest.Date)
+                               .Replace("[discountname]", mailRequest.DiscountName)
+                               .Replace("[discount]", mailRequest.Discount)
                                .Replace("[totalpricewithdiscount]", mailRequest.TotalPiceWithDiscount.ToString("0.##"));
 
             var email = new MimeMessage();

@@ -1,5 +1,4 @@
-﻿
-namespace Frontend.Models
+﻿namespace Frontend.Models
 {
     public class AzureStorageConfig
     {

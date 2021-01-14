@@ -1,14 +1,14 @@
 ﻿using Frontend.Auth;
 using Frontend.Models;
 using Frontend.Services;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace Frontend.Pages.LoginPages
+namespace frontend.Pages.Bases
 {
-    public class LoginBase: ComponentBase
+    public class LoginBase : ComponentBase
     {
         [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
@@ -20,9 +20,11 @@ namespace Frontend.Pages.LoginPages
         public IUserService userService { get; set; }
 
         public User user = new User();
+
+        private User returnedUser;
         public string ErrorMesssage { get; set; }
 
-        ClaimsPrincipal claimsPrincipal;
+        private ClaimsPrincipal claimsPrincipal;
 
         [CascadingParameter]
         public Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -41,11 +43,9 @@ namespace Frontend.Pages.LoginPages
 
         public async Task<bool> ValidateUser()
         {
-            User returnedUser;
-
             try
             {
-                 returnedUser = await userService.LoginAsync(user);
+                returnedUser = await userService.LoginAsync(user);
             }
             catch (System.Exception)
             {
@@ -59,9 +59,8 @@ namespace Frontend.Pages.LoginPages
             }
             else
             {
-                ErrorMesssage = "Invalid username or password";
+                ErrorMesssage = "Invalid login info";
             }
-
             return await Task.FromResult(true);
         }
     }

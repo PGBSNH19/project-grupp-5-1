@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Frontend.Models.Mail
 {
@@ -19,6 +16,8 @@ namespace Frontend.Models.Mail
         public string ZipCode { get; set; }
         public decimal TotalPiceWithDiscount { get; set; }
         public string Date { get; set; }
+        public string DiscountName { get; set; }
+        public string Discount { get; set; }
         public IEnumerable<BuyedProducts> buyedProductsList { get; set; }
     }
 }

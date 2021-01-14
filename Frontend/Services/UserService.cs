@@ -1,5 +1,5 @@
-﻿using Frontend.Models;
-using System.Net.Http;
+﻿using System.Net.Http;
+using Frontend.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +27,7 @@ namespace Frontend.Services
         {
             try
             {
-                var response = await _httpClient.PostJsonAsync<User>(_configuration["ApiHostUrl"] + "api/v1.0/users", user);
+                var response = await _httpClient.PostJsonAsync<User>(_configuration["ApiHostUrl"] + "api/v1.0/login/register", user);
                 return await Task.FromResult(response);
             }
             catch (System.Exception)
@@ -35,6 +35,5 @@ namespace Frontend.Services
                 return null;
             }
         }
-
     }
 }

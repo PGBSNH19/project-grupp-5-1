@@ -3,7 +3,6 @@ using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,12 +24,6 @@ namespace Backend.Services.Repositories
         {
             return await _context.Set<Product>().FirstOrDefaultAsync(w => w.Id == id);
         }
-        
-        //public async Task<Decimal> GetLatestPrice(int productId)
-        //{
-        //    return await _context.Set<ProductPrice>().Where(x => x.ProductId == productId).OrderBy(x => x.DateChanged)
-        //        .Select(x => x.SalePrice ?? x.Price).LastAsync();
-        //}
 
         public async Task<IList<Product>> SearchProducts(string productName)
         {

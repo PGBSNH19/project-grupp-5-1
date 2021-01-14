@@ -3,14 +3,11 @@ using Frontend.Services;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Frontend.Pages
+namespace frontend.Pages.Bases
 {
     public class ProductDetailsBase : ComponentBase
     {
@@ -47,15 +44,17 @@ namespace Frontend.Pages
             if (hasFound)
             {
                 var getProductPrices = await ProductService.GetPriceByProductId(product.Id);
+                product.Price = getProductPrices.Price;
+                product.SalePrice = getProductPrices.SalePrice;
                 product.CurrentPrice = await ProductService.GetLatestPriceByProductId(product.Id);
             }
             else
             {
                 product.Price = 0;
                 product.SalePrice = 0;
+                product.CurrentPrice = 0;
             }
             Images = await ImageService.GetImagesByProductId(product.Id);
-
         }
     }
 }

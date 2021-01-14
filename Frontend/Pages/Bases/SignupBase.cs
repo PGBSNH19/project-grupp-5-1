@@ -1,16 +1,16 @@
 ﻿using Frontend.Auth;
 using Frontend.Models;
 using Frontend.Services;
-using System.Threading.Tasks;
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System;
-using System.Security.Claims;
 using Microsoft.JSInterop;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace Frontend.Pages.LoginPages
+namespace frontend.Pages.Bases
 {
-    public class SignupBase: ComponentBase
+    public class SignupBase : ComponentBase
     {
         [Inject]
         public IJSRuntime _jSRuntime { get; set; }
@@ -22,16 +22,19 @@ namespace Frontend.Pages.LoginPages
         public NavigationManager NavigationManager { get; set; }
 
         [Inject]
+        protected IMatToaster Toaster { get; set; }
+
+        [Inject]
         public IUserService userService { get; set; }
 
         public RegisterUser user;
 
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
-        ClaimsPrincipal loggedInUser;
+
+        private ClaimsPrincipal loggedInUser;
         public bool IsUserAuthenticated;
         public bool IsUserAdmin;
-        public string ErrorMesssage { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -39,7 +42,7 @@ namespace Frontend.Pages.LoginPages
 
             if (loggedInUser.Identity.IsAuthenticated)
             {
-               IsUserAuthenticated = true;
+                IsUserAuthenticated = true;
             }
             if (loggedInUser.IsInRole("Admin"))
             {
@@ -48,7 +51,7 @@ namespace Frontend.Pages.LoginPages
 
             user = new RegisterUser();
             user.Role = "2";
-        }   
+        }
 
         public async Task<bool> RegisterUser()
         {
@@ -58,24 +61,23 @@ namespace Frontend.Pages.LoginPages
             {
                 if (IsUserAdmin)
                 {
-                    await _jSRuntime.InvokeAsync<bool>("confirm", $"You have added the user successfully..");
+                    Toaster.Add($"User \"{returnedUser.Username}\" has successfully been registered.", MatToastType.Success, "Account registered");
                     user = new RegisterUser();
                     user.Role = "2";
                     StateHasChanged();
                 }
                 else
                 {
-                  await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
-                  NavigationManager.NavigateTo("/");
+                    Toaster.Add("Your account has successfully been registered!", MatToastType.Success, "Account registered");
+                    await (((AuthStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser));
+                    NavigationManager.NavigateTo("/");
                 }
-
             }
             else
             {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"This user is already registered..");
+                Toaster.Add($"An account with the username \"{user.Username}\" already exists.", MatToastType.Danger, "Username already exists");
             }
             return await Task.FromResult(true);
         }
-
     }
 }

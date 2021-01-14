@@ -6,7 +6,6 @@
 <br />
 <a href="/addproduct" class="btn btn-success"><span class="oi oi-plus" aria-hidden="true" /> Add New Product</a>
 
-
 @if (products == null)
 {
     <p><em>Loading....</em></p>
@@ -35,29 +34,29 @@ else
         <tbody>
             @foreach (var product in products)
             {
-            <tr>
-                <td>@product.Name</td>
-                <td>@product.Description</td>
-                <td>@product.ProductCategoryName</td>
-                <td>@product.CurrentPrice</td>
-                <td>@product.Price</td>
-                <td>@product.SalePrice</td>
-                @if (@product.Stock < 6 && product.Stock >= 1)
-                {
-                    <td>@product.Stock <i class="iconify text-warning float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is running low on stock" aria-hidden="true" /></td>
-                }
-                else if (@product.Stock <= 0)
-                {
-                    <td>@product.Stock <i class="iconify text-danger float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is out of stock" aria-hidden="true" /></td>
-                }
-                else
-                {
-                    <td>@product.Stock</td>
-                }
-                <td>@product.IsFeatured</td>
-                <td>@product.IsAvailable</td>
-                <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
-            </tr>
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.ProductCategoryName</td>
+                    <td>@product.CurrentPrice</td>
+                    <td>@product.Price</td>
+                    <td>@product.SalePrice</td>
+                    @if (@product.Stock < 6 && product.Stock >= 1)
+                    {
+                        <td>@product.Stock <i class="iconify text-warning float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is running low on stock" aria-hidden="true" /></td>
+                    }
+                    else if (@product.Stock <= 0)
+                    {
+                        <td>@product.Stock <i class="iconify text-danger float-right" data-icon="carbon:warning-filled" data-inline="false" title="Product is out of stock" aria-hidden="true" /></td>
+                    }
+                    else
+                    {
+                        <td>@product.Stock</td>
+                    }
+                    <td>@product.IsFeatured</td>
+                    <td>@product.IsAvailable</td>
+                    <td><a href="/Edit/@product.Id" class="btn btn-primary">Edit</a></td>
+                </tr>
             }
         </tbody>
     </table>

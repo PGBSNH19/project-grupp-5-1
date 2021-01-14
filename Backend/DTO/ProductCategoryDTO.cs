@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Backend.DTO
+﻿namespace Backend.DTO
 {
     public class ProductCategoryDTO
     {

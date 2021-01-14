@@ -1,14 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using Frontend.Componenets;
 using Frontend.Models;
 using Frontend.Services;
-using Frontend.Componenets;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Frontend.Pages
+namespace frontend.Pages.Bases
 {
     public class EditBase : ComponentBase
     {
@@ -25,15 +25,14 @@ namespace Frontend.Pages
 
         [Parameter]
         public string CurrentID { get; set; }
+
         public string ProductCatId { get; set; }
         public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
         public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductPrice> GetProductPrices { get; set; }
 
-
         public DropZoneBase child;
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -61,23 +60,23 @@ namespace Frontend.Pages
 
         protected async void HandleValidSubmit()
         {
-            if (ProductCatId == null)
-                ProductCatId = "1";
+            if (await ImageService.UploadImages(child.Images, product.Id))
+            {
+                if (ProductCatId == null)
+                    ProductCatId = "1";
 
-            product.ProductCategoryId = int.Parse(ProductCatId);
-            await ProductService.Update(product, product.Price, (decimal)product.SalePrice);
-            product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
+                product.ProductCategoryId = int.Parse(ProductCatId);
+                await ProductService.Update(product, product.Price, (decimal)product.SalePrice);
+                product = await Task.Run(() => ProductService.GetProductById(Convert.ToInt32(CurrentID)));
 
-            await ImageService.UploadImages(child.Images, product.Id);
-
-            StateHasChanged();
-            NavigationManager.NavigateTo("manageproducts");
+                StateHasChanged();
+                NavigationManager.NavigateTo("manageproducts");
+            }
         }
 
         public void Cancel()
         {
             NavigationManager.NavigateTo("manageproducts");
         }
-
     }
 }

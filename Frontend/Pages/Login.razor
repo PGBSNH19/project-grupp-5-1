@@ -1,0 +1,32 @@
+﻿@page  "/login"
+@layout LoginLayout
+@inherits LoginBase
+
+<div class="container col-sm-4">
+    <div class="row justify-content-center">
+        <EditForm Model="@user" OnValidSubmit="@ValidateUser">
+            <DataAnnotationsValidator />
+            <div class="login-box">
+                <img alt="" class="avatar" src="https://i.postimg.cc/zDyt7KCv/a1.jpg">
+                <h2>Login</h2>
+                <InputText type=text @bind-Value="user.Username" placeholder="user name" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.Username)" />
+                </div>
+                <InputText type="password" @bind-Value="user.Password" placeholder="password" />
+                <div class="error-message">
+                    <ValidationMessage For="@(()=> user.Password)" />
+                </div>
+
+                <input type="submit" class="btn btn-sm" value="Login" />
+                <p class="login-signup-button"><a href="/signup">Sign up</a></p>
+                @if (ErrorMesssage != null)
+                {
+                    <div class="error-message">
+                        <div class="validation-message">@ErrorMesssage</div>
+                    </div>
+                }
+            </div>
+        </EditForm>
+    </div>
+</div>

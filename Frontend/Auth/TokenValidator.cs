@@ -1,11 +1,12 @@
-﻿using Frontend.Models;
+﻿using System;
+using MatBlazor;
+using Frontend.Models;
 using System.Net.Http;
 using Microsoft.JSInterop;
 using Blazored.LocalStorage;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components;
-using System;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Frontend.Auth
@@ -15,13 +16,14 @@ namespace Frontend.Auth
         private readonly NavigationManager _NavigationManager;
         private AuthenticationStateProvider _authenticationStateProvider;
 
+        private readonly IMatToaster _toaster;
         private readonly IJSRuntime _jSRuntime;
         private readonly ILocalStorageService _localStorageService;
 
-
-        public TokenValidator(NavigationManager NavigationManager, ILocalStorageService localStorageService, IJSRuntime jSRuntime, AuthenticationStateProvider authenticationStateProvider)
+        public TokenValidator(NavigationManager NavigationManager, ILocalStorageService localStorageService, IJSRuntime jSRuntime, AuthenticationStateProvider authenticationStateProvider, IMatToaster toaster)
         {
             _jSRuntime = jSRuntime;
+            _toaster = toaster;
             _NavigationManager = NavigationManager;
             _localStorageService = localStorageService;
             _authenticationStateProvider = authenticationStateProvider;
@@ -39,7 +41,7 @@ namespace Frontend.Auth
             }
             else
             {
-                await _jSRuntime.InvokeAsync<bool>("confirm", $"You have to log in to go to this page.");
+                _toaster.Add($"You have to log in to go to this page.", MatToastType.Danger, "Alert:");
                 await ((AuthStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
                 _NavigationManager.NavigateTo("/login");
                 return http;
