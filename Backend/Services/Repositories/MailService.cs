@@ -26,7 +26,7 @@ namespace Backend.Services.Repositories
             string MailText = str.ReadToEnd();
             str.Close();
 
-            BuyedProducts htmlProduct = new BuyedProducts();
+            BoughtProducts htmlProduct = new BoughtProducts();
 
             foreach (var item in mailRequest.buyedProductsList)
             {

@@ -1,4 +1,4 @@
-﻿using Frontend.Componenets;
+﻿using Frontend.Components;
 using Frontend.Models;
 using Frontend.Services;
 using Frontend.Services.Interfaces;

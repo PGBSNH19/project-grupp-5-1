@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Frontend.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
-namespace Frontend.Componenets
+namespace Frontend.Components
 {
     public class DropZoneBase : ComponentBase
     {

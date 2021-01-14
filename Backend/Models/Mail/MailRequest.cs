@@ -19,6 +19,6 @@ namespace Backend.Models.Mail
         public string DiscountName { get; set; }
         public string Discount { get; set; }
 
-        public IEnumerable<BuyedProducts> buyedProductsList { get; set; }
+        public IEnumerable<BoughtProducts> buyedProductsList { get; set; }
     }
 }

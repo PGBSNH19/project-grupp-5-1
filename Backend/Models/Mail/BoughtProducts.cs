@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models.Mail
 {
-    public class BuyedProducts
+    public class BoughtProducts
     {
         public string ProductName { get; set; }
         public string Description { get; set; }
