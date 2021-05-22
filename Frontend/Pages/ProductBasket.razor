@@ -1,0 +1,67 @@
+﻿@inherits ProductBasketBase
+
+<div style="max-width:600px;">
+    @if (Basket == null || Basket.Count <= 0)
+    {
+        <div class="text-center">
+            You don't have any products in your basket.
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Product name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var basketProduct in Basket)
+                {
+                    <tr>
+                        <td>@basketProduct.Product.Name</td>
+                        <td>@basketProduct.Amount</td>
+                        <td>@basketProduct.Product.CurrentPrice</td>
+                        <td>@(basketProduct.Amount * basketProduct.Product.CurrentPrice)</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>
+                <tr>
+                    <th>
+                        Total price:
+                        @Basket.Sum(x => x.Amount * x.Product.CurrentPrice)
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+        <div class="text-center">
+            <a class="btn btn-light" @onclick="@Cancel" style="cursor: pointer;">Cancel</a>
+            <a class="btn btn-primary" href="orderpage">Check out</a>
+        </div>
+    }
+</div>
+
+@code {
+    //[CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+    //public List<ProductInBasket> Basket = new List<ProductInBasket>();
+
+    //private async Task GetBasketData()
+    //{
+    //    bool basketExists = await localStorage.ContainKeyAsync("customer-basket");
+    //    Basket = basketExists ? await localStorage.GetItemAsync<List<ProductInBasket>>("customer-basket") : new List<ProductInBasket>();
+    //}
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await GetBasketData();
+    //}
+
+    //async Task Cancel() => await BlazoredModal.Cancel();
+}

@@ -1,0 +1,44 @@
+on:
+  push:
+    branches:
+      - develop
+name: Backend CD
+
+defaults:
+  run:
+    working-directory: ./Backend
+
+jobs:
+    # Followed this tutorial: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@master
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.NOR_AZURE_CREDENTIALS }}          
+        - name: Replace tokens
+          uses: cschleiden/replace-tokens@v1.0
+          with:
+            files: '["**/*.json"]'
+            tokenPrefix: '#{'
+            tokenSuffix: '}#'
+          env:
+            CONNECTION_STRING: ${{secrets.NOR_CONNECTION_STRING}}
+            MAILSETTINGS_EMAIL: ${{secrets.MAILSETTINGS_EMAIL}}
+            MAILSETTINGS_PASSWORD: ${{secrets.MAILSETTINGS_PASSWORD}} 
+        - name: Azure Container Registry Login
+          uses: Azure/docker-login@v1  
+          with:
+            username: ${{secrets.NOR_ACR_USERNAME}}
+            password:  ${{secrets.NOR_ACR_PASSWORD}}
+            login-server: ${{secrets.NOR_ACR_LOGIN_SERVER}}
+        
+        - name: Build docker image
+          run: docker build . -t ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:latest
+         
+        - name: Build docker image
+          run: docker push ${{ secrets.NOR_ACR_LOGIN_SERVER }}/storebackend:latest

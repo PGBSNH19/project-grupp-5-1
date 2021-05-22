@@ -1,0 +1,220 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Pages
+@using Frontend.Auth
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IModalService modal
+@inherits ProductBasketBase
+@*remove this comment befor to merge to main*@
+
+@*<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">Frontend</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    </div>*@
+<nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-dark bg-dark box-shadow">
+    <div class="top-row pl- navbar navbar-dark">
+        <a class="navbar-brand text-light" href="">
+            <img src="/Images/G5-Logo2.png" style="width:10;height:80px" />
+        </a>
+    </div>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="container">
+        <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <NavLink class="nav-link text-light" href="" Match="NavLinkMatch.All">
+                        <span class="iconify" data-icon="fa-solid:home" data-inline="false" style="width: 40px;"></span>
+                        <span> Home</span>
+                    </NavLink>
+                </li>
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="manageproducts">
+                                <span class="iconify" data-icon="carbon:product" data-inline="false"
+                                    style="width: 40px;"></span>
+                                <span> Manage Products</span>
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="managecoupons">
+                                <span class="iconify" data-icon="whh:coupon" data-inline="false"
+                                    style="width: 40px;"></span>
+                                <span> Manage Coupons</span>
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="signup">
+                                <span class="iconify" data-icon="whh:adduseralt" data-inline="false"
+                                    style="width: 30px;"></span>
+                                <span>Add User</span>
+                            </NavLink>
+                        </li>
+                    </Authorized>
+                </AuthorizeView>
+                <li class="nav-item">
+                    <NavLink class="nav-link" @onclick="@(() => modal.Show<ProductBasket>("Productbasket"))"
+                        style="cursor: pointer;">
+                        <span class="iconify" data-icon="emojione-v1:shopping-bags" data-inline="false"
+                            style="width: 30px;"></span>
+                        <span>View basket</span>
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+        <div class="@NavMenuCssClass navbar-collapse" @onclick="CollapseNavMenu">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <AuthorizeView>
+                        @* <Authorized>
+                            <p class="mt-3 font-weight-bold text-white">@context.User.Identity.Name</p>
+                            </Authorized> *@
+                        <NotAuthorized>
+                            <p class="mt-3 font-weight-bold text-white">Signed out...!</p>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <p class="mt-3 font-weight-bold text-white">@context.User.Identity.Name (Admin)</p>
+                        </Authorized>
+                    </AuthorizeView>
+                </li>
+                <li class="nav-item">
+                    <AuthorizeView Roles="Customer">
+                        <Authorized>
+                            <p class="mt-3 font-weight-bold text-white">@context.User.Identity.Name (Customer)</p>
+                        </Authorized>
+                    </AuthorizeView>
+                </li>
+            </ul>
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <AuthorizeView>
+                        <Authorized>
+                            <span class="mt-3 font-weight-bold text-white">
+                                <a class="" href="/" @onclick="(() => Logout())">
+                                    <span class="iconify" data-icon="clarity:logout-solid" data-inline="false"
+                                        style="width: 30px;"></span>
+                                    <span> Logout</span>
+                                </a>
+                            </span>
+                        </Authorized>
+                        <NotAuthorized>
+                            <a class="ml-2" href="/login">
+                                <span class="iconify" data-icon="clarity:login-solid" data-inline="false"
+                                    style="width: 30px;"></span>
+                                <span> Login</span>
+                            </a>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@*remove this comment before merge to main*@
+
+@*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <div class="container">
+    <div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand text-light" href="">Frontend</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse"
+    data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    </div>
+
+    <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
+
+    <ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+    <NavLink class="nav-link text-light" href="" Match="NavLinkMatch.All">Home</NavLink>
+    </li>
+    <li class="nav-item">
+    <NavLink class="nav-link text-light" href="addproduct">Add product</NavLink>
+    </li>
+    <li class="nav-item">
+    <NavLink class="nav-link text-light" href="managecoupons">Manage Coupons</NavLink>
+    </li>
+    <li class="nav-item">
+    <NavLink class="nav-link text-light glyphicon glyphicon-shopping-cart" @onclick="@(() =>
+    modal.Show<ProductBasket>("Product basket"))"
+    style="cursor: pointer;">
+    </NavLink>
+    </li>
+    <li class="nav-item">
+    <a href="#">
+    <span class="nav-link text-light glyphicon glyphicon-log-in">Login</span>
+    </a>
+    </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    </div>
+    </div>
+    </nav>*@
+
+@*<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">Frontend</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    </div>
+
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+    <li class="nav-item px-3">
+    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+    <span class="oi oi-home" aria-hidden="true"></span> Home
+    </NavLink>
+    </li>
+    <li class="nav-item px-3">
+    <NavLink class="nav-link" href="addproduct">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add product
+    </NavLink>
+    </li>
+    <li class="nav-item px-3">
+    <NavLink class="nav-link" href="managecoupons">
+    <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Coupons
+    </NavLink>
+    </li>
+    <li class="nav-item px-3">
+    <NavLink class="nav-link" @onclick="@(() => modal.Show<ProductBasket>("Product basket"))" style="cursor: pointer;">
+    <span class="oi oi-cart" data-inline="false"></span> View basket
+    </NavLink>
+    </li>
+    </ul>
+    </div>*@
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    public async Task Logout()
+    {
+        await ((AuthStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOut();
+        NavigationManager.NavigateTo("/");
+    }
+
+    void CollapseNavMenu()
+    {
+        collapseNavMenu = true;
+    }
+}

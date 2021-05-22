@@ -1,0 +1,58 @@
+﻿@layout LoginLayout
+@page  "/signup"
+@inherits SignupBase
+
+<EditForm Model="@user" OnValidSubmit="@RegisterUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mobile-remove">
+        <br /><br /><br /><br /><br /><br /><br />
+    </div>
+    <div class="container col-lg-5 mt-3">
+        <div class="row">
+            <div>
+                <h3 style="font-weight:bold;" class="mb-3 text-white">Sign Up</h3>
+            </div>
+            <div>
+            </div>
+            <div class="col-12 row mb-3">
+                <InputText class="form-control col-12" @bind-Value="user.FirstName" placeholder="first name (optional)" />
+            </div>
+            <div class="col-12 row mb-3">
+                <InputText class="form-control col-12" @bind-Value="user.LastName" placeholder="last name (optional)" />
+            </div>
+            <div class="col-12 row mb-3">
+                <InputText class="form-control col-12" @bind-Value="user.Username" placeholder="user name" />
+            </div>
+            <div class="col-12 row mb-3">
+                <InputText type="password" class="form-control col-12" @bind-Value="user.Password" placeholder="password" />
+            </div>
+            <div class="col-12 row mb-3">
+                <InputText type="password" class="form-control col-12" @bind-Value="user.ConfirmPassword" placeholder="confirm password" />
+            </div>
+            <AuthorizeView Roles="Admin">
+                <Authorized Context="Auth">
+                    <div class="col-12 row mb-3">
+                        <InputSelect class="form-control col-12" @bind-Value="user.Role">
+                            <option value="1">Admin</option>
+                            <option value="2">Customer</option>
+                        </InputSelect>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+            <br />
+            <div class="col-12 row mb-3">
+                <span class="col-12"></span>
+                <input type="submit" class="form-control col-6 btn btn-sm btn-danger" value="Sign up" />
+                @if (!IsUserAdmin)
+                {
+                    <a href="/login" class="col-6 pt-1" style="color:white; text-decoration:none">Already an user?</a>
+                }
+            </div>
+            <br />
+            <div class="col-12 row" style="text-align:left; font-style:italic; color:red">
+                <span class="col-12">@ErrorMesssage</span>
+            </div>
+        </div>
+    </div>
+</EditForm>

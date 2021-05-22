@@ -1,0 +1,22 @@
+﻿@using Frontend.Auth
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<body>
+    <NavMenu />
+    <div class="container">
+        @Body
+    </div>
+</body>
+
+@*<div class="sidebar">
+    <NavMenu />
+    </div>
+
+    <div class="main">
+
+    <div class="content px-4">
+    @Body
+    </div>
+    </div>*@
